@@ -45,7 +45,7 @@ const updateUser = async (req, res) => {
     const queryString = 'UPDATE users SET first_name = $1, last_name = $2, email = $3, password = $4 WHERE id = $5';
     
     try {
-        const result = await db.query(queryString, [user.first_name, user.last_name, user.email, user.password, req.userId]);
+        await db.query(queryString, [user.first_name, user.last_name, user.email, user.password, req.userId]);
         res.status(200).json({message: `User modified with ID: ${req.userId}`});
     } catch (err) {
         console.error('Error updating user:', err.message);
@@ -57,7 +57,7 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     const queryString = 'DELETE FROM users WHERE id = $1';
     try {
-        const result = await db.query(queryString, [req.userId]);
+        await db.query(queryString, [req.userId]);
         res.status(200).json({message: `User deleted with ID: ${req.userId}`});
     } catch (err) {
         console.error('Error deleting user:', err.message);

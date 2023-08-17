@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
  * Router Imports
  */
 const usersRouter = require('./routes/userRoutes');
+const productsRouter = require('./routes/productRoutes');
 
 
 const PORT = process.env.PORT || 3000;
@@ -19,7 +20,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 
 app.use('/users', usersRouter);
-
+app.use('/products', productsRouter);
 
 
 app.listen(PORT, () => {

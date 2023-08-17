@@ -7,7 +7,7 @@ router.param('userId', checkUserId);        // Uses middleware to check if the u
 
 router.get('/', db.getUsers);               // Retrvieves all users
 router.get('/:userId', db.getUserById);     // Retrieves a single user   
-router.put('/:userId', db.updateUser);      // Updates a user
+router.patch('/:userId', db.updateUser);    // Updates a user
 router.delete('/:userId', db.deleteUser);   // Deletes a user
 
 module.exports = router;

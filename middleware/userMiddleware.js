@@ -2,7 +2,7 @@ const db = require('../database/index');
 
 /**
  * Checks if the user with id is in the database. If the 
- * user is found user and userId get attached to the request body.
+ * user is found user and userId gets attached to the request body.
  * @param {Object} req 
  * @param {Object} res 
  * @param {Object} next 
@@ -18,9 +18,10 @@ const checkUserId = async (req, res, next, id) => {
             req.userId = userId;
             next();
         } else {
-            res.status(404).send(`User with id - ${userId} does not exist!`);
+            res.status(404).json({message: `User with id - ${userId} does not exist!`});
         }
     } catch (err) {
+        console.error('Error checking user id:', err.message);
         res.status(500).json({ message: err.message });
     }
 }

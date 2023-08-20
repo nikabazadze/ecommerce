@@ -12,7 +12,7 @@ const getProducts = async (req, res) => {
     }
 };
 
-// Retrvieves products by category id
+// Retrvieves products filtered by category id
 const getProductsByCategoryId = async (req, res) => {
     const queryString = 'SELECT * FROM products WHERE category_id = $1';
     try {
@@ -33,7 +33,7 @@ const getProductsByCategoryId = async (req, res) => {
  * Middleware has already checked product id and attached product to the 
  * request object. That's why this method sends product without any query
  */
-const getProductById = async (req, res) => {
+const getProductById = (req, res) => {
     res.status(200).json(req.product);
 };
 
@@ -44,8 +44,8 @@ const addProduct = async (req, res) => {
     // Check if all the required product properties are in the request body
     if (!(requestBody.product_name && requestBody.category_id && requestBody.description && requestBody.unit_price && requestBody.quantity_left)) {
         res.status(422).json({
-            message: "Could not add a product! Include all valid product properties to add a product.",
-            validProperties: ["product_name", "category_id", "description", "unit_price", "quantity_left"]
+            message: "Could not add a product! Include all required product properties to add a product.",
+            requiredProperties: ["product_name", "category_id", "description", "unit_price", "quantity_left"]
         });
         return;
     }
@@ -68,7 +68,7 @@ const updateProduct = async (req, res) => {
     // Check if there are any valid property in the request body to update a product
     if (!(requestBody.product_name || requestBody.category_id || requestBody.description || requestBody.unit_price || requestBody.quantity_left)) {
         res.status(422).json({
-            message: "Could not update a product because of no valid product properties!",
+            message: "Could not update a product because of no valid product properties in the request body!",
             validProperties: ["product_name", "category_id", "description", "unit_price", "quantity_left"]
         });
         return;
@@ -82,7 +82,6 @@ const updateProduct = async (req, res) => {
     if (requestBody.quantity_left) product.quantity_left = requestBody.quantity_left;
 
     const queryString = 'UPDATE products SET product_name = $1, category_id = $2, description = $3, unit_price = $4, quantity_left = $5 WHERE id = $6';
-    
     try {
         await db.query(queryString, [product.product_name, product.category_id, product.description, product.unit_price, product.quantity_left, req.productId]);
         res.status(200).json({message: `Product modified with ID: ${req.productId}`});

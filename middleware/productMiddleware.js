@@ -1,7 +1,7 @@
 const db = require('../database/index');
 
 /**
- * Checks if the product with id is in the database. If the 
+ * Checks if the product with given id is in the database. If the 
  * product is found product and productId gets attached to the request body.
  * @param {Object} req 
  * @param {Object} res 
@@ -18,7 +18,7 @@ const checkProductId = async (req, res, next, id) => {
             req.productId = productId;
             next();
         } else {
-            res.status(404).json({message: `product with id - ${productId} does not exist!`});
+            res.status(404).json({message: `Product with id - ${productId} does not exist!`});
         }
     } catch (err) {
         console.error('Error checking product id:', err.message);

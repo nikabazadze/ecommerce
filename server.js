@@ -12,6 +12,7 @@ const bodyParser = require('body-parser');
  */
 const usersRouter = require('./routes/userRoutes');
 const productsRouter = require('./routes/productRoutes');
+const ordersRouter = require('./routes/orderRoutes');
 
 
 const PORT = process.env.PORT || 3000;
@@ -21,6 +22,7 @@ app.use(bodyParser.json());
 
 app.use('/users', usersRouter);
 app.use('/products', productsRouter);
+app.use('/orders', ordersRouter);
 
 
 app.listen(PORT, () => {

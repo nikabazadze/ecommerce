@@ -5,7 +5,7 @@ const { checkProductId } = require('../middleware/productMiddleware');
 
 router.param('productId', checkProductId);          // Uses middleware to check if the user with that id exists
 
-// Retrvieves all products or filters by category
+// Retrvieves all products or filters it by category
 router.get('/', (req, res) => {
     const { categoryId } = req.query;
     if (categoryId) {

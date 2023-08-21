@@ -9,7 +9,7 @@ router.use(checkCart);
 router.get('/', db.getUserCart);
 router.get('/items', db.getCartItems);
 router.patch('/', db.updateCart);
-router.put('/', db.clearCart); 
-
+router.put('/', db.clearCart);
+router.post('/checkout', db.checkoutCart);
 
 module.exports = router;

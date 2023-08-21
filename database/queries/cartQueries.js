@@ -1,10 +1,3 @@
-/**
- * There is no POST or DELETE http method for the cart, because 
- * you can not create or delete a new cart. When a new user registers
- * new cart is created for that user automatically and if the user will
- * be deleted their cart will be deleted too automatically.
- */
-
 const db = require('../index');
 const { checkProductId } = require('../../middleware/productMiddleware');
 
@@ -63,6 +56,13 @@ const updateCart = async (req, res) => {
 const clearCart = async (req, res) => {
     const { clear } = req.query;
     if (clear === "true") {
+        // Check if there is anything in the cart
+        const cartTotalValue = parseFloat(req.cart.total_value);
+        if (cartTotalValue === 0) {
+            res.status(400).json({message: "Could not clear cart! There are no items in the cart to clear."});
+            return;
+        };
+
         const clearCart = 'UPDATE cart SET total_value = $1 where id = $2';
         const clearCartItems = 'DELETE FROM cart_items WHERE cart_id = $1';
         try {
@@ -76,6 +76,51 @@ const clearCart = async (req, res) => {
     } else {
         res.status(400).json({message: "Could not clear cart! Use `?clear=true` query string. If you want to update cart item use `PATCH` http method instead."});
         return;
+    };
+};
+
+// Processes cart checkout
+const checkoutCart = async (req, res, next) => {
+    const cartTotalValue = parseFloat(req.cart.total_value);
+
+    // Check if there is anything in the cart
+    if (cartTotalValue === 0) {
+        res.status(400).json({message: "Could not checkout cart! There are no items in the cart to checkout."});
+        return;
+    };
+
+    // Try processing payment
+    const paymentProcessed = processPayment();
+    if (!paymentProcessed) {
+        res.status(400).json({message: "Payment has not processed successfully! Check your payment details!"});
+        return;
+    };
+
+    // Place a new order
+    const date = new Date().toUTCString();
+    const addOrderQuery = 'INSERT INTO orders (user_id, total_value, status, created_at) VALUES ($1, $2, $3, $4)';
+    const getOrderQuery = 'SELECT * FROM orders WHERE user_id = $1 AND total_value = $2 AND status = $3 AND created_at = $4';
+    const addOrderItemsQuery = 'INSERT INTO order_items (order_id, product_id, product_quantity) SELECT $1, product_id, product_quantity FROM cart_items WHERE cart_id = $2';
+    try {
+        await db.query(addOrderQuery, [req.userId, cartTotalValue, 'pending', date]);
+        const newOrder = await db.query(getOrderQuery, [req.userId, cartTotalValue, 'pending', date]);
+        const orderId = newOrder.rows[0].id;
+        await db.query(addOrderItemsQuery, [orderId, req.cart.id]);
+    } catch (err) {
+        console.error('Error creating order:', err.message);
+        res.status(500).json({ message: err.message });
+    };
+
+    // Clear cart
+    const clearCart = 'UPDATE cart SET total_value = $1 where id = $2';
+    const clearCartItems = 'DELETE FROM cart_items WHERE cart_id = $1';
+    try {
+        await db.query(clearCart, [0, req.cart.id]);
+        await db.query(clearCartItems, [req.cart.id]);
+        res.status(200).json({message: "Order placed successfully!"});
+    } catch (err) {
+        console.error('Error placing order:', err.message);
+        res.status(500).json({ message: err.message });
     };
 };
 
@@ -178,9 +223,14 @@ const removeCartItem = async (req, res, productId) => {
     }
 };
 
+const processPayment = () => {
+    return true;
+};
+
 module.exports = {
     getUserCart,
     getCartItems,
     updateCart,
-    clearCart
+    clearCart,
+    checkoutCart
 };

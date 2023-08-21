@@ -27,11 +27,11 @@ const updateUser = async (req, res) => {
     const user = req.user;
     const requestBody = req.body;
 
-    // Check if there are any valid property in the request body to update user
+    // Check if there are any valid fields in the request body to update user
     if (!(requestBody.first_name || requestBody.last_name || requestBody.email || requestBody.password)) {
-        res.status(422).json({
-            message: "Could not update user because of no valid user properties in the request body!",
-            validProperties: ["first_name", "last_name", "email", "password"]
+        res.status(400).json({
+            message: "Could not update user because of no valid user fields in the request body!",
+            validFields: ["first_name", "last_name", "email", "password"]
         });
         return;
     };

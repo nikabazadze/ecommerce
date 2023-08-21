@@ -3,7 +3,8 @@ const router = express.Router();
 const db = require('../database/queries/orderQueries');
 const { checkOrderId } = require('../middleware/orderMiddleware');
 
-router.param('orderId', checkOrderId);          // Uses middleware to check if the order with that id exists
+// Uses middleware to check if the order with that id exists
+router.param('orderId', checkOrderId);
 
 // Retrieves all orders or filters it by order status
 router.get('/', (req, res) => {

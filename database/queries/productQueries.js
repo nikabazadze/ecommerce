@@ -41,11 +41,11 @@ const getProductById = (req, res) => {
 const addProduct = async (req, res) => {
     const requestBody = req.body;
 
-    // Check if all the required product properties are in the request body
+    // Check if all the required product fields are in the request body
     if (!(requestBody.product_name && requestBody.category_id && requestBody.description && requestBody.unit_price && requestBody.quantity_left)) {
-        res.status(422).json({
-            message: "Could not add a product! Include all required product properties to add a product.",
-            requiredProperties: ["product_name", "category_id", "description", "unit_price", "quantity_left"]
+        res.status(400).json({
+            message: "Could not add a product! Include all required fields to add a product.",
+            requiredFields: ["product_name", "category_id", "description", "unit_price", "quantity_left"]
         });
         return;
     }
@@ -65,11 +65,11 @@ const updateProduct = async (req, res) => {
     const product = req.product;
     const requestBody = req.body;
 
-    // Check if there are any valid property in the request body to update a product
+    // Check if there are any valid fields in the request body to update a product
     if (!(requestBody.product_name || requestBody.category_id || requestBody.description || requestBody.unit_price || requestBody.quantity_left)) {
-        res.status(422).json({
-            message: "Could not update a product because of no valid product properties in the request body!",
-            validProperties: ["product_name", "category_id", "description", "unit_price", "quantity_left"]
+        res.status(400).json({
+            message: "Could not update a product because of no valid fields in the request body!",
+            validFields: ["product_name", "category_id", "description", "unit_price", "quantity_left"]
         });
         return;
     };

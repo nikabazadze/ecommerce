@@ -1,5 +1,4 @@
 const db = require('../index');
-const { checkProductId } = require('../../middleware/productMiddleware');
 
 // Retrvieves all orders
 const getOrders = async (req, res) => {
@@ -16,7 +15,7 @@ const getOrders = async (req, res) => {
 // Retrvieves orders filtered by order status
 const getOrdersByStatus = async (req, res) => {
     if (!(req.query.status === "pending" || req.query.status === "complete")) {
-        res.status(422).json({message: "Invalid status value in the query string! Status value must be `pending` or `complete`!"});
+        res.status(400).json({message: "Invalid status value in the query string! Status value must be `pending` or `complete`!"});
         return;
     }
 
@@ -53,17 +52,17 @@ const getOrderItems = async (req, res) => {
         console.error('Error retrieving order items:', err.message);
         res.status(500).json({ message: err.message });
     }
-}
+};
 
 // Adds new order in the database
 const addOrder = async (req, res, next) => {
     const requestBody = req.body;
 
-    // Check if all the required order properties are in the request body
+    // Check if all the required fields are in the request body
     if (!(requestBody.user_id && requestBody.order_items)) {
-        res.status(422).json({
-            message: "Could not add order! Include all required order properties to add order.",
-            requiredProperties: ["user_id", "order_items"]
+        res.status(400).json({
+            message: "Could not add order! Include all required fields to add order.",
+            requiredFields: ["user_id", "order_items"]
         });
         return;
     }
@@ -83,11 +82,11 @@ const addOrder = async (req, res, next) => {
 const updateOrderStatus = async (req, res) => {
     if (req.body.status) {
         if (!(req.body.status === "pending" || req.body.status === "complete")) {
-            res.status(422).json({message: "Could not update order status! New status value must be `pending` or `complete`!"});
+            res.status(400).json({message: "Could not update order status - invalid status value! New status value must be `pending` or `complete`!"});
             return;
         }
     } else {
-        res.status(422).json({message: "Could not update order status! Add status property in the request body!"});
+        res.status(400).json({message: "Could not update order status! Add status field in the request body!"});
         return;
     }
 

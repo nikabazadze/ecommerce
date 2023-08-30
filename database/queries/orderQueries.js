@@ -54,30 +54,6 @@ const getOrderItems = async (req, res) => {
     }
 };
 
-// Adds new order in the database
-const addOrder = async (req, res, next) => {
-    const requestBody = req.body;
-
-    // Check if all the required fields are in the request body
-    if (!(requestBody.user_id && requestBody.order_items)) {
-        res.status(400).json({
-            message: "Could not add order! Include all required fields to add order.",
-            requiredFields: ["user_id", "order_items"]
-        });
-        return;
-    }
-  
-    const date = new Date().toUTCString();
-    const queryString = 'INSERT INTO orders (user_id, total_value, status, created_at) VALUES ($1, $2, $3, $4)';
-    try {
-        const newOrder = await db.query(queryString, [requestBody.user_id, orderValue, 'pending', date]);
-        res.status(201).json({message: "New order added"});
-    } catch (err) {
-        console.error('Error adding order:', err.message);
-        res.status(500).json({ message: err.message });
-    }
-};
-
 // Updates an order
 const updateOrderStatus = async (req, res) => {
     if (req.body.status) {
@@ -117,7 +93,6 @@ module.exports = {
     getOrdersByStatus,
     getOrderById,
     getOrderItems,
-    addOrder,
     updateOrderStatus,
     deleteOrder
 };

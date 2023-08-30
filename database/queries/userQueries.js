@@ -1,4 +1,3 @@
-const { use } = require('../../routes/userRoutes');
 const db = require('../index');
 
 // Retrvieves all users
@@ -84,11 +83,54 @@ const getUserOrdersByStatus = (req, res) => {
     };
 };
 
+// Checks if there is a user in the database with given email
+const checkUserByEmail = async (email) => {
+    const queryString = 'SELECT * FROM users WHERE email = $1';
+    try {
+        const user = await db.query(queryString, [email]);
+        return user.rows[0];
+    } catch (err) {
+        console.error('Error checking user in the database:', err.message);
+    };
+};
+
+/**
+ * Finds user by id in the database.
+ * Defined this function to be used in the authentication process.
+ * We could not use already defined function `getUserById` for this,
+ * because that function uses middleware which we don't need in authentication. 
+ */
+const findUserById = async (id) => {
+    const queryString = 'SELECT * FROM users WHERE id = $1';
+    try {
+        const user = await db.query(queryString, [id]);
+        return user.rows[0];
+    } catch (err) {
+        console.error('Error checking user by id:', err.message);
+    };
+};
+
+// Adds new user in the database
+const createUser = async (firstName, lastName, email, password, res) => {
+    const date = new Date().toUTCString();
+    const queryString = 'INSERT INTO users (first_name, last_name, email, password, created_at) VALUES ($1, $2, $3, $4, $5)';
+    try {
+        await db.query(queryString, [firstName, lastName, email, password, date]);
+        res.status(201).json({message: "New user added in the database."})
+    } catch (err) {
+        console.error('Error adding new user:', err.message);
+        res.status(500).json({ message: err.message });
+    };
+};
+
 module.exports = {
     getUsers,
     getUserById,
     updateUser,
     deleteUser,
     getUserOrders,
-    getUserOrdersByStatus
+    getUserOrdersByStatus,
+    checkUserByEmail,
+    findUserById,
+    createUser
 };

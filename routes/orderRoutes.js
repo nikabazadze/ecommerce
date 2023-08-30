@@ -18,7 +18,6 @@ router.get('/', (req, res) => {
 
 router.get('/:orderId', db.getOrderById);
 router.get('/:orderId/items', db.getOrderItems);
-router.post('/', db.addOrder);
 router.patch('/:orderId', db.updateOrderStatus);
 router.delete('/:orderId', db.deleteOrder);
 

@@ -1,4 +1,4 @@
-const db = require('../database/index');
+const db = require('../models/index');
 
 /**
  * Checks if the product with given id is in the database. If the 

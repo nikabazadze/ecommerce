@@ -1,38 +1,33 @@
-/**
- * Package Imports
- */
 const express = require('express');
 const app = express();
-require("dotenv").config();
-const morgan = require('morgan');
-const bodyParser = require('body-parser');
+const logger = require('morgan');
+const cors = require("cors");
+const helmet = require("helmet");
 const session = require("express-session");
 const store = new session.MemoryStore();    // Only for development
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+require("dotenv").config();
 
-const db = require('./database/queries/userQueries');
-const { hashPassword, comparePasswords } = require('./util/passwordHash');
-
-/**
- * Router Imports
- */
-const usersRouter = require('./routes/userRoutes');
-const productsRouter = require('./routes/productRoutes');
-const ordersRouter = require('./routes/orderRoutes');
-
+const apiRouter = require('./routes/index');
+const db = require('./controllers/user.controllers');
+const { hashPassword, comparePasswords } = require('./utils/passwordHash');
 
 const PORT = process.env.PORT || 3000;
 
-app.use(morgan('dev'));
-app.use(bodyParser.json());
+app.use(cors());
+app.use(helmet());
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // Session config
 app.use(session({
-    secret: "ajgabajga",
+    secret: process.env.SESSION_SECRET,
     cookie: {
         maxAge: 1000 * 60 *60 * 24,
-        secure: false,
+        httpOnly: true,
+        secure: false,  // For development
     },
     resave: false,
     saveUninitialized: false,
@@ -69,12 +64,8 @@ passport.use(new LocalStrategy(async function (email, password, done) {
     };
 }));
 
-
-// API Routes
-app.use('/users', usersRouter);
-app.use('/products', productsRouter);
-app.use('/orders', ordersRouter);
-
+// API router
+app.use('/api', apiRouter);
 
 app.get('/', (req, res) => {
     res.json({message: "You arrived on Home page!"});

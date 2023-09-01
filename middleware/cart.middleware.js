@@ -1,4 +1,4 @@
-const db = require('../database/index');
+const db = require('../models/index');
 
 /**
  * Checks if the cart for the specified user is in the database. If the 
@@ -8,7 +8,7 @@ const db = require('../database/index');
  * @param {Object} next 
  * @param {String} id 
  */
-const checkCart = async (req, res, next) => {
+const checkUserCart = async (req, res, next) => {
     const queryString = 'SELECT * FROM cart WHERE user_id = $1';
     try {
         const result = await db.query(queryString, [req.userId]);
@@ -25,4 +25,4 @@ const checkCart = async (req, res, next) => {
     }
 };
 
-module.exports = {checkCart};
+module.exports = { checkUserCart };

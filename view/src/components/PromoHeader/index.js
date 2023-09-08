@@ -3,8 +3,8 @@ import styles from './PromoHeader.module.css';
 
 function PromoHeader() {
     const promos = [
-        "FREE SHIPPING ON ORDER OVER $75+",
-        "99 DAY RISK FREE TRIAL"
+        "free shipping on order over $75+",
+        "99 day risk free trial"
     ];
     
     return (

@@ -1,5 +1,7 @@
 import React from "react";
+
 import styles from './Header.module.css';
+import Search from "../Search";
 
 function Header() {
     const categories = ["wallets", "cases", "bags", "accessories"];
@@ -17,7 +19,7 @@ function Header() {
     function renderRightNav() {
         return (
             <ul className={styles.list}>
-                <li><a href="#">Search</a></li>
+                <li><Search /></li>
                 <li><a href="#">Login</a></li>
                 <li><a href="#">Cart</a></li>
             </ul>

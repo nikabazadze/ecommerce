@@ -5,6 +5,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: fixed;
+    top: 2rem;
     color: #454545;
 }
 
@@ -28,7 +30,7 @@
 
 .list {
     display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
 .list a {
@@ -37,4 +39,9 @@
     text-transform: uppercase;
     text-decoration: none;
     color: inherit;
+}
+
+.rightNav .list li {
+    display: flex;
+    align-items: center;
 }

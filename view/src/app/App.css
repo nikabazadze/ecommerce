@@ -3,3 +3,9 @@ body {
     font-family: 'Nunito Sans', sans-serif;
     font-size: 1rem;
 }
+
+main,
+footer {
+    position: relative;
+    top: 6rem;
+}

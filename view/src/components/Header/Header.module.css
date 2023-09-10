@@ -8,6 +8,8 @@
     position: fixed;
     top: 2rem;
     color: #454545;
+    background-color: #fff;
+    z-index: 100;
 }
 
 .logo {

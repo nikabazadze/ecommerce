@@ -2,6 +2,8 @@ import React from "react";
 
 import styles from './Header.module.css';
 import Search from "../Search";
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 
 function Header() {
     const categories = ["wallets", "cases", "bags", "accessories"];
@@ -20,8 +22,8 @@ function Header() {
         return (
             <ul className={styles.list}>
                 <li><Search /></li>
-                <li><a href="#">Login</a></li>
-                <li><a href="#">Cart</a></li>
+                <li><a href="#" className={styles.temp}><PersonOutlinedIcon /><span>Hello, Sign in</span></a></li>
+                <li><a href="#"><ShoppingCartOutlinedIcon sx={{fontSize: 22}} /><span>Cart</span></a></li>
             </ul>
         );
     };

@@ -14,8 +14,7 @@ function Banner() {
                 <img src={banner2} alt="holding pop up wallet in the hand"/>
             </div>
             <div className={styles.overlay}>
-                <h2>&nbsp;&nbsp; best quality</h2>
-                <h2>&nbsp;&nbsp;pop up wallets</h2>
+                <h1>&nbsp;&nbsp;best quality<br />pop up wallets</h1>
             </div>
         </section>
     );

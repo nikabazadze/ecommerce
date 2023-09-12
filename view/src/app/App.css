@@ -4,7 +4,10 @@ body {
     font-size: 1rem;
 }
 
-main,
+main {
+    margin: 0 5rem;
+}
+
 footer {
     position: relative;
     top: 6rem;

@@ -1,0 +1,17 @@
+.homepage {
+    position: relative;
+    top: 6rem;
+}
+
+.homepage main section {
+    margin-top: 4rem;
+    color: #454545;
+}
+
+.homepage h2 {
+    font-size: 2rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    margin-top: 2rem; /* temp */
+}

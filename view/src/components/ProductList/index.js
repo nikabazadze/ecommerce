@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 
 import styles from './ProductList.module.css';
 import ProductListItem from "../ProductListItem";
-import products from '../../data/mockData';
+import { products } from '../../data/mockData';
 
 function ProductList() {
     return (

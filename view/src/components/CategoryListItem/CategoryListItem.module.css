@@ -1,0 +1,24 @@
+.card {
+    /* width: 100%; */
+    border-radius: 0.25rem;
+    box-shadow: 0px 0px 15px #c8c8c8;
+}
+
+.imgContainer {
+    width: 100%;
+    max-height: 35vh;
+    overflow: hidden;
+}
+
+.imgContainer img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    padding: 1.25rem 1.75rem;
+}

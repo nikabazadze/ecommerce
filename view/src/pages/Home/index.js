@@ -4,6 +4,7 @@ import styles from './Home.module.css';
 import Banner from "../../components/Banner";
 import ProductList from "../../components/ProductList";
 import CategoryList from "../../components/CategoryList";
+import ProductFeatures from "../../components/ProductFeatures";
 
 function Home() {
     return (
@@ -14,11 +15,14 @@ function Home() {
                 <ProductList />
             </section>
             <section>
+                <ProductFeatures />
+            </section>
+            <section>
                 <h2>shop by category</h2>
                 <CategoryList />
             </section>
         </div>
-    )
+    );
 };
 
 export default Home;

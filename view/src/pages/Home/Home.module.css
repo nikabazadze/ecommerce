@@ -3,8 +3,9 @@
     top: 6rem;
 }
 
-.homepage main section {
-    margin-top: 4rem;
+.homepage section {
+    margin: 0 5rem;
+    margin-top: 5rem;
     color: #454545;
 }
 
@@ -13,5 +14,4 @@
     font-weight: 500;
     text-transform: uppercase;
     margin-bottom: 2rem;
-    margin-top: 2rem; /* temp */
 }

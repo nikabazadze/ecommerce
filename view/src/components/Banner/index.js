@@ -6,7 +6,7 @@ import banner2 from '../../assets/images/banner2.png';
 
 function Banner() {
     return (
-        <section className={styles.banner}>
+        <div className={styles.banner}>
             <div className={styles.imgContainer}>
                 <img src={banner1} alt="Several wallets on the table along with laptop"/>
             </div>
@@ -16,7 +16,7 @@ function Banner() {
             <div className={styles.overlay}>
                 <h1>&nbsp;&nbsp;best quality<br />pop up wallets</h1>
             </div>
-        </section>
+        </div>
     );
 };
 

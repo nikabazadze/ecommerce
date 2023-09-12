@@ -12,7 +12,9 @@ function App() {
         <PromoHeader />
         <Header />
       </header>
-      <Home />
+      <main>
+        <Home />
+      </main>
     </div>
   );
 }

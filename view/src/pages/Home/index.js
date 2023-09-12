@@ -8,13 +8,13 @@ function Home() {
     return (
         <div className={styles.homepage}>
             <Banner />
-            <main>
-                <section>
-                    <h2>best sellers</h2>
-                    <ProductList />
-                    <h2>best sellers</h2>   {/* temp */}
-                </section>
-            </main>
+            <section>
+                <h2>best sellers</h2>
+                <ProductList />
+            </section>
+            <section>
+                <h2>shop by category</h2>
+            </section>
         </div>
     )
 };

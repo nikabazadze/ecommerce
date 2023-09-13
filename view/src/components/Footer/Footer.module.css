@@ -1,0 +1,39 @@
+.footer {
+    width: 100%;
+    height: 30rem;
+    padding: 5rem 10rem;
+    color: #fff;
+    background-color: #454545;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.contentContainer {
+    /* border: 1px solid red; */
+    display: flex;
+    gap: 5rem;
+}
+
+.contentContainer > div {
+    width: 10rem;
+}
+
+.contentContainer h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 1.125rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #fff;
+}
+
+.contentContainer a {
+    line-height: 2;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+
+/* .subscribeContainer {
+    border: 1px solid red;
+} */

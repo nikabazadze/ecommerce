@@ -16,7 +16,7 @@ function AlertDialog({title, content, onClose}) {
   };
 
   return (
-    <div>
+    <div style={{ position: "absolute"}}>
       <Dialog
         open={open}
         onClose={handleClose}

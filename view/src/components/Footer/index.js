@@ -3,6 +3,7 @@ import { useState } from "react";
 import styles from './Footer.module.css';
 import AlertDialog from "../AlertDialog";
 import Newsletter from "../Newsletter";
+import Socials from "../Socials";
 
 function Footer() {
     const [ openDialog, setOpenDialog ] = useState(false);
@@ -10,7 +11,7 @@ function Footer() {
     const supportListItems = ["shipping", "contact us", "returns", "warranty", "FAQs", "privacy policy"];
     const aboutListItems = ["about ZiPLiX", "our blog", "press & media", "careers", "our story", "ZiPLiX patents"];
     const shopListItems = ["premium wallets", "bags", "metal wallets", "cases", "accessories", "shop all"];
-    const dialogTitle = "Could not open!"
+    const dialogTitle = "Could not open the page!"
     const dialogContent = "There is no content/page for this list item. This list item is rendered only for visual purposes.";
 
     function renderList(title, items) {
@@ -37,6 +38,7 @@ function Footer() {
             </div>
             <div className={styles.rightContent}>
                 <Newsletter />
+                <Socials />
             </div>
             <div className={styles.copyright}>
                 <p>&copy; 2023 Ziplix, all rights reserved.</p>

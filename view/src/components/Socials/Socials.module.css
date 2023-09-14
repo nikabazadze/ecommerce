@@ -1,0 +1,14 @@
+.container {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.container > * {
+    cursor: pointer;
+}
+
+.container > *:hover {
+    color: #d8d8d8;
+}

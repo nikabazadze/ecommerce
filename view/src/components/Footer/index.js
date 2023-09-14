@@ -38,6 +38,9 @@ function Footer() {
             <div className={styles.rightContent}>
                 <Newsletter />
             </div>
+            <div className={styles.copyright}>
+                <p>&copy; 2023 Ziplix, all rights reserved.</p>
+            </div>
             {openDialog && <AlertDialog title={dialogTitle} content={dialogContent} onClose={setOpenDialog} />}
         </div>
     );

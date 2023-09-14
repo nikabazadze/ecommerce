@@ -37,3 +37,10 @@
 .rightContent {
     display: flex;
 }
+
+.copyright {
+    font-size: 0.875rem;
+    text-transform: capitalize;
+    position: absolute;
+    bottom: 2rem;
+}

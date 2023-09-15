@@ -19,6 +19,11 @@
     letter-spacing: 0.2rem;
     color: #000;
 }
+
+.logo a {
+    color: inherit;
+    text-decoration: none;
+}
  
 .leftNav {
     position: absolute;

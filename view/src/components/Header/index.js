@@ -31,7 +31,7 @@ function Header() {
     return (
         <div className={styles.container}>
             <nav className={styles.leftNav}>{renderLeftNav()}</nav>
-            <span className={styles.logo}>ZiPLiX</span>
+            <span className={styles.logo}><a href="/">ZiPLiX</a></span>
             <nav className={styles.rightNav}>{renderRightNav()}</nav>
         </div>
     );

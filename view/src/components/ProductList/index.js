@@ -8,10 +8,10 @@ import { products } from '../../data/mockData';
 function ProductList() {
     return (
         <div>
-            <Grid container spacing={3}>
+            <Grid container rowSpacing={5} columnSpacing={2.5} alignItems="strech">
                 {
                     products.map((product) => (
-                        <Grid item>
+                        <Grid item xs={3}>
                             <ProductListItem product={product} />
                         </Grid>
                     ))

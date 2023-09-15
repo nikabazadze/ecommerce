@@ -5,7 +5,7 @@
 
 .homepage > section:first-of-type {
     position: relative;
-    width: calc(100% - 5rem);
+    width: calc(100% - 5rem);   /* Change with css variable of website padding instead of 5rem */
 }
 
 .homepage section {

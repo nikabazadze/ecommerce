@@ -1,3 +1,14 @@
-.container {
+.gridContainer {
     max-width: 90rem;
+}
+
+.flexContainer {
+    width: calc(100%);
+    display: flex;
+    gap: 2rem;
+    overflow: hidden;
+    position: relative;
+    left: -1rem;
+    bottom: 1rem;
+    padding: 1rem;
 }

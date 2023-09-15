@@ -3,19 +3,33 @@
 }
 
 .flexContainer {
-    border: 1px solid red;
     display: flex;
     gap: 2rem;
     overflow: hidden;
+    width: 100vw;
+    padding: 1rem 0;
     position: relative;
-    left: -1rem;
+    left: -5rem;    /* Change with css variable of website padding instead */
     bottom: 1rem;
-    padding: 1rem;
-    width: calc(100% + 1rem);
 }
 
 .flexContainer > * {
-    width: 21%;
+    width: 20%;
     height: auto !important;    /* If any issues in the future, this should be checked first */
     flex-shrink: 0;
+    position: relative;
+    left: 5rem;     /* Change with css variable of website padding instead */
+}
+
+.iconContainer {
+    position: absolute;
+    right: 10rem;   /* Change with css variable of website padding instead, use 2x website padding */
+    top: 0.25rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.iconContainer > * {
+    cursor: pointer;
+    color: #454545;
 }

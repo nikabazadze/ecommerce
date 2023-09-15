@@ -12,7 +12,7 @@ function Home() {
             <Banner />
             <section>
                 <h2>best sellers</h2>
-                <ProductList />
+                <ProductList position="horizontal"/>
             </section>
             <section>
                 <ProductFeatures />

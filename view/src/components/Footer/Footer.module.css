@@ -28,8 +28,15 @@
     border-bottom: 1px solid #fff;
 }
 
-.navContainer a {
+.navContainer li {
     line-height: 2;
+}
+
+.navContainer span {
+    cursor: pointer;
+}
+
+.navContainer a {
     text-decoration: none;
     text-transform: capitalize;
     color: inherit;

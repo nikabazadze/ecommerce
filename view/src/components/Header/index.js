@@ -13,7 +13,7 @@ function Header() {
         return (
             <ul className={styles.list}>
                 {categories.map((category, index) => {
-                    return <li key={index}><Link to="/shop">{category}</Link></li>;
+                    return <li key={index} onClick={() => window.scrollTo(0, 0)}><Link to="/shop">{category}</Link></li>;
                 })}
             </ul>
         );
@@ -32,7 +32,7 @@ function Header() {
     return (
         <div className={styles.container}>
             <nav className={styles.leftNav}>{renderLeftNav()}</nav>
-            <span className={styles.logo}><Link to="/">ZiPLiX</Link></span>
+            <span className={styles.logo}><Link to="/" onClick={() => window.scrollTo(0, 0)}>ZiPLiX</Link></span>
             <nav className={styles.rightNav}>{renderRightNav()}</nav>
         </div>
     );

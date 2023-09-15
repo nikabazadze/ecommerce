@@ -23,7 +23,10 @@ function Footer() {
                 <ul>
                     {
                         items.map((item, index) => (
-                            <li key={index}><Link to={title === "shop" ? "/shop" : "/"} onClick={() => setOpenDialog(title !== "shop")}>{item}</Link></li>
+                            title === "shop" ? 
+                                <li key={index}><Link to="/shop" onClick={() => window.scrollTo(0, 0)}>{item}</Link></li>
+                                :
+                                <li key={index}><span onClick={() => setOpenDialog(true)}>{item}</span></li>
                         ))
                     }
                 </ul>

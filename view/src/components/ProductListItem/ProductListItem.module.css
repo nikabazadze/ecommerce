@@ -70,6 +70,6 @@
 
 /* Product price */
 .productMeta > div:last-of-type > span {
-    font-size: 1.125rem;
+    font-size: 1.0625rem;
     font-weight: 500;
 }

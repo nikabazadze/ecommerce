@@ -7,7 +7,7 @@ import { products } from '../../data/mockData';
 
 function ProductList() {
     return (
-        <div>
+        <div className={styles.container}>
             <Grid container rowSpacing={5} columnSpacing={2.5} alignItems="strech">
                 {
                     products.map((product) => (

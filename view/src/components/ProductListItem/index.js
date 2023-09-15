@@ -3,9 +3,9 @@ import Rating from '@mui/material/Rating';
 
 import styles from './ProductListItem.module.css';
 
-function ProductListItem({product, isFlexItem = false}) {
+function ProductListItem({ product }) {
     return (
-        <div className={styles.card} style={{ height: `${isFlexItem ? "auto" : "100%"}`}}>
+        <div className={styles.card} >
             <div className={styles.imgContainer}>
                 <img src={product.url} alt="Product photo"/>
             </div>

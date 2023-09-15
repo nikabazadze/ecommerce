@@ -1,8 +1,8 @@
 /* Main container style */
 .card {
+    min-width: 14.5rem;
     display: flex;
     flex-direction: column;
-    height: 100%;
     border-radius: 0.25rem;
     box-shadow: 0px 2px 18px rgba(0,0,0,0.15);
 }

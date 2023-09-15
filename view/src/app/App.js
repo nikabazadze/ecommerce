@@ -1,25 +1,21 @@
 import React from 'react';
-import './App.css';
+import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 
-import PromoHeader from '../components/PromoHeader';
-import Header from '../components/Header';
+import './App.css';
+import Root from '../components/Root';
 import Home from '../pages/Home';
-import Footer from '../components/Footer';
+import Shop from '../pages/Shop';
+
+const router = createBrowserRouter(createRoutesFromElements(
+  <Route path='/' element={ <Root /> } >
+    <Route path='/' element={ <Home /> } />
+    <Route path='/shop' element={ <Shop /> } />
+  </Route>
+));
 
 function App() {
   return (
-    <div>
-      <header>
-        <PromoHeader />
-        <Header />
-      </header>
-      <main>
-        <Home />
-      </main>
-      <footer>
-        <Footer />
-      </footer>
-    </div>
+    <RouterProvider router={ router } />
   );
 };
 

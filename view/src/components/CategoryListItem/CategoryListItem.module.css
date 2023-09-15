@@ -1,11 +1,7 @@
 .card {
+    height: 100%;
     border-radius: 0.25rem;
     box-shadow: 0px 0px 15px #c8c8c8;
-}
-
-.card a {
-    text-decoration: none;
-    color: inherit;
 }
 
 .imgContainer {
@@ -25,4 +21,9 @@
     font-weight: 600;
     text-transform: capitalize;
     padding: 1.25rem 1.75rem;
+}
+
+.card a {
+    text-decoration: none;
+    color: inherit;
 }

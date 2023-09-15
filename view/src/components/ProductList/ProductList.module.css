@@ -3,7 +3,7 @@
 }
 
 .flexContainer {
-    width: calc(100%);
+    border: 1px solid red;
     display: flex;
     gap: 2rem;
     overflow: hidden;
@@ -11,4 +11,11 @@
     left: -1rem;
     bottom: 1rem;
     padding: 1rem;
+    width: calc(100% + 1rem);
+}
+
+.flexContainer > * {
+    width: 21%;
+    height: auto !important;    /* If any issues in the future, this should be checked first */
+    flex-shrink: 0;
 }

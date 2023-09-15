@@ -22,7 +22,7 @@ function ProductList({position = "grid"}) {
                 </div>
                 :
                 <div className={styles.flexContainer}>
-                    {products.map((product) => <ProductListItem product={product} isFlexItem={true} />)}
+                    {products.map((product) => <ProductListItem product={product}/>)}
                 </div>
             }
         </div>

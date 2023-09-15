@@ -1,6 +1,7 @@
 /* Main container style */
 .card {
     min-width: 14.5rem;
+    height: 100%;
     display: flex;
     flex-direction: column;
     border-radius: 0.25rem;

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 import styles from './Header.module.css';
 import Search from "../Search";
@@ -12,7 +13,7 @@ function Header() {
         return (
             <ul className={styles.list}>
                 {categories.map((category, index) => {
-                    return <li key={index}><a href="#">{category}</a></li>;
+                    return <li key={index}><Link to="/shop">{category}</Link></li>;
                 })}
             </ul>
         );
@@ -22,8 +23,8 @@ function Header() {
         return (
             <ul className={styles.list}>
                 <li><Search /></li>
-                <li><a href="#" className={styles.temp}><PersonOutlinedIcon /><span>Hello, Sign in</span></a></li>
-                <li><a href="#"><ShoppingCartOutlinedIcon sx={{fontSize: 22}} /><span>Cart</span></a></li>
+                <li><Link to="/"><PersonOutlinedIcon /><span>Hello, Sign in</span></Link></li>
+                <li><Link to="/"><ShoppingCartOutlinedIcon sx={{fontSize: 22}} /><span>Cart</span></Link></li>
             </ul>
         );
     };
@@ -31,7 +32,7 @@ function Header() {
     return (
         <div className={styles.container}>
             <nav className={styles.leftNav}>{renderLeftNav()}</nav>
-            <span className={styles.logo}><a href="/">ZiPLiX</a></span>
+            <span className={styles.logo}><Link to="/">ZiPLiX</Link></span>
             <nav className={styles.rightNav}>{renderRightNav()}</nav>
         </div>
     );

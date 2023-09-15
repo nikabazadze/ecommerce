@@ -30,7 +30,9 @@
 
 .navContainer a {
     line-height: 2;
+    text-decoration: none;
     text-transform: capitalize;
+    color: inherit;
     cursor: pointer;
 }
 

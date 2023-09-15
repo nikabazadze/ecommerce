@@ -1,5 +1,7 @@
 import React from "react";
 import { useState } from "react";
+import { Link } from 'react-router-dom';
+
 import styles from './Footer.module.css';
 import AlertDialog from "../AlertDialog";
 import Newsletter from "../Newsletter";
@@ -21,7 +23,7 @@ function Footer() {
                 <ul>
                     {
                         items.map((item, index) => (
-                            <li key={index}><a onClick={() => setOpenDialog(true)}>{item}</a></li>
+                            <li key={index}><Link to={title === "shop" ? "/shop" : "/"} onClick={() => setOpenDialog(title !== "shop")}>{item}</Link></li>
                         ))
                     }
                 </ul>

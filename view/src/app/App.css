@@ -4,6 +4,7 @@ body {
     font-size: 1rem;
 }
 
+main,
 footer {
     position: relative;
     top: 6rem;

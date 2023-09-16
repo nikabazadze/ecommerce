@@ -23,7 +23,7 @@
 
 .iconContainer {
     position: absolute;
-    right: 10rem;   /* Change with css variable of website padding instead, use 2x website padding */
+    right: 19rem;   /* Change with css variable of website padding instead, use 2x website padding */
     top: 0.25rem;
     display: flex;
     gap: 1rem;
@@ -32,4 +32,20 @@
 .iconContainer > * {
     cursor: pointer;
     color: #454545;
+}
+
+.iconContainer > *:active {
+    color: #454545aa;
+}
+
+.iconContainer + a {
+    border-bottom: 1.5px solid #454545;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: inherit;
+    position: absolute;
+    right: 11rem;   /* Change with css variable of website padding instead */
+    top: 0.75rem;
 }

@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from 'react-router-dom';
+
 import Grid from '@mui/material/Grid';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -38,9 +40,10 @@ function ProductList({position = "grid"}) {
                 :
                 <div>
                     <div className={styles.iconContainer}>
-                        <KeyboardArrowLeftIcon  sx={{ fontSize: 28}} onClick={() => handleClick("left")} />
-                        <KeyboardArrowRightIcon sx={{ fontSize: 28}} onClick={() => handleClick("right")} />
+                        <KeyboardArrowLeftIcon  sx={{ fontSize: 30}} onClick={() => handleClick("left")}  />
+                        <KeyboardArrowRightIcon sx={{ fontSize: 30}} onClick={() => handleClick("right")} />
                     </div>
+                    <Link to={"/shop"} >shop all</Link>
                     <div className={styles.flexContainer} id="flexContainer">
                         {products.map((product) => <ProductListItem product={product} />)}
                     </div>

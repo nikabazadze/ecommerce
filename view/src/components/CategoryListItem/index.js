@@ -4,7 +4,7 @@ import styles from './CategoryListItem.module.css';
 
 function CategoryListItem({category}) {
     return (
-        <div className={styles.card} onClick={() => window.scrollTo(0, 0)}>
+        <div className={styles.card}>
             <Link to="/shop">
                 <div className={styles.imgContainer}>
                     <img src={category.url} alt="Product category photo"/>

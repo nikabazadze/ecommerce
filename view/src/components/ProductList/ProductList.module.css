@@ -10,7 +10,6 @@
     padding: 1rem 0;
     position: relative;
     left: -5rem;    /* Change with css variable of website padding instead */
-    bottom: 1rem;
 }
 
 .flexContainer > * {

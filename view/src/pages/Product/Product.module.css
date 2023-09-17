@@ -1,0 +1,237 @@
+.productPage {
+    /* border: 2px solid blue; */
+    margin: 0 5rem;     /* Update with css variable of page main padding */
+    color: #454545;
+}
+
+.productPage h2 {
+    /* border: 1px solid red; */
+    font-family: DM Serif Text;
+    font-size: 2.1875rem;
+    line-height: 3rem;
+}
+
+.mainContainer {
+    /* border: 1px solid red; */
+    margin: 8.3125rem 0;
+    display: flex;
+}
+
+
+
+/* left section styles */
+.leftSection {
+    /* border: 1px solid purple; */
+    width: 50%;
+}
+
+.imgContainer {
+    /* border: 1px solid green; */
+    margin-top: 2.0625rem;
+    width: calc(100% - 7.375rem);
+    overflow: hidden;
+}
+
+.imgContainer img {
+    /* border: 1px solid yellow; */
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+
+
+/* Right section styles */
+.rightSection {
+    /* border: 1px solid purple; */
+    width: 50%;
+    padding-right: 7.75rem;
+}
+
+/* Product meta styles */
+.productMeta {
+    /* border: 1px solid blue; */
+    display: flex;
+    flex-direction: column;
+    gap: 1.375rem;
+}
+
+/* Product rating */
+.rating {
+    /* border: 1px solid red; */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    left: -0.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.rating > span {
+    font-size: 1.25rem;
+}
+
+.rating > p {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    position: relative;
+    top: 0.05rem;
+}
+
+/* Price */
+.productMeta > span {
+    /* border: 1px solid red; */
+    font-size: 2.1875rem;
+    line-height: 2.5625rem;
+}
+
+/* Colors section */
+.colorsContainer {
+    /* border: 1px solid blue; */
+    margin-top: 1.5625rem;
+}
+
+.colorsContainer p {
+    /* border: 1px solid red; */
+    font-size: 1.25rem;
+    font-weight: 200;
+    line-height: 2.3125rem;
+    text-transform: capitalize;
+    margin: 1.5rem 0;
+}
+
+.colorsContainer ul {
+    /* border: 1px solid red; */
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    position: relative;
+    left: calc(-2px - 0.1rem);
+}
+
+.colorsContainer li {
+    border-radius: 50%;
+    padding: 0.1rem;
+    border: 2px solid #fff;
+}
+
+.color {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Action buttons */
+.buttonsContainer {
+    /* border: 1px solid blue; */
+    margin-top: 1.42rem;
+    margin-bottom: 1.25rem;
+}
+
+.buttonsContainer button {
+    font-family: inherit;
+    font-size: 1.25rem;
+    line-height: 2rem;
+    width: 100%;
+    height: 3.75rem;
+    cursor: pointer;
+}
+
+.buttonsContainer button:first-of-type {
+    margin-bottom: 0.625rem;
+    color: #3d3939;
+    background-color: #fff;
+    border: 1px solid #b3b3b3;
+    box-shadow: 0px 4px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.buttonsContainer button:last-of-type {
+    color: #fff;
+    background-color: #3d3939;
+    border: 1px solid #dbdbdb;
+    box-shadow: 0px 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Product Shipping/Description styles */
+.buttonsContainer + div {
+    /* border: 1px solid blue; */
+}
+
+.shipping {
+    /* border: 1px solid red; */
+    line-height: 1.125rem;
+}
+
+.description {
+    /* border: 1px solid red; */
+    font-size: 1.25rem;
+    font-weight: 200;
+    line-height: 2rem;
+    letter-spacing: 0.125rem;
+    margin: 2.1875rem 0;
+}
+
+/* Accordion */
+.accordion {
+    /* border: 1px solid blue; */
+}
+
+.accordion span {
+    /* font-family: 'Roboto', sans-serif; */
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 2rem;
+    color: #454545;
+}
+
+
+
+/* Product features section */
+.features {
+    /* border: 1px solid blue; */
+}
+
+.features > * {
+    /* border: 1px solid red; */
+    margin-bottom: 2.5rem;
+}
+
+.features > *:last-child {
+    margin-bottom: 0rem;
+}
+
+.features > * > div:last-of-type {
+    align-items: flex-start;
+    padding: 0 9.8125rem;
+}
+
+.features h2 {
+    margin-bottom: 1.6875rem;
+}
+
+.features p {
+    /* border: 1px solid red; */
+    font-size: 1.25rem;
+    font-weight: 200;
+    line-height: 2rem;
+    letter-spacing: 0.125rem;
+    text-align: start;
+}
+
+/* Product suggestions section */
+.suggestion {
+    /* border: 1px solid blue; */
+    margin: 6.25rem 0 13rem 0;
+    position: relative;
+    /* width: calc(100% - 5rem); */
+}
+
+.suggestion h2 {
+    text-align: center;
+    margin-bottom: 4.6875rem;
+}
+
+.suggestion > div > div > div:first-of-type {
+    top: 0.875rem;
+}

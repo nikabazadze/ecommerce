@@ -14,7 +14,7 @@ function Home() {
                 <h2>best sellers</h2>
                 <ProductList position="horizontal"/>
             </section>
-            <section>
+            <section className={styles.features}>
                 <ProductFeatures 
                     position="left"
                     url="https://vulkit.com/cdn/shop/files/vulkit_wallet_f0cf5b26-cd81-4af1-a59a-8edbfb546bc5_1080x.jpg?v=1679649457"

@@ -39,11 +39,13 @@ function ProductList({position = "grid"}) {
                 </div>
                 :
                 <div>
-                    <div className={styles.iconContainer}>
-                        <KeyboardArrowLeftIcon  sx={{ fontSize: 30}} onClick={() => handleClick("left")}  />
-                        <KeyboardArrowRightIcon sx={{ fontSize: 30}} onClick={() => handleClick("right")} />
+                    <div className={styles.scrollContainer}>
+                        <div className={styles.iconContainer}>
+                            <KeyboardArrowLeftIcon  sx={{ fontSize: 30}} onClick={() => handleClick("left")}  />
+                            <KeyboardArrowRightIcon sx={{ fontSize: 30}} onClick={() => handleClick("right")} />
+                        </div>
+                        <Link to={"/shop"} >shop all</Link>
                     </div>
-                    <Link to={"/shop"} >shop all</Link>
                     <div className={styles.flexContainer} id="flexContainer">
                         {products.map((product) => <ProductListItem product={product} />)}
                     </div>

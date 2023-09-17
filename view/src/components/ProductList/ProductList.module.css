@@ -21,10 +21,16 @@
     left: 5rem;     /* Change with css variable of website padding instead */
 }
 
-.iconContainer {
+.scrollContainer {
+    display: flex;
+    align-items: center;
+    gap: 5rem;
     position: absolute;
-    right: 19rem;   /* Change with css variable of website padding instead, use 2x website padding */
-    top: 0.25rem;
+    right: 11rem;
+    top: 0.2rem;
+}
+
+.iconContainer {
     display: flex;
     gap: 1rem;
 }
@@ -45,7 +51,4 @@
     text-decoration: none;
     text-transform: uppercase;
     color: inherit;
-    position: absolute;
-    right: 11rem;   /* Change with css variable of website padding instead */
-    top: 0.75rem;
 }

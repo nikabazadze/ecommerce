@@ -5,7 +5,7 @@ import styles from "./Product.module.css";
 import './border.css';
 import { products } from "../../data/mockData";
 import BasicAccordion from "../../components/Accordion";
-import ProductFeatures from "../../components/ProductFeatures";
+import ProductHighlights from "../../components/ProductHighlights";
 import ProductList from "../../components/ProductList";
 
 function Product() {
@@ -41,15 +41,15 @@ function Product() {
         );
     };
 
-    function renderFeatures() {
+    function renderHighlights() {
         return (
-            <div className={styles.features}>
-                {product.features.map((feature, index) => (
-                    <ProductFeatures 
+            <div className={styles.highlights}>
+                {product.highlights.map((highlight, index) => (
+                    <ProductHighlights 
                         position={`${index % 2 === 0 ? "right" : "left"}`}
-                        url={feature.url}
-                        title={feature.title}
-                        description={feature.description}
+                        url={highlight.url}
+                        title={highlight.title}
+                        description={highlight.description}
                     />
                 ))}
             </div>
@@ -91,7 +91,7 @@ function Product() {
                 </div>
             </section>
             <section>
-                {renderFeatures()}
+                {renderHighlights()}
             </section>
             <section className={styles.suggestion}>
                 <h2>You May also Like</h2>

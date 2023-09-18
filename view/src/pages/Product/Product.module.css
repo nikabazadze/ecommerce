@@ -187,30 +187,30 @@
 
 
 
-/* Product features section */
-.features {
+/* Product highlights section */
+.highlights {
     /* border: 1px solid blue; */
 }
 
-.features > * {
+.highlights > * {
     /* border: 1px solid red; */
     margin-bottom: 2.5rem;
 }
 
-.features > *:last-child {
+.highlights > *:last-child {
     margin-bottom: 0rem;
 }
 
-.features > * > div:last-of-type {
+.highlights > * > div:last-of-type {
     align-items: flex-start;
     padding: 0 9.8125rem;
 }
 
-.features h2 {
+.highlights h2 {
     margin-bottom: 1.6875rem;
 }
 
-.features p {
+.highlights p {
     /* border: 1px solid red; */
     font-size: 1.25rem;
     font-weight: 200;

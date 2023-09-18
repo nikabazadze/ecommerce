@@ -6,11 +6,13 @@ import Root from '../components/Root';
 import Home from '../pages/Home';
 import Shop from '../pages/Shop';
 import Product from '../pages/Product';
+import Cart from '../pages/Cart';
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path='/' element={ <Root /> } >
     <Route path='/' element={ <Home /> } />
     <Route path='/shop' element={ <Shop /> } />
+    <Route path='/cart' element={ <Cart /> } />
     <Route path='/product' element={ <Product /> } />
   </Route>
 ));

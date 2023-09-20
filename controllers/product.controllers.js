@@ -32,7 +32,8 @@ const getProductsByCategoryId = async (req, res) => {
 
 // Retrieves a single product by product id
 const getProductById = async (req, res) => {
-
+    const product = await retrieveProduct(req.product, req.productId);
+    res.send(product);
 };
 
 // Adds a new product in the database
@@ -361,6 +362,120 @@ const deleteProduct = async (req, res) => {
         console.error('Error deleting product:', err.message);
         res.status(500).json({ message: err.message });
     }
+};
+
+
+
+// Helper functions
+
+const retrieveProduct = async (product, id) => {
+    const productMeta = product;
+    const productVariants = await getProductVariants(id);
+    const features = await getFeatures(id);
+    const specifications = await getSpecifications(id);
+    const highlights = await getHighlights(id);
+
+    const result = {
+        productName: productMeta.product_name,
+        mainCategoryId: productMeta.main_category_id,
+        subCategoryId: productMeta.sub_category_id,
+        smallDescription: productMeta.small_description,
+        mainDescription: productMeta.main_description,
+        unitPrice: productMeta.unit_price,
+        reviewsScore: productMeta.reviews_score,
+        reviewsQuantity: productMeta.reviews_quantity,
+        quantityLeft: productMeta.quantity_left,
+        productVariants: productVariants,
+        features: features,
+        specifications: specifications,
+        highlights: highlights
+    }
+
+    return result;
+};
+
+const getProductVariants = async (id) => {
+    let colors = [];
+    const colorQuery = 'SELECT color_id, name, code FROM product_colors JOIN colors ON product_colors.color_id = colors.id WHERE product_colors.product_id = $1';
+    try {
+        colors = await db.query(colorQuery, [id]);
+    } catch (err) {
+        console.error('Error getting product colors:', err.message);
+        res.status(500).json({ message: err.message });
+    }
+
+    let images = [];
+    const imagesQuery = 'SELECT img_url FROM product_images WHERE product_id = $1 AND color_id = $2';
+    for (const color of colors.rows) {
+        try {
+            const result = await db.query(imagesQuery, [id, color.color_id]);
+            images.push(result.rows);
+        } catch (err) {
+            console.error(`Error getting product images for color ${color.name}:`, err.message);
+            res.status(500).json({ message: err.message });
+        }
+    }
+
+    const productVariants = [];
+    for (let i = 0; i < colors.rows.length; i++) {
+        const variant = {
+            colorName: colors.rows[i].name,
+            colorCode: colors.rows[i].code,
+            imgUrls: []
+        };
+
+        for (const colorImages of images[i]) {
+            variant.imgUrls.push(colorImages.img_url);
+        }
+
+        productVariants.push(variant);
+    }
+
+    return productVariants;
+};
+
+const getFeatures = async (id) => {
+    let features = [];
+    const queryString = 'SELECT product_feature FROM product_features WHERE product_id = $1';
+    try {
+        features = await db.query(queryString, [id]);
+    } catch (err) {
+        console.error('Error getting product features:', err.message);
+        res.status(500).json({ message: err.message });
+    }
+
+    const result = [];
+    for (const feature of features.rows) {
+        result.push(feature.product_feature);
+    }
+
+    return result;
+};
+
+const getSpecifications = async (id) => {
+    let specifications = [];
+    const queryString = 'SELECT spec_name AS name, spec_content AS content FROM product_specifications WHERE product_id = $1';
+    try {
+        specifications = await db.query(queryString, [id]);
+    } catch (err) {
+        console.error('Error getting product specifications:', err.message);
+        res.status(500).json({ message: err.message });
+    }
+
+    return specifications.rows;
+};
+
+const getHighlights = async (id) => {
+    let highlights = [];
+    const queryString = 'SELECT title, content, img_url AS url FROM product_highlights WHERE product_id = $1';
+    try {
+        highlights = await db.query(queryString, [id]);
+    } catch (err) {
+        console.error('Error getting product highlights:', err.message);
+        res.status(500).json({ message: err.message });
+    }
+
+    return highlights.rows;
 };
 
 module.exports = {

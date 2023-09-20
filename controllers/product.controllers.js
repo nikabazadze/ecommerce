@@ -1,5 +1,7 @@
+const { isError } = require('../utils/errorChecker');
 const db = require('../models/index');
 const chalk = require('chalk');
+
 
 // Retrieves a single product by product id
 const getProductById = async (req, res) => {
@@ -7,42 +9,47 @@ const getProductById = async (req, res) => {
         const product = await retrieveProduct(req.product);
         res.status(200).json(product);
     } catch (err) {
-        console.error('Error retrieving product:', err.message);
-        res.status(500).json({ message: err.message });
+        console.error('Error retrieving product:', id.message);
+        res.status(500).json({ message: id.message });
         return;
     }
 };
 
 // Retrvieves all products
 const getProducts = async (req, res) => {
-    let products = [];
     const queryString = 'SELECT * FROM products';
     try {
-        products = await db.query(queryString);
+        const products = await db.query(queryString);
+        const result = [];
+        for (const product of products.rows) {
+            result.push(await retrieveProduct(product));
+        }
+
+        res.status(200).json(result);
     } catch (err) {
         console.error('Error retrieving products:', err.message);
         res.status(500).json({ message: err.message });
         return;
     }
-
-    const result = [];
-    for (const product of products.rows) {
-        result.push(await retrieveProduct(product));
-    }
-
-    res.status(200).json(result);
 };
 
-// Retrvieves products filtered by category id
+// Retrvieves products filtered by category
 const getProductsByCategoryId = async (req, res) => {
-    const categoryId = parseInt(req.query.categoryId);
-    const queryString = 'SELECT * FROM products WHERE category_id = $1';
+    const id = parseInt(req.query.categoryId);
+
+    const queryString = 'SELECT * FROM products WHERE main_category_id = $1';
     try {
-        const result = await db.query(queryString, [categoryId])
-        if (result.rowCount !== 0) {
-            res.status(200).json(result.rows);
+        const products = await db.query(queryString, [id]);
+        
+        if (products.rowCount !== 0) {
+            const result = [];
+            for (const product of products.rows) {
+                result.push(await retrieveProduct(product));
+            }
+            res.status(200).json(result);
         } else {
-            res.status(404).json({message: `No products found with category id: ${categoryId}`});
+            res.status(404).json({message: `No products found with category: ${categoryName}`});
+            return;
         }
     } catch (err) {
         console.error('Error retrieving products by category id:', err.message);

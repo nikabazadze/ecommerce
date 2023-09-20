@@ -3,7 +3,7 @@ const chalk = require('chalk');
 
 // Retrvieves all products
 const getProducts = async (req, res) => {
-    const queryString = 'SELECT * FROM products';
+    const queryString = 'SELECT * FROM products RETURNING id';
     try {
         const result = await db.query(queryString);
         res.status(200).json(result.rows);
@@ -33,7 +33,7 @@ const getProductsByCategoryId = async (req, res) => {
 // Retrieves a single product by product id
 const getProductById = async (req, res) => {
     const product = await retrieveProduct(req.product, req.productId);
-    res.send(product);
+    res.json(product);
 };
 
 // Adds a new product in the database
@@ -41,9 +41,9 @@ const addProduct = async (req, res) => {
     const requestBody = req.body;
 
     // Check if all the required product fields are in the request body
-    if (!requestBody.productName || !requestBody.mainCategoryId || !requestBody.subCategoryId || !requestBody.smallDescription || 
-        !requestBody.mainDescription || !requestBody.unitPrice || !requestBody.quantityLeft || !requestBody.productVariants || 
-        !requestBody.features || !requestBody.specifications || !requestBody.highlights) {
+    if (!requestBody.productName || !requestBody.mainCategoryId || (!requestBody.subCategoryId && requestBody.subCategoryId !== null) || 
+        !requestBody.smallDescription || !requestBody.mainDescription || !requestBody.unitPrice || !requestBody.quantityLeft || 
+        !requestBody.productVariants || !requestBody.features || !requestBody.specifications || !requestBody.highlights) {
         res.status(400).json({
             message: "Could not add a product! Include all required fields to add a product.",
             note: "Check example request body for new product in the documentation to properly add a new product",
@@ -402,6 +402,7 @@ const getProductVariants = async (id) => {
     } catch (err) {
         console.error('Error getting product colors:', err.message);
         res.status(500).json({ message: err.message });
+        return;
     }
 
     let images = [];
@@ -413,6 +414,7 @@ const getProductVariants = async (id) => {
         } catch (err) {
             console.error(`Error getting product images for color ${color.name}:`, err.message);
             res.status(500).json({ message: err.message });
+            return;
         }
     }
 
@@ -442,6 +444,7 @@ const getFeatures = async (id) => {
     } catch (err) {
         console.error('Error getting product features:', err.message);
         res.status(500).json({ message: err.message });
+        return;
     }
 
     const result = [];
@@ -460,6 +463,7 @@ const getSpecifications = async (id) => {
     } catch (err) {
         console.error('Error getting product specifications:', err.message);
         res.status(500).json({ message: err.message });
+        return;
     }
 
     return specifications.rows;
@@ -473,6 +477,7 @@ const getHighlights = async (id) => {
     } catch (err) {
         console.error('Error getting product highlights:', err.message);
         res.status(500).json({ message: err.message });
+        return;
     }
 
     return highlights.rows;

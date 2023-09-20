@@ -25,3 +25,5 @@ yarn-error.log*
 
 # Mock data
 mockData.js
+
+NewProductReqBody.js

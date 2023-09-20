@@ -1,16 +1,36 @@
 const db = require('../models/index');
 const chalk = require('chalk');
 
+// Retrieves a single product by product id
+const getProductById = async (req, res) => {
+    try {
+        const product = await retrieveProduct(req.product);
+        res.status(200).json(product);
+    } catch (err) {
+        console.error('Error retrieving product:', err.message);
+        res.status(500).json({ message: err.message });
+        return;
+    }
+};
+
 // Retrvieves all products
 const getProducts = async (req, res) => {
-    const queryString = 'SELECT * FROM products RETURNING id';
+    let products = [];
+    const queryString = 'SELECT * FROM products';
     try {
-        const result = await db.query(queryString);
-        res.status(200).json(result.rows);
+        products = await db.query(queryString);
     } catch (err) {
         console.error('Error retrieving products:', err.message);
         res.status(500).json({ message: err.message });
+        return;
     }
+
+    const result = [];
+    for (const product of products.rows) {
+        result.push(await retrieveProduct(product));
+    }
+
+    res.status(200).json(result);
 };
 
 // Retrvieves products filtered by category id
@@ -28,12 +48,6 @@ const getProductsByCategoryId = async (req, res) => {
         console.error('Error retrieving products by category id:', err.message);
         res.status(500).json({ message: err.message });
     }
-};
-
-// Retrieves a single product by product id
-const getProductById = async (req, res) => {
-    const product = await retrieveProduct(req.product, req.productId);
-    res.json(product);
 };
 
 // Adds a new product in the database
@@ -368,7 +382,8 @@ const deleteProduct = async (req, res) => {
 
 // Helper functions
 
-const retrieveProduct = async (product, id) => {
+const retrieveProduct = async (product) => {
+    const id = product.id;
     const productMeta = product;
     const productVariants = await getProductVariants(id);
     const features = await getFeatures(id);

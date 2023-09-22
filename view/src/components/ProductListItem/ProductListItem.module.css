@@ -48,8 +48,8 @@
     font-size: 1rem;
 }
 
-/* Product rating */
-.rating {
+/* Product reviews */
+.reviews {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -58,11 +58,11 @@
     margin-bottom: 0.5rem;
 }
 
-.rating > span {
+.reviews > span {
     font-size: 1.25rem;
 }
 
-.rating p {
+.reviews p {
     font-size: 13px;
     margin-bottom: 0;
     position: relative;

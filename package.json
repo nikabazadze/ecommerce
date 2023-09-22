@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon server.js",
+    "start:frontend": "cd view && npm start",
+    "dev": "concurrently \"npm start\" \"npm run start:frontend\""
   },
   "keywords": [],
   "author": "",

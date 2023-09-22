@@ -1,18 +1,22 @@
 import React from "react";
-import styles from './Home.module.css';
+import { useSelector } from "react-redux";
 
+import styles from './Home.module.css';
 import Banner from "../../components/Banner";
 import ProductList from "../../components/ProductList";
 import CategoryList from "../../components/CategoryList";
 import ProductHighlights from "../../components/ProductHighlights";
+import { selectProducts, selectProductsAreLoading, selectProductsHaveError } from "../../store/ProductsSlice";
 
-function Home() {
+function Home() { 
+    const bestProducts = useSelector(selectProducts);
+
     return (
         <div className={styles.homepage}>
             <Banner />
             <section>
                 <h2>best sellers</h2>
-                <ProductList position="horizontal"/>
+                <ProductList products={bestProducts} position="horizontal"/>
             </section>
             <section className={styles.highlights}>
                 <ProductHighlights 

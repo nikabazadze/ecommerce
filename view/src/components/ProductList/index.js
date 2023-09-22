@@ -7,9 +7,8 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 import styles from './ProductList.module.css';
 import ProductListItem from "../ProductListItem";
-import { products } from '../../data/mockData';
 
-function ProductList({position = "grid"}) {
+function ProductList({products, position = "grid"}) {
     function handleClick(direction) {
         const list = document.getElementById("flexContainer");
         const product = list.children[0];

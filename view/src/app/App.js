@@ -1,4 +1,6 @@
 import React from 'react';
+import { useEffect } from 'react';
+import { useDispatch } from "react-redux";
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 
 import './App.css';
@@ -7,6 +9,8 @@ import Home from '../pages/Home';
 import Shop from '../pages/Shop';
 import Product from '../pages/Product';
 import Cart from '../pages/Cart';
+
+import { loadProducts } from '../store/ProductsSlice';
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path='/' element={ <Root /> } >
@@ -18,6 +22,12 @@ const router = createBrowserRouter(createRoutesFromElements(
 ));
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadProducts());
+  }, [dispatch]);
+
   return (
     <RouterProvider router={ router } />
   );

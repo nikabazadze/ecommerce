@@ -1,18 +1,12 @@
-const { isError } = require('../utils/errorChecker');
+const { hasError, sendError500 } = require('../utils/error');
 const db = require('../models/index');
 const chalk = require('chalk');
 
 
 // Retrieves a single product by product id
 const getProductById = async (req, res) => {
-    try {
-        const product = await retrieveProduct(req.product);
-        res.status(200).json(product);
-    } catch (err) {
-        console.error('Error retrieving product:', id.message);
-        res.status(500).json({ message: id.message });
-        return;
-    }
+    const product = await retrieveProduct(req.product);
+    hasError(product) ? sendError500(res, product) : res.status(200).json(product);
 };
 
 // Retrvieves all products
@@ -22,16 +16,17 @@ const getProducts = async (req, res) => {
         const products = await db.query(queryString);
         const result = [];
         for (const product of products.rows) {
-            result.push(await retrieveProduct(product));
-            console.log(chalk.cyan.bold("Returned a product from database."));
+            const retrievedProduct = await retrieveProduct(product);
+            if (hasError(retrievedProduct)) return sendError500(res, retrievedProduct);
+            result.push(retrievedProduct);
+            console.log(chalk.cyan.bold("Retrieved a product from database."));
         }
 
-        console.log(chalk.magentaBright.bold("Returned all products from database."));
+        console.log(chalk.magentaBright.bold("Retrieved all products from database."));
         res.status(200).json(result);
     } catch (err) {
         console.error('Error retrieving products:', err.message);
-        res.status(500).json({ message: err.message });
-        return;
+        sendError500(res, err);
     }
 };
 
@@ -46,16 +41,20 @@ const getProductsByCategoryId = async (req, res) => {
         if (products.rowCount !== 0) {
             const result = [];
             for (const product of products.rows) {
-                result.push(await retrieveProduct(product));
+                const retrievedProduct = await retrieveProduct(product);
+                if (hasError(retrievedProduct)) return sendError500(res, retrievedProduct);
+                result.push(retrievedProduct);
+                console.log(chalk.cyan.bold(`Retrieved a product with category id: ${id} from database.`));
             }
+
+            console.log(chalk.magentaBright.bold(`Retrieved all products with category id: ${id} from database.`));
             res.status(200).json(result);
         } else {
-            res.status(404).json({message: `No products found with category: ${categoryName}`});
-            return;
+            return res.status(404).json({message: `No products found with category id: ${id}`});
         }
     } catch (err) {
         console.error('Error retrieving products by category id:', err.message);
-        res.status(500).json({ message: err.message });
+        sendError500(res, err);
     }
 };
 
@@ -67,37 +66,32 @@ const addProduct = async (req, res) => {
     if (!requestBody.productName || !requestBody.mainCategoryId || (!requestBody.subCategoryId && requestBody.subCategoryId !== null) || 
         !requestBody.smallDescription || !requestBody.mainDescription || !requestBody.unitPrice || !requestBody.quantityLeft || 
         !requestBody.productVariants || !requestBody.features || !requestBody.specifications || !requestBody.highlights) {
-        res.status(400).json({
+        return res.status(400).json({
             message: "Could not add a product! Include all required fields to add a product.",
             note: "Check example request body for new product in the documentation to properly add a new product",
             requiredFields: ["productName", "mainCategoryId", "subCategoryId", "smallDescription", "mainDescription", "unitPrice", 
                              "quantityLeft", "productVariants", "features", "specifications", "highlights"]
         });
-        return;
     }
 
     // Check if there are String values in the respective fields
     if ((typeof requestBody.productName !== "string") || (typeof requestBody.smallDescription !== "string") || (typeof requestBody.mainDescription !== "string")) {
-        res.status(400).json({message: "`productName`, `smallDescription` and `mainDescription` fields must have a value typeof `string`!"});
-        return;
+        return res.status(400).json({message: "`productName`, `smallDescription` and `mainDescription` fields must have a value typeof `string`!"});
     }
 
     // Check if there are Number values in the respective fields
     if ((typeof requestBody.mainCategoryId !== "number") || (typeof requestBody.unitPrice !== "number") || (typeof requestBody.quantityLeft !== "number")) {
-        res.status(400).json({message: "Non numeric value! `mainCategoryId`, `unitPrice` and `quantityLeft` must have `number` value type."});
-        return;
+        return res.status(400).json({message: "Non numeric value! `mainCategoryId`, `unitPrice` and `quantityLeft` must have `number` value type."});
     }
 
     // Check if unitPrice and quantityLeft are positive numbers
     if (requestBody.unitPrice <= 0 || requestBody.quantityLeft <= 0) {
-        res.status(400).json({message: "Negavite value! `unitPrice` and `quantityLeft` must have positive values."});
-        return;
+        return res.status(400).json({message: "Negavite value! `unitPrice` and `quantityLeft` must have positive values."});
     }
 
     // Check if subCategoryId has number or null value
     if ((typeof requestBody.subCategoryId !== "number") && (requestBody.subCategoryId !== null)) {
-        res.status(400).json({message: "subCategoryId must have value type of `number` on `null`!"});
-        return;
+        return res.status(400).json({message: "subCategoryId must have value type of `number` on `null`!"});
     }
 
     // Check if mainCategoryId and subCategoryId exists in database
@@ -105,21 +99,14 @@ const addProduct = async (req, res) => {
     const checkSubCategoryId = (typeof requestBody.subCategoryId === "number") ? 'SELECT * FROM subcategories WHERE id = $1' : null;
     try {
         const category = await db.query(checkMainCategoryId, [requestBody.mainCategoryId]);
-        if (category.rowCount === 0) {
-            res.status(404).json({message: `No categories found with id: ${requestBody.mainCategoryId}`});
-            return;
-        }
+        if (category.rowCount === 0) return res.status(404).json({message: `No categories found with id: ${requestBody.mainCategoryId}`});
         if (checkSubCategoryId !== null) {
             const subcategory = await db.query(checkSubCategoryId, [requestBody.subCategoryId]);
-            if (subcategory.rowCount === 0) {
-                res.status(404).json({message: `No subcategories found with id: ${requestBody.subCategoryId}`});
-                return;
-            }
+            if (subcategory.rowCount === 0) return res.status(404).json({message: `No subcategories found with id: ${requestBody.subCategoryId}`});
         }
     } catch (err) {
         console.error('Error checking main or subCategory Id:', err.message);
-        res.status(500).json({ message: err.message });
-        return;
+        return sendError500(res, err);
     }
 
     // Check if there is at least 1 valid product variant in req.body
@@ -130,51 +117,39 @@ const addProduct = async (req, res) => {
                 const fields = Object.keys(variant);
     
                 if (!fields.includes("colorName") || !fields.includes("colorCode") || !fields.includes("imgUrls")) {
-                    res.status(400).json({
+                    return res.status(400).json({
                         message: "Missing required fields in the `productVariants` object!",
                         requiredFields: ["colorName", "colorCode", "imgUrls"]
                     });
-                    return;
                 }
 
                 if ((typeof variant.colorName !== "string") || (typeof variant.colorCode !== "string")) {
-                    res.status(400).json({message: "productVariants's > `colorName` and `colorCode` fields must have values typeof string!"});
-                    return;
+                    return res.status(400).json({message: "productVariants's > `colorName` and `colorCode` fields must have values typeof string!"});
                 }
         
                 if (Array.isArray(variant.imgUrls)) {
                     for (const url of variant.imgUrls) {
-                        if (typeof url !== "string") {
-                            res.status(400).json({message: "productVariants's > `imgUrls` array must have values typeof `string` storing image urls!"});
-                            return;
-                        }
+                        if (typeof url !== "string") return res.status(400).json({message: "productVariants's > `imgUrls` array must have values typeof `string` storing image urls!"});
                     };
                 } else {
-                    res.status(400).json({message: "productVariants's > `imgUrls` field must be array with string url values"});
-                    return;
+                    return res.status(400).json({message: "productVariants's > `imgUrls` field must be array with string url values"});
                 }
         
             } else {
-                res.status(400).json({message: "`productVariants` must have `Object` values!"});
-                return;
+                return res.status(400).json({message: "`productVariants` must have `Object` values!"});
             }
         };
     } else {
-        res.status(400).json({message: "`productVariants` must be an array with `Object` values!"});
-        return;
+        return res.status(400).json({message: "`productVariants` must be an array with `Object` values!"});
     }
 
     // Check if features is an array with string values
     if (Array.isArray(requestBody.features)) {
         for (const feature of requestBody.features) {
-            if (typeof feature !== "string") {
-                res.status(400).json({message: "`features` array must have values typeof `string`!"});
-                return;
-            }
+            if (typeof feature !== "string") return res.status(400).json({message: "`features` array must have values typeof `string`!"});
         };
     } else {
-        res.status(400).json({message: "`features` must be an array with values typeof `string`!"});
-        return;
+        return res.status(400).json({message: "`features` must be an array with values typeof `string`!"});
     }
 
     // Check if there is at least 1 valid product specification in req.body
@@ -185,25 +160,21 @@ const addProduct = async (req, res) => {
     
                 if (fields.includes("specName") && fields.includes("specContent")) {
                     if ((typeof specification.specName !== "string") || (typeof specification.specContent !== "string")) {
-                        res.status(400).json({message: "specifications's > `specName` and `specContent` fields must have values typeof string!"});
-                        return;
+                        return res.status(400).json({message: "specifications's > `specName` and `specContent` fields must have values typeof string!"});
                     }
                 } else {
-                    res.status(400).json({
+                    return res.status(400).json({
                         message: "Missing required fields in the `specifications` array's one of the object!",
                         requiredFields: ["specName", "specContent"]
                     });
-                    return;
                 }
 
             } else {
-                res.status(400).json({message: "`specifications` must have `Object` values!"});
-                return;
+                return res.status(400).json({message: "`specifications` must have `Object` values!"});
             }
         };
     } else {
-        res.status(400).json({message: "`specifications` must be an array with `Object` values!"});
-        return;
+        return res.status(400).json({message: "`specifications` must be an array with `Object` values!"});
     }
 
     // Check if there is at least 1 valid product highlight in req.body
@@ -214,25 +185,21 @@ const addProduct = async (req, res) => {
     
                 if (fields.includes("title") && fields.includes("content") && fields.includes("imgUrl")) {
                     if ((typeof highlight.title !== "string") || (typeof highlight.content !== "string") || (typeof highlight.imgUrl !== "string")) {
-                        res.status(400).json({message: "highlights's > `title`, `content` and `imgUrl` fields must have values typeof string!"});
-                        return;
+                        return res.status(400).json({message: "highlights's > `title`, `content` and `imgUrl` fields must have values typeof string!"});
                     }
                 } else {
-                    res.status(400).json({
+                    return res.status(400).json({
                         message: "Missing required fields in the `highlights` array's one of the object!",
                         requiredFields: ["title", "content", "imgUrl"]
                     });
-                    return;
                 }
 
             } else {
-                res.status(400).json({message: "`highlights` must have `Object` values!"});
-                return;
+                return res.status(400).json({message: "`highlights` must have `Object` values!"});
             }
         };
     } else {
-        res.status(400).json({message: "`highlights` must be an array with `Object` values!"});
-        return;
+        return res.status(400).json({message: "`highlights` must be an array with `Object` values!"});
     }
 
 
@@ -247,8 +214,7 @@ const addProduct = async (req, res) => {
         console.log(chalk.cyan.bold(`${step++}. Product details added in products table.`));
     } catch (err) {
         console.error('Error adding product:', err.message);
-        res.status(500).json({ message: err.message });
-        return;
+        return sendError500(res, err);
     }
 
     // Fill product_colors and product_images tables
@@ -269,8 +235,7 @@ const addProduct = async (req, res) => {
             }
         } catch (err) {
             console.error('Error checking/adding color in the colors table:', err.message);
-            res.status(500).json({ message: err.message });
-            return;
+            return sendError500(res, err);
         }
 
         // Fill product_colors table
@@ -280,8 +245,7 @@ const addProduct = async (req, res) => {
             console.log(chalk.yellow("--- Product color added in `product_colors` table."));
         } catch (err) {
             console.error('Error adding product color in the product_colors table:', err.message);
-            res.status(500).json({ message: err.message });
-            return;
+            return sendError500(res, err);
         }
 
         // Fill product_images table
@@ -291,8 +255,7 @@ const addProduct = async (req, res) => {
                 await db.query(productImagesQuery, [productId, colorId, url]);
             } catch (err) {
                 console.error('Error adding product image in the product_images table:', err.message);
-                res.status(500).json({ message: err.message });
-                return;
+                return sendError500(res, err);
             }
         };
         console.log(chalk.yellow(`--- Product images for color: ${variant.colorName} added in product_images table.`));
@@ -306,8 +269,7 @@ const addProduct = async (req, res) => {
             await db.query(featuresQuery, [productId, feature]);
         } catch (err) {
             console.error('Error adding product feature in the product_features table:', err.message);
-            res.status(500).json({ message: err.message });
-            return;
+            return sendError500(res, err);
         }
     };
     console.log(chalk.cyan.bold(`${step++}. Product features added in product_features table.`));
@@ -319,8 +281,7 @@ const addProduct = async (req, res) => {
             await db.query(specificationsQuery, [productId, spec.specName, spec.specContent]);
         } catch (err) {
             console.error('Error adding product specification in the product_specifications table:', err.message);
-            res.status(500).json({ message: err.message });
-            return;
+            return sendError500(res, err);
         }
     };
     console.log(chalk.cyan.bold(`${step++}. Product specifications added in product_specifications table.`));
@@ -333,8 +294,7 @@ const addProduct = async (req, res) => {
             await db.query(highlightsQuery, [productId, highlight.title, highlight.content, highlight.imgUrl]);
         } catch (err) {
             console.error('Error adding product highlight in the product_highlights table:', err.message);
-            res.status(500).json({ message: err.message });
-            return;
+            return sendError500(res, err);
         }
     };
     console.log(chalk.cyan.bold(`${step++}. Product highlights added in product_highlights table.`));
@@ -383,7 +343,7 @@ const deleteProduct = async (req, res) => {
         res.status(200).json({message: `Product with ID: ${req.productId} deleted!`});
     } catch (err) {
         console.error('Error deleting product:', err.message);
-        res.status(500).json({ message: err.message });
+        sendError500(res, err);
     }
 };
 
@@ -392,12 +352,21 @@ const deleteProduct = async (req, res) => {
 // Helper functions
 
 const retrieveProduct = async (product) => {
+    let error = {};
     const id = product.id;
     const productMeta = product;
+
     const productVariants = await getProductVariants(id);
+    if (hasError(productVariants)) return productVariants;
+
     const features = await getFeatures(id);
+    if (hasError(features)) return features;
+
     const specifications = await getSpecifications(id);
+    if (hasError(specifications)) return specifications;
+
     const highlights = await getHighlights(id);
+    if (hasError(highlights)) return highlights;
 
     const result = {
         id: id,
@@ -426,8 +395,7 @@ const getProductVariants = async (id) => {
         colors = await db.query(colorQuery, [id]);
     } catch (err) {
         console.error('Error getting product colors:', err.message);
-        res.status(500).json({ message: err.message });
-        return;
+        return err;
     }
 
     let images = [];
@@ -438,8 +406,7 @@ const getProductVariants = async (id) => {
             images.push(result.rows);
         } catch (err) {
             console.error(`Error getting product images for color ${color.name}:`, err.message);
-            res.status(500).json({ message: err.message });
-            return;
+            return err;
         }
     }
 
@@ -468,8 +435,7 @@ const getFeatures = async (id) => {
         features = await db.query(queryString, [id]);
     } catch (err) {
         console.error('Error getting product features:', err.message);
-        res.status(500).json({ message: err.message });
-        return;
+        return err;
     }
 
     const result = [];
@@ -487,8 +453,7 @@ const getSpecifications = async (id) => {
         specifications = await db.query(queryString, [id]);
     } catch (err) {
         console.error('Error getting product specifications:', err.message);
-        res.status(500).json({ message: err.message });
-        return;
+        return err;
     }
 
     return specifications.rows;
@@ -501,8 +466,7 @@ const getHighlights = async (id) => {
         highlights = await db.query(queryString, [id]);
     } catch (err) {
         console.error('Error getting product highlights:', err.message);
-        res.status(500).json({ message: err.message });
-        return;
+        return err;
     }
 
     return highlights.rows;

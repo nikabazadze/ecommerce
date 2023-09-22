@@ -23,8 +23,10 @@ const getProducts = async (req, res) => {
         const result = [];
         for (const product of products.rows) {
             result.push(await retrieveProduct(product));
+            console.log(chalk.cyan.bold("Returned a product from database."));
         }
 
+        console.log(chalk.magentaBright.bold("Returned all products from database."));
         res.status(200).json(result);
     } catch (err) {
         console.error('Error retrieving products:', err.message);
@@ -339,7 +341,7 @@ const addProduct = async (req, res) => {
 
 
     res.status(201).json({message: "New product added"});
-    console.log(chalk.green.magentaBright(`${step}. (*_*) New product with id: ${productId} added in the database.`));
+    console.log(chalk.magentaBright.bold(`${step}. (*_*) New product with id: ${productId} added in the database.`));
 };
 
 // Updates a product
@@ -398,6 +400,7 @@ const retrieveProduct = async (product) => {
     const highlights = await getHighlights(id);
 
     const result = {
+        id: id,
         productName: productMeta.product_name,
         mainCategoryId: productMeta.main_category_id,
         subCategoryId: productMeta.sub_category_id,
@@ -418,7 +421,7 @@ const retrieveProduct = async (product) => {
 
 const getProductVariants = async (id) => {
     let colors = [];
-    const colorQuery = 'SELECT color_id, name, code FROM product_colors JOIN colors ON product_colors.color_id = colors.id WHERE product_colors.product_id = $1';
+    const colorQuery = 'SELECT color_id, name, code FROM product_colors JOIN colors ON product_colors.color_id = colors.id WHERE product_colors.product_id = $1 ORDER BY product_colors.id';
     try {
         colors = await db.query(colorQuery, [id]);
     } catch (err) {

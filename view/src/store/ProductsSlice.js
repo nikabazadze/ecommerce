@@ -36,4 +36,25 @@ export const selectProducts = (state) => state.products.products;
 export const selectProductsAreLoading = (state) => state.products.productsAreLoading;
 export const selectProductsHaveError = (state) => state.products.productsHaveError;
 
+export const selectProductById = (id) => {
+    return (state) => state.products.products.find(product => product.id === parseInt(id));
+};
+
+export const selectProdoctColors = (id) => {
+    return (state) => {
+        const selector = selectProductById(id);
+        const product = selector(state);
+        const result = [];
+        product.productVariants.forEach(variant => {
+            const color = {
+                name: variant.colorName,
+                code: variant.colorCode
+            };
+            result.push(color);
+        });
+
+        return result;
+    }
+};
+
 export default productsSlice.reducer;

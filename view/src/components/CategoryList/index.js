@@ -10,8 +10,8 @@ function CategoryList() {
         <div>
             <Grid container spacing={3}>
                 {
-                    categories.map((category) => (
-                        <Grid item xs={4}>
+                    categories.map((category, index) => (
+                        <Grid item xs={4} key={index}>
                             <CategoryListItem category={category} />
                         </Grid>
                     ))

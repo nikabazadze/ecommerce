@@ -1,4 +1,9 @@
-/* Main container style */
+/* Main style */
+.link {
+    text-decoration: none;
+    color: inherit;
+}
+
 .card {
     min-width: 14.5rem;
     height: 100%;

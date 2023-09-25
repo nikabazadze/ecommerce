@@ -439,8 +439,9 @@ const getFeatures = async (id) => {
     }
 
     const result = [];
+    let index = 0;
     for (const feature of features.rows) {
-        result.push(feature.product_feature);
+        result.push({id: index++, content: feature.product_feature});
     }
 
     return result;

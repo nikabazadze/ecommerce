@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const logger = require('morgan');
 const cors = require("cors");
 const helmet = require("helmet");
@@ -20,6 +21,7 @@ app.use(helmet());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'view', 'build')));
 
 // Session config
 app.use(session({
@@ -114,6 +116,11 @@ app.post('/register', async (req, res) => {
     };
 });
 
+const absolutePath = path.resolve(__dirname, 'view', 'build', 'index.html');
+
+app.get('*', (req, res) => {
+    res.sendFile(absolutePath);
+});
 
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);

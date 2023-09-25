@@ -15,9 +15,9 @@ import { loadProducts } from '../store/ProductsSlice';
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path='/' element={ <Root /> } >
     <Route path='/' element={ <Home /> } />
-    <Route path='/shop' element={ <Shop /> } />
-    <Route path='/cart' element={ <Cart /> } />
-    <Route path='/product' element={ <Product /> } />
+    <Route path='shop' element={ <Shop /> } />
+    <Route path='cart' element={ <Cart /> } />
+    <Route path='products/:id' element={ <Product /> } />
   </Route>
 ));
 

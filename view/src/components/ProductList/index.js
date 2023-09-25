@@ -29,7 +29,7 @@ function ProductList({products, position = "grid"}) {
                     <Grid container rowSpacing={5} columnSpacing={2.5} alignItems="strech">
                         {
                             products.map((product) => (
-                                <Grid item xs={3}>
+                                <Grid item xs={3} key={product.id} >
                                     <ProductListItem product={product} />
                                 </Grid>
                             ))
@@ -46,7 +46,7 @@ function ProductList({products, position = "grid"}) {
                         <Link to={"/shop"} >shop all</Link>
                     </div>
                     <div className={styles.flexContainer} id="flexContainer">
-                        {products.map((product) => <ProductListItem product={product} />)}
+                        {products.map((product) => <ProductListItem product={product} key={product.id} />)}
                     </div>
                 </div>
             }

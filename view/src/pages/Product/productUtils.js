@@ -41,3 +41,9 @@ export const getAccordionItems = (product) => {
 
     return result;
 };
+
+export const getUrl = (product, chosenColor) => {
+    if (!product || !chosenColor) return "";
+    const variant = product.productVariants.find(variant => variant.colorName === chosenColor.name);
+    return variant ? variant.imgUrls[0] : "";
+};

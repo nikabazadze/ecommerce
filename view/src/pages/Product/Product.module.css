@@ -173,15 +173,13 @@
 }
 
 /* Accordion */
-.accordion {
-    /* border: 1px solid blue; */
+.accordion ul {
+    padding-left: 1rem;
 }
 
-.accordion span {
-    /* font-family: 'Roboto', sans-serif; */
-    font-size: 1.25rem;
-    font-weight: 500;
+.accordion li {
     line-height: 2rem;
+    list-style-type: disc;
     color: #454545;
 }
 

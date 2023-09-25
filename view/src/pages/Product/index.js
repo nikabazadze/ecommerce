@@ -10,23 +10,14 @@ import BasicAccordion from "../../components/Accordion";
 import ProductHighlights from "../../components/ProductHighlights";
 import ProductList from "../../components/ProductList";
 import { selectProductById, selectProducts } from "../../store/ProductsSlice";
+import { getProductColors, getAccordionItems, getUrl } from "./productUtils";
 
 function Product() {
     let { id } = useParams();
     const products = useSelector(selectProducts);
     const product = useSelector(selectProductById(id));
-
-    const productColors = useMemo(() => {
-        if (!product) return [];
-        return product.productVariants.map(variant => {
-            const color = {
-                name: variant.colorName,
-                code: variant.colorCode
-            };
-            return color;
-        });
-    }, [product]);
-
+    const productColors = useMemo(() => getProductColors(product), [product]);
+    const accordionItems = product ? getAccordionItems(product) : [];
     const [chosenColor, setChosenColor] = useState(null);
 
     useEffect(() => {
@@ -37,19 +28,6 @@ function Product() {
 
     if (!product || !chosenColor) {
         return <div>Loading...</div>;
-    }
-
-    const accordionItems = [
-        {
-            title: "Shipping and Delivery",
-            content: <p>Free shipping order over $75+ <br /><br />We offer regular or express shipping to most addresses worldwide. Shipping cost and delivery times are calculated at checkout. <br /><br />Note: P.O. box deliveries will automatically be sent by regular shipping.</p>
-        },
-    ];
-
-    const getUrl = () => {
-        if (!chosenColor) return "";
-        const variant = product.productVariants.find(variant => variant.colorName === chosenColor.name);
-        return variant ? variant.imgUrls[0] : "";
     };
 
     const renderColors = () => {
@@ -88,7 +66,7 @@ function Product() {
             <section className={styles.mainContainer}>
                 <div className={styles.leftSection}>
                     <div className={styles.imgContainer}>
-                        <img src={getUrl()} alt="Product photo" />
+                        <img src={getUrl(product, chosenColor)} alt="Product photo" />
                     </div>
                 </div>
                 <div className={styles.rightSection}>

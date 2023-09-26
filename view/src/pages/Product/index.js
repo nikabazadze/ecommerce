@@ -1,7 +1,7 @@
 import React from "react";
 import { useState,useMemo, useEffect } from "react";
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import './border.css';
 import Rating from '@mui/material/Rating';
@@ -14,6 +14,8 @@ import { getProductColors, getAccordionItems, getUrl } from "./productUtils";
 
 function Product() {
     let { id } = useParams();
+    const [ searchParams, setSearchParams ] = useSearchParams();
+    const variantId = searchParams.get('variant');
     const products = useSelector(selectProducts);
     const product = useSelector(selectProductById(id));
     const productColors = useMemo(() => getProductColors(product), [product]);
@@ -25,6 +27,10 @@ function Product() {
             setChosenColor(productColors[0]);
         }
     }, [productColors]);
+
+    useEffect(() => {
+        if (chosenColor) setSearchParams({'variant': `${chosenColor.id}`});
+    }, [chosenColor])
 
     if (!product || !chosenColor) {
         return <div>Loading...</div>;

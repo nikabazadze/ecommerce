@@ -6,7 +6,7 @@ import styles from './ProductListItem.module.css';
 
 function ProductListItem({ product }) {
     return (
-        <Link to={`/products/${product.id}`} className={styles.link}>
+        <Link to={`/products/${product.id}?variant=0`} className={styles.link}>
             <div className={styles.card} >
                 <div className={styles.imgContainer}>
                     <img src={product.productVariants[0].imgUrls[0]} alt="Product photo"/>

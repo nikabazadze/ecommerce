@@ -9,6 +9,10 @@ import styles from './ProductList.module.css';
 import ProductListItem from "../ProductListItem";
 
 function ProductList({products, position = "grid"}) {
+    if (!products) {
+        return <div>Loading...</div>;
+    };
+
     function handleClick(direction) {
         const list = document.getElementById("flexContainer");
         const product = list.children[0];

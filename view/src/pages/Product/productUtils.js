@@ -1,7 +1,8 @@
 export const getProductColors = (product) => {
     if (!product) return [];
-    return product.productVariants.map(variant => (
+    return product.productVariants.map((variant, index) => (
         {
+            id: index,
             name: variant.colorName,
             code: variant.colorCode
         }

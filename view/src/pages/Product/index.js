@@ -6,20 +6,22 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import './border.css';
 import Rating from '@mui/material/Rating';
 import styles from "./Product.module.css";
+import ProductList from "../../components/ProductList";
+import ImageSlider from "../../components/ImageSlider";
 import BasicAccordion from "../../components/Accordion";
 import ProductHighlights from "../../components/ProductHighlights";
-import ProductList from "../../components/ProductList";
 import { selectProductById, selectProducts } from "../../store/ProductsSlice";
-import { getProductColors, getAccordionItems, getUrl } from "./productUtils";
+import { getProductColors, getAccordionItems } from "./productUtils";
 
 function Product() {
     let { id } = useParams();
     const [ searchParams, setSearchParams ] = useSearchParams();
-    const variantId = searchParams.get('variant');
+    const variant = searchParams.get('variant');
     const products = useSelector(selectProducts);
     const product = useSelector(selectProductById(id));
-    const productColors = useMemo(() => getProductColors(product), [product]);
     const accordionItems = product ? getAccordionItems(product) : [];
+    const productColors = useMemo(() => getProductColors(product), [product]);
+    const productImages = product ? product.productVariants[variant].imgUrls : [];
     const [chosenColor, setChosenColor] = useState(null);
 
     useEffect(() => {
@@ -71,8 +73,8 @@ function Product() {
         <div className={styles.productPage}>
             <section className={styles.mainContainer}>
                 <div className={styles.leftSection}>
-                    <div className={styles.imgContainer}>
-                        <img src={getUrl(product, chosenColor)} alt="Product photo" />
+                    <div className={styles.imageSliderContainer}>
+                        <ImageSlider images={productImages} />
                     </div>
                 </div>
                 <div className={styles.rightSection}>

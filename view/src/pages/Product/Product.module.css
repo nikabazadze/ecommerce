@@ -13,7 +13,7 @@
 
 .mainContainer {
     /* border: 1px solid red; */
-    margin: 8.3125rem 0;
+    margin: 5rem 0;
     display: flex;
 }
 
@@ -25,18 +25,11 @@
     width: 50%;
 }
 
-.imgContainer {
-    /* border: 1px solid green; */
+.imageSliderContainer {
     margin-top: 2.0625rem;
-    width: calc(100% - 7.375rem);
-    overflow: hidden;
-}
-
-.imgContainer img {
-    /* border: 1px solid yellow; */
-    max-width: 100%;
-    height: auto;
-    display: block;
+    width: calc(100% - 4rem);
+    max-width: 35rem;
+    height: 40rem;
 }
 
 

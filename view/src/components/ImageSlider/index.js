@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useRef, useEffect } from "react";
 import styles from './ImageSlider.module.css';
+import ModalSlider from "./ModalSlider";
 
 function ImageSlider({images}) {
     const containerRef = useRef(null);
@@ -9,11 +10,20 @@ function ImageSlider({images}) {
     const [ currentIndex, setCurrentIndex ] = useState(0);
     const sliderWidth = images.length * 100;
 
+    const [openModal, setOpenModal] = useState(false);
+    const handleOpen = () => setOpenModal(true);
+
     useEffect(() => {
+        if (!openModal) {
+            updateMainSlider();
+        }
+    }, [currentIndex]);
+
+    const updateMainSlider = () => {
         const imageWidth = containerRef.current ? containerRef.current.offsetWidth : 0;
         const newPosition = -currentIndex * imageWidth;
         mainImageRef.current.style.transform = `translateX(${newPosition}px)`;
-    }, [currentIndex]);
+    };
 
     const showPrevious = () => {
         const isFirstImage = currentIndex === 0;
@@ -66,6 +76,7 @@ function ImageSlider({images}) {
                     {images.map((image, index) => (
                         <div 
                             key={index} 
+                            onClick={handleOpen}
                             className={styles.img}
                             style={{ backgroundImage: `url(${image})` }}
                         ></div>
@@ -74,7 +85,7 @@ function ImageSlider({images}) {
             </div>
             <div className={styles.prev} onClick={showPrevious} >&#10094;</div>
             <div className={styles.next} onClick={showNext} >&#10095;</div>
-            <ul ref={imageListRef}>
+            <ul ref={imageListRef} className={styles.smallImagesContainer}>
                 {images.map((image, index) => (
                     <li key={index} 
                         className={styles.img}
@@ -87,6 +98,7 @@ function ImageSlider({images}) {
                     ></li>
                 ))}
             </ul>
+            <ModalSlider images={images} open={openModal} setOpen={setOpenModal} mainSlideIndex={currentIndex} />
         </div>
     );
 };

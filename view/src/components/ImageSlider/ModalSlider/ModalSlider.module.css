@@ -1,6 +1,4 @@
-/* Modal styles */
 .modalMainContainer {
-    /* border: 1px solid blue; */
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.8);
@@ -8,7 +6,6 @@
 }
 
 .modalImgContainer {
-    /* border: 1px solid blue; */
     width: 40vw;
     height: 95vh;
     overflow: hidden;
@@ -21,14 +18,12 @@
 }
 
 .imageSlider {
-    /* border: 1px solid red; */
     height: 100%;
     display: flex;
     transition: transform 0.3s ease-in-out;
 }
 
 .img {
-    /* border: 1px solid green; */
     width: 100%;
     height: 100%;
     background-repeat: no-repeat;
@@ -37,6 +32,7 @@
     cursor: zoom-out;
 }
 
+/* Icons */
 .prev,
 .next {
     border-radius: 50%;
@@ -65,7 +61,7 @@
 }
 
 .closeIcon {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.6);
     background-color: transparent;
     border-radius: 50%;
     padding: 0.1rem;
@@ -74,12 +70,11 @@
     position: absolute;
     top: 0.875rem;
     right: 1rem;
-    color: #454545;
     cursor: pointer;
 }
 
-.modalMainContainer .prev:hover,
-.modalMainContainer .next:hover,
+.prev:hover,
+.next:hover,
 .closeIcon:hover {
     color: #454545;
     background-color: rgba(255, 255, 255, 0.8);

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import styles from './SignUp.module.css';
 import TextField from '@mui/material/TextField';
 import GoogleLogo from '../../assets/images/googleLogo.svg';
 import fbLogo from '../../assets/images/fbLogo.svg';
+import { addUser } from "../../API";
 
 function SignUp() {
     const [ firstName, setFirstName ] = useState("");
@@ -10,9 +12,28 @@ function SignUp() {
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
 
-    const handleSubmit = (e) => {
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Sign up completed!");
+
+        if (firstName, lastName, email, password) {
+            const status = await addUser(firstName, lastName, email, password);
+            
+            if (status === 201) {
+                console.log("Sign up completed successfuly!");
+                navigate("/");
+            } else {
+                console.log("Error! Sign up wasn't processed.");
+            }
+
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+            setPassword("");
+        } else {
+            console.log("Fill all required fields in the sign up form!");
+        }
     };
  
     return (

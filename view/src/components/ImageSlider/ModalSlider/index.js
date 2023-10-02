@@ -10,9 +10,7 @@ function ModalSlider({images, open, setOpen, mainSlideIndex}) {
     const modalImageContainerRef = useRef(null);
     const modalMainImageRef = useRef(null);
 
-    console.log(`Main slide index: ${mainSlideIndex}`)
     const [ currentIndex, setCurrentIndex ] = useState(mainSlideIndex);
-    console.log(`Modals current index: ${currentIndex}`);
     const sliderWidth = images.length * 100;
 
     useEffect(() => {

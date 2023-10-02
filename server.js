@@ -91,7 +91,7 @@ app.post('/login',
         }
 );
 
-app.post('/register', async (req, res) => {
+app.post('/signup', async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
     if (firstName && lastName && email && password) {
         try {
@@ -100,13 +100,11 @@ app.post('/register', async (req, res) => {
                 await db.createUser(firstName, lastName, email, hashedPassword, res);
             } else {
                 console.error('Error while hashing password:', err.message);
-                res.status(500).json({ message: err.message });
-                return;
+                return res.status(500).json({ message: err.message });
             }
         } catch (err) {
             console.error('Error while adding user:', err.message);
-            res.status(500).json({ message: err.message });
-            return;
+            return res.status(500).json({ message: err.message });
         };
     } else {
         res.status(400).json({

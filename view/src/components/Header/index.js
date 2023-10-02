@@ -23,8 +23,8 @@ function Header() {
         return (
             <ul className={styles.list}>
                 <li><Search /></li>
-                <li><Link to="/"><PersonOutlinedIcon /><span>Hello, Sign in</span></Link></li>
-                <li><Link to="/"><ShoppingCartOutlinedIcon sx={{fontSize: 22}} /><span>Cart</span></Link></li>
+                <li><Link to="/signup"><PersonOutlinedIcon /><span>Hello, Sign in</span></Link></li>
+                <li><Link to="/cart"><ShoppingCartOutlinedIcon sx={{fontSize: 22}} /><span>Cart</span></Link></li>
             </ul>
         );
     };

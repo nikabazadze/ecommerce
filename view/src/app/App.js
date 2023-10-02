@@ -9,7 +9,7 @@ import Home from '../pages/Home';
 import Shop from '../pages/Shop';
 import Product from '../pages/Product';
 import Cart from '../pages/Cart';
-import SignUp from '../components/SignUp';
+import SignUp from '../pages/SignUp';
 
 import { loadProducts } from '../store/ProductsSlice';
 

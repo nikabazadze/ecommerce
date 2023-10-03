@@ -78,18 +78,31 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
-app.get('/login', (req, res) => {
-    res.json({message: "You did not login!"});  // Only for development
-});
-
-app.post('/login', 
-        passport.authenticate('local', {
-            failureRedirect: '/login'
-        }),
-        (req, res) => {
-            res.status(200).json({message: "Successful Login!"});
+app.post('/login', (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+            return next(err);
         }
-);
+        if (!user) {
+            return res.status(401).json({ success: false, message: 'Authentication failed' });
+        }
+        req.logIn(user, (err) => {
+            if (err) {
+                return next(err);
+            }
+            return res.status(200).json({
+                success: true, 
+                message: 'Authentication successful',
+                user: {
+                    id: req.user.id,
+                    firstName: req.user.first_name,
+                    lastName: req.user.last_name,
+                    email: req.user.email
+                }
+            });
+        });
+    })(req, res, next);
+});
 
 app.post('/signup', async (req, res) => {
     const { firstName, lastName, email, password } = req.body;

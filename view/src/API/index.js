@@ -20,3 +20,16 @@ export const addUser = async (firstName, lastName, email, password) => {
 
     return response.status;
 };
+
+export const login = async (email, password) => {
+    const response = await fetch(`${SERVER_ENDPOINT}/login`, {
+        method: "POST",
+        body: JSON.stringify({
+            username: email,
+            password
+        }),
+        headers: { "Content-Type": "application/json", },
+    });
+
+    return response.status;
+};

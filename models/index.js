@@ -9,4 +9,4 @@ const query = async (text, params) => {
     return response;
 };
 
-module.exports = {query};
+module.exports = {query, pool};

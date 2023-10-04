@@ -90,6 +90,22 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
+app.get('/currentUser', (req, res) => {
+    if (req.isAuthenticated()) {
+        res.json({ 
+            isAuthenticated: true,
+            user: {
+                id: req.user.id,
+                firstName: req.user.first_name,
+                lastName: req.user.last_name,
+                email: req.user.email
+            }
+        });
+    } else {
+        res.status(401).json({ isAuthenticated: false, message: "Not authenticated" });
+    }
+});
+
 app.post('/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if (err) {

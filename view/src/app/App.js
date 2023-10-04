@@ -12,6 +12,8 @@ import Cart from '../pages/Cart';
 import Account from '../pages/Account';
 
 import { loadProducts } from '../store/ProductsSlice';
+import { getCurrentUser } from '../API';
+import { setUser, setIsLoggedIn } from '../store/UserSlice';
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path='/' element={ <Root /> } >
@@ -26,9 +28,39 @@ const router = createBrowserRouter(createRoutesFromElements(
 function App() {
   const dispatch = useDispatch();
 
+  // Loads all products
   useEffect(() => {
     dispatch(loadProducts());
   }, [dispatch]);
+
+  // Checks if current site visitor is authorized user
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchData = async () => {
+      try {
+        const response = await getCurrentUser();
+        if (!isMounted) return;
+  
+        if (response.isAuthenticated) {
+          dispatch(setUser(response.user));
+          dispatch(setIsLoggedIn(true));
+        } else {
+          dispatch(setIsLoggedIn(false));
+          dispatch(setUser(null));
+          console.log(response.message);
+        }
+      } catch (error) {
+        console.error("Error fetching current user:", error);
+      }
+    };
+  
+    fetchData();
+  
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <RouterProvider router={ router } />

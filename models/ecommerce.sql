@@ -42,6 +42,7 @@ CREATE TABLE cart_items (
 	cart_id integer REFERENCES cart(id) ON DELETE CASCADE,
   product_id integer REFERENCES products(id) ON DELETE CASCADE,
   product_quantity integer NOT NULL,
+  product_variant integer NOT NULL,
   PRIMARY KEY (cart_id, product_id)
 );
 

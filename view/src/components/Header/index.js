@@ -1,12 +1,16 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 
 import styles from './Header.module.css';
 import Search from "../Search";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import { selectIsLoggedIn, selectUser } from "../../store/UserSlice";
 
 function Header() {
+    const isLoggedIn = useSelector(selectIsLoggedIn);
+    const user = useSelector(selectUser);
     const categories = ["wallets", "cases", "bags", "accessories"];
 
     function renderLeftNav() {
@@ -23,8 +27,8 @@ function Header() {
         return (
             <ul className={styles.list}>
                 <li><Search /></li>
-                <li><Link to="/account/signup"><PersonOutlinedIcon /><span>Hello, Sign up</span></Link></li>
-                <li><Link to="/cart"><ShoppingCartOutlinedIcon sx={{fontSize: 22}} /><span>Cart</span></Link></li>
+                <li><Link to={`/account/${isLoggedIn ? "profile" : "signup"}`}><PersonOutlinedIcon /><span>{`Hello, ${isLoggedIn ? user.firstName : "Sign up"}`}</span></Link></li>
+                <li><Link to={`/${isLoggedIn ? "cart" : "account/login"}`}><ShoppingCartOutlinedIcon sx={{fontSize: 22}} /><span>Cart</span></Link></li>
             </ul>
         );
     };

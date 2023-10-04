@@ -5,7 +5,9 @@ const logger = require('morgan');
 const cors = require("cors");
 const helmet = require("helmet");
 const session = require("express-session");
-const store = new session.MemoryStore();    // Only for development
+const pgSession = require('connect-pg-simple')(session);
+const { pool } = require('./models'); 
+// const store = new session.MemoryStore();    // Only for development
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 require("dotenv").config();
@@ -16,7 +18,12 @@ const { hashPassword, comparePasswords } = require('./utils/passwordHash');
 
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:3001',
+    credentials: true
+};
+  
+app.use(cors(corsOptions));
 app.use(helmet());
 app.use(logger('dev'));
 app.use(express.json());
@@ -25,15 +32,20 @@ app.use(express.static(path.join(__dirname, 'view', 'build')));
 
 // Session config
 app.use(session({
+    store: new pgSession({
+        pool: pool,
+        tableName: 'session'
+    }),
     secret: process.env.SESSION_SECRET,
+    rolling: true,
     cookie: {
-        maxAge: 1000 * 60 *60 * 24,
+        maxAge: 1000 * 60 *60 * 24 * 7,    // 7 days
         httpOnly: true,
-        secure: false,  // For development
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
     },
     resave: false,
     saveUninitialized: false,
-    store
 }));
 
 // Passport config

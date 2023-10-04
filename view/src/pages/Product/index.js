@@ -3,7 +3,6 @@ import { useState,useMemo, useEffect } from "react";
 import { useSelector } from 'react-redux';
 import { useParams, useSearchParams } from 'react-router-dom';
 
-import './border.css';
 import Rating from '@mui/material/Rating';
 import styles from "./Product.module.css";
 import ProductList from "../../components/ProductList";
@@ -44,7 +43,7 @@ function Product() {
                 {
                     productColors.map((color) => (
                         <li key={color.code} 
-                            className={`${color.code === chosenColor.code && "chosenColorBorder"}`}
+                            className={`${color.code === chosenColor.code && styles.chosenColorBorder}`}
                             onClick={() => setChosenColor(color)}
                         ><div className={styles.color} style={{ backgroundColor: `${color.code}` }}></div></li>
                     ))

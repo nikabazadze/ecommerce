@@ -28,7 +28,7 @@ function Header() {
             <ul className={styles.list}>
                 <li><Search /></li>
                 <li><Link to={`/account/${isLoggedIn ? "profile" : "signup"}`}><PersonOutlinedIcon /><span>{`Hello, ${isLoggedIn ? user.firstName : "Sign up"}`}</span></Link></li>
-                <li><Link to={`/${isLoggedIn ? "cart" : "account/login"}`}><ShoppingCartOutlinedIcon sx={{fontSize: 22}} /><span>Cart</span></Link></li>
+                <li><Link to="cart"><ShoppingCartOutlinedIcon sx={{fontSize: 22}} /><span>Cart</span></Link></li>
             </ul>
         );
     };

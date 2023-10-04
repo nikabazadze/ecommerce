@@ -32,6 +32,12 @@ export const login = async (email, password) => {
         headers: { "Content-Type": "application/json", },
         credentials: 'include',
     });
+    console.log(response)
 
+    return await response.json();
+};
+
+export const getCurrentUser = async () => {
+    const response = await fetch(`${SERVER_ENDPOINT}/currentUser`, { credentials: 'include' });
     return await response.json();
 };

@@ -1,6 +1,6 @@
 .productPage {
     /* border: 2px solid blue; */
-    margin: 0 5rem;     /* Update with css variable of page main padding */
+    margin: 0 var(--padding-main);
     color: #454545;
 }
 
@@ -113,6 +113,10 @@
     height: 2rem;
     border-radius: 50%;
     cursor: pointer;
+}
+
+.chosenColorBorder {
+    border: 2px solid #868686 !important;
 }
 
 /* Action buttons */

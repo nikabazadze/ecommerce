@@ -8,7 +8,7 @@
 }
 
 .container {
-    margin: 5rem;
+    margin: 5rem var(--padding-main);
     display: flex;
     justify-content: center;
 }

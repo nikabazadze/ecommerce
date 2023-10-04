@@ -27,13 +27,13 @@
  
 .leftNav {
     position: absolute;
-    left: 5rem;
+    left: var(--padding-main);
     text-transform: uppercase;
 }
 
 .rightNav {
     position: absolute;
-    right: 5rem;
+    right: var(--padding-main);
 }
 
 .list {

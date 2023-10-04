@@ -1,6 +1,6 @@
 .cartPage {
     /* border: 1px solid blue; */
-    margin: 3.75rem 5rem;   /* Update with css variable of page main padding */
+    margin: 3.75rem var(--padding-main);
     color: #454545;
 }
 

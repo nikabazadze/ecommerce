@@ -4,12 +4,12 @@
 
 .flexContainer {
     display: flex;
-    gap: 2rem;
+    gap: 1.5rem;
     overflow: hidden;
     width: 100vw;
     padding: 1rem 0;
     position: relative;
-    left: -5rem;    /* Change with css variable of website padding instead */
+    left: calc(-1 * var(--padding-main));
 }
 
 .flexContainer > * {
@@ -17,7 +17,7 @@
     height: auto !important;    /* If any issues in the future, this should be checked first */
     flex-shrink: 0;
     position: relative;
-    left: 5rem;     /* Change with css variable of website padding instead */
+    left: var(--padding-main);
 }
 
 .scrollContainer {

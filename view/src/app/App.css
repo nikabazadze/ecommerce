@@ -1,3 +1,7 @@
+:root {
+    --padding-main: 10rem;
+}
+
 html,
 body {
     font-family: 'Nunito Sans', sans-serif;

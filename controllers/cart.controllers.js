@@ -20,12 +20,17 @@ const getCartItems = async (req, res) => {
 
 // Adds item in the cart
 const addCartItem = async (req, res) => {
+    const variant = parseInt(req.query.variant);
     const quantity = parseInt(req.query.quantity);
+
+    // Check if `variant` query parameter exists and have integer value >= 0
+    if ((!variant && variant !== 0) || variant < 0) {
+        return res.status(400).json({message: "Could not add cart item! Add `variant` query parameter with integer value >= 0."});
+    }
     
     // Check if `quantity` query parameter exists and have positive integer value
     if (!quantity || quantity < 1) {
-        res.status(400).json({message: "Could not add cart item! Add `quantity` query parameter with positive integer value."});
-        return;
+        return res.status(400).json({message: "Could not add cart item! Add `quantity` query parameter with positive integer value."});
     };
 
     // Check if this product is already in the cart
@@ -44,10 +49,10 @@ const addCartItem = async (req, res) => {
 
     let cartTotalValue = parseFloat(req.cart.total_value);
     cartTotalValue += parseFloat(req.product.unit_price) * quantity;
-    const addItem = 'INSERT INTO cart_items VALUES ($1, $2, $3)';
+    const addItem = 'INSERT INTO cart_items VALUES ($1, $2, $3, $4)';
     const updateCartValue = 'UPDATE cart SET total_value = $1 where id = $2';
     try {
-        await db.query(addItem, [req.cart.id, req.productId, quantity]);
+        await db.query(addItem, [req.cart.id, req.productId, quantity, variant]);
         await db.query(updateCartValue, [cartTotalValue, req.cart.id]);
         res.status(200).json({message: `New product with id - ${req.productId} added in the cart for the user id: ${req.userId}`});
     } catch (err) {

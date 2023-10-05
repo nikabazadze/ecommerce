@@ -28,7 +28,7 @@ CREATE TABLE products (
   main_description text NOT NULL,
   reviews_score decimal(10, 2),
   reviews_quantity integer,
-  quantity_left integer NOT NULL
+  product_quantity integer NOT NULL
 );
 
 CREATE TABLE cart (

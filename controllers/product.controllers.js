@@ -64,13 +64,13 @@ const addProduct = async (req, res) => {
 
     // Check if all the required product fields are in the request body
     if (!requestBody.productName || !requestBody.mainCategoryId || (!requestBody.subCategoryId && requestBody.subCategoryId !== null) || 
-        !requestBody.smallDescription || !requestBody.mainDescription || !requestBody.quantityLeft || 
+        !requestBody.smallDescription || !requestBody.mainDescription || !requestBody.productQuantity || 
         !requestBody.productVariants || !requestBody.features || !requestBody.specifications || !requestBody.highlights) {
         return res.status(400).json({
             message: "Could not add a product! Include all required fields to add a product.",
             note: "Check example request body for new product in the documentation to properly add a new product",
             requiredFields: ["productName", "mainCategoryId", "subCategoryId", "smallDescription", "mainDescription", 
-                             "quantityLeft", "productVariants", "features", "specifications", "highlights"]
+                             "productQuantity", "productVariants", "features", "specifications", "highlights"]
         });
     }
 
@@ -80,13 +80,13 @@ const addProduct = async (req, res) => {
     }
 
     // Check if there are Number values in the respective fields
-    if ((typeof requestBody.mainCategoryId !== "number") || (typeof requestBody.quantityLeft !== "number")) {
-        return res.status(400).json({message: "Non numeric value! `mainCategoryId` and `quantityLeft` must have `number` value type."});
+    if ((typeof requestBody.mainCategoryId !== "number") || (typeof requestBody.productQuantity !== "number")) {
+        return res.status(400).json({message: "Non numeric value! `mainCategoryId` and `productQuantity` must have `number` value type."});
     }
 
-    // Check if unitPrice and quantityLeft are positive numbers
-    if (requestBody.unitPrice <= 0 || requestBody.quantityLeft <= 0) {
-        return res.status(400).json({message: "Negavite value! `unitPrice` and `quantityLeft` must have positive values."});
+    // Check if productQuantity is positive integer
+    if (requestBody.productQuantity <= 0) {
+        return res.status(400).json({message: "Negavite value! `productQuantity` must have positive values."});
     }
 
     // Check if subCategoryId has number or null value
@@ -210,10 +210,10 @@ const addProduct = async (req, res) => {
     let step = 1;     // Simply counts number of completed steps before adding a product
     // Fill products table
     let productId = "";
-    const productsTableQuery = 'INSERT INTO products (product_name, main_category_id, sub_category_id, small_description, main_description, quantity_left) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id';
+    const productsTableQuery = 'INSERT INTO products (product_name, main_category_id, sub_category_id, small_description, main_description, product_quantity) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id';
     try {
         const newProduct = await db.query(productsTableQuery, [requestBody.productName, requestBody.mainCategoryId, requestBody.subCategoryId, 
-                                                               requestBody.smallDescription, requestBody.mainDescription, requestBody.quantityLeft,]);
+                                                               requestBody.smallDescription, requestBody.mainDescription, requestBody.productQuantity,]);
         productId = newProduct.rows[0].id;
         console.log(chalk.cyan.bold(`${step++}. Product details added in products table.`));
     } catch (err) {

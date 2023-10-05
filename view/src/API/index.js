@@ -41,3 +41,8 @@ export const getCurrentUser = async () => {
     const response = await fetch(`${SERVER_ENDPOINT}/currentUser`, { credentials: 'include' });
     return await response.json();
 };
+
+export const getUserCart = async (userId) => {
+    const response = await fetch(`${API_ENDPOINT}/users/${userId}/cart`, { credentials: 'include' });
+    return await response.json();
+};

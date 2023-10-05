@@ -36,18 +36,21 @@ const addCartItem = async (req, res) => {
         const getCartItem = 'SELECT * FROM cart_items WHERE cart_id = $1 AND product_id = $2';
         const cartItem = await db.query(getCartItem, [req.cart.id, req.productId]);
         if (cartItem.rowCount !== 0) {
-            res.status(422).json({message: "Could not add item! This item is already in the cart. You can update or remove it instead of adding it."});
-            return;
+            return res.status(422).json({message: "Could not add item! This item is already in the cart. You can update or remove it instead of adding it."});
         };
     } catch (err) {
         console.error('Error checking cart item:', err.message);
-        res.status(500).json({ message: err.message });
-        return;
+        return res.status(500).json({ message: "Error checking cart item" });
     };
 
     // Add cart item
     let cartTotalValue = parseFloat(req.cart.total_value);
-    cartTotalValue += parseFloat(req.product.unit_price) * quantity;
+
+    const productVariants = await getProductVariants(req.productId);
+    const itemVariant = productVariants[variant];
+    const itemPrice = itemVariant.unitPrice;
+
+    cartTotalValue += parseFloat(itemPrice) * quantity;
     const addItem = 'INSERT INTO cart_items VALUES ($1, $2, $3, $4)';
     const updateCartValue = 'UPDATE cart SET total_value = $1 where id = $2';
     try {
@@ -56,7 +59,7 @@ const addCartItem = async (req, res) => {
         res.status(200).json({message: `New product with id - ${req.productId} added in the cart for the user id: ${req.userId}`});
     } catch (err) {
         console.error('Error adding cart item:', err.message);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Error adding cart item" });
     }
 };
 
@@ -66,8 +69,7 @@ const updateCartItem = async (req, res) => {
     
     // Check if `quantity` query parameter exists and have positive integer value
     if (!quantity || quantity < 1) {
-        res.status(400).json({message: "Could not update cart item! Add `quantity` query parameter with positive integer value."});
-        return;
+        return res.status(400).json({message: "Could not update cart item! Add `quantity` query parameter with positive integer value."});
     };
 
     let cartTotalValue = parseFloat(req.cart.total_value);
@@ -76,19 +78,22 @@ const updateCartItem = async (req, res) => {
     const updateCartValue = 'UPDATE cart SET total_value = $1 where id = $2';
 
     try {
-        const cartItem = await db.query(getCartItem, [req.cart.id, req.productId]);
+        let cartItem = await db.query(getCartItem, [req.cart.id, req.productId]);
         if (cartItem.rowCount !== 0) {
-            const currentQuantity = cartItem.rows[0].product_quantity;
+            cartItem = cartItem.rows[0];
+            const productVariants = await getProductVariants(req.productId);
+            const itemVariant = productVariants[cartItem.product_variant];
+
+            const cartItemPrice = itemVariant.unitPrice;
+            const currentQuantity = cartItem.product_quantity;
 
             if (currentQuantity === quantity) {
-                res.status(400).json({message: `Could not update cart item! Quantity of the product with id - ${req.productId} is already ${quantity}.`});
-                return;
+                return res.status(400).json({message: `Could not update cart item! Quantity of the product with id - ${req.productId} is already ${quantity}.`});
             };
-            const valueDiff = (quantity - currentQuantity) * parseFloat(req.product.unit_price);
+            const valueDiff = (quantity - currentQuantity) * parseFloat(cartItemPrice);
             cartTotalValue += valueDiff;
         } else {
-            res.status(400).json({message: `Could not update cart! There are no products in the cart with product id - ${req.productId}`});
-            return;
+            return res.status(400).json({message: `Could not update cart! There are no products in the cart with product id - ${req.productId}`});
         };
 
         await db.query(updateItemQuantity, [quantity, req.cart.id, req.productId]);
@@ -96,7 +101,7 @@ const updateCartItem = async (req, res) => {
         res.status(200).json({message: `Product quantity with id - ${req.productId} updated in the cart for the user id: ${req.userId}`});
     } catch (err) {
         console.error('Error updating cart item:', err.message);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Error updating cart item" });
     }
 };
 
@@ -107,13 +112,17 @@ const deleteCartItem = async (req, res) => {
     const deleteCartItem = 'DELETE FROM cart_items WHERE cart_id = $1 AND product_id = $2';
     const updateCartValue = 'UPDATE cart SET total_value = $1 where id = $2';
     try {
-        const cartItem = await db.query(getCartItem, [req.cart.id, req.productId]);
+        let cartItem = await db.query(getCartItem, [req.cart.id, req.productId]);
         if (cartItem.rowCount !== 0) {
-            const quantity = cartItem.rows[0].product_quantity;
-            cartTotalValue -= parseFloat(req.product.unit_price) * quantity;
+            cartItem = cartItem.rows[0];
+            const productVariants = await getProductVariants(req.productId);
+            const itemVariant = productVariants[cartItem.product_variant];
+
+            const cartItemPrice = itemVariant.unitPrice;
+            const quantity = cartItem.product_quantity;
+            cartTotalValue -= parseFloat(cartItemPrice) * quantity;
         } else {
-            res.status(400).json({message: `Could not remove cart item! There are no products in the cart with product id: ${req.productId}`});
-            return;
+            return res.status(400).json({message: `Could not remove cart item! There are no products in the cart with product id: ${req.productId}`});
         };
 
         await db.query(deleteCartItem, [req.cart.id, req.productId]);
@@ -121,7 +130,7 @@ const deleteCartItem = async (req, res) => {
         res.status(200).json({message: `Product with id - ${req.productId} removed from the cart for the user id: ${req.userId}`});
     } catch (err) {
         console.error('Error removing cart item:', err.message);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Error removing cart item" });
     }
 };
 
@@ -130,8 +139,7 @@ const clearCart = async (req, res) => {
     // Check if there is anything in the cart
     const cartTotalValue = parseFloat(req.cart.total_value);
     if (cartTotalValue === 0) {
-        res.status(400).json({message: "Could not clear cart! There are no items in the cart to clear."});
-        return;
+        return res.status(400).json({message: "Could not clear cart! There are no items in the cart to clear."});
     };
 
     const clearCart = 'UPDATE cart SET total_value = $1 where id = $2';
@@ -142,7 +150,7 @@ const clearCart = async (req, res) => {
         res.status(200).json({message: `Cart for the user with id: ${req.userId} has been cleared.`});
     } catch (err) {
         console.error('Error clearing cart:', err.message);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Error clearing cart" });
     };
 };
 
@@ -152,28 +160,54 @@ const checkoutCart = async (req, res) => {
 
     // Check if there is anything in the cart
     if (cartTotalValue === 0) {
-        res.status(400).json({message: "Could not checkout cart! There are no items in the cart to checkout."});
-        return;
+        return res.status(400).json({message: "Could not checkout cart! There are no items in the cart to checkout."});
     };
 
     // Try processing payment
     const paymentProcessed = true;
     if (!paymentProcessed) {
-        res.status(400).json({message: "Payment has not processed successfully! Check your payment details!"});
-        return;
+        return res.status(400).json({message: "Payment has not processed successfully! Check your payment details!"});
     };
 
     // Place a new order
+    let newOrderId = null;
     const date = new Date().toUTCString();
     const addOrderQuery = 'INSERT INTO orders (user_id, total_value, status, created_at) VALUES ($1, $2, $3, $4) RETURNING id';
-    const addOrderItemsQuery = 'INSERT INTO order_items (order_id, product_id, product_quantity) SELECT $1, product_id, product_quantity FROM cart_items WHERE cart_id = $2';
+    const addOrderItemsQuery = 'INSERT INTO order_items (order_id, product_id, product_quantity, product_variant) SELECT $1, product_id, product_quantity, product_variant FROM cart_items WHERE cart_id = $2';
     try {
         const newOrder = await db.query(addOrderQuery, [req.userId, cartTotalValue, 'pending', date]);
-        await db.query(addOrderItemsQuery, [newOrder.rows[0].id, req.cart.id]);
+        newOrderId = newOrder.rows[0].id;
+        await db.query(addOrderItemsQuery, [newOrderId, req.cart.id]);
     } catch (err) {
         console.error('Error creating order:', err.message);
-        res.status(500).json({ message: err.message });
+        return res.status(500).json({ message: "Error creating order" });
     };
+
+    // Reduce product quantities from the order
+    let orderItems = [];
+    const getOrderItemsQuery = 'SELECT * FROM order_items WHERE order_id = $1';
+    try {
+        orderItems = await db.query(getOrderItemsQuery, [newOrderId]);
+    } catch (err) {
+        console.error('Error retrieving order items:', err.message);
+        return res.status(500).json({ message: "Error retrieving order items" });
+    }
+
+    for (const item of orderItems.rows) {
+        const productId = item.product_id;
+        const orderItemQuantity = item.product_quantity;
+        const getProductQuery = 'SELECT * FROM products WHERE id = $1';
+        const reduceProductQuantityQuery = 'UPDATE products SET product_quantity = $1 WHERE id = $2';
+        try {
+            const product = await db.query(getProductQuery, [productId]);
+            const currentProductQuantity = product.rows[0].product_quantity;
+            const newQuantity = currentProductQuantity - orderItemQuantity;
+            await db.query(reduceProductQuantityQuery, [newQuantity, productId]);
+        } catch (err) {
+            console.error('Error updating product quantity:', err.message);
+            return res.status(500).json({ message: "Error updating product quantity" });
+        }
+    }
 
     // Clear cart
     const clearCart = 'UPDATE cart SET total_value = $1 where id = $2';
@@ -181,10 +215,10 @@ const checkoutCart = async (req, res) => {
     try {
         await db.query(clearCart, [0, req.cart.id]);
         await db.query(clearCartItems, [req.cart.id]);
-        res.status(200).json({message: "Order placed successfully!"});
+        return res.status(201).json({message: "Order placed successfully!"});
     } catch (err) {
-        console.error('Error placing order:', err.message);
-        res.status(500).json({ message: err.message });
+        console.error('Error clearing cart:', err.message);
+        return res.status(500).json({ message: "Error clearing cart" });
     };
 };
 

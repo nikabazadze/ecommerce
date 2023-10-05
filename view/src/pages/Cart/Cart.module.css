@@ -1,11 +1,10 @@
 .cartPage {
-    /* border: 1px solid blue; */
+    border: 1px solid red;
     margin: 3.75rem var(--padding-main);
     color: #454545;
 }
 
 .cartPage h1 {
-    /* border: 1px solid red; */
     font-size: 2rem;
     text-align: center;
     line-height: 2.625rem;
@@ -16,12 +15,11 @@
 
 /* Table styles */
 .table {
-    /* border: 1px solid blue; */
-    margin: 1.75rem 0 2.875rem 0;
+    width: 100%;
+    margin: 2rem 0;
 }
 
 .table table {
-    /* border: 1px solid red; */
     width: 100%;
 }
 
@@ -38,13 +36,11 @@
 }
 
 .table th:first-child {
-    /* border: 1px solid orange; */
     width: 70%;
     text-align: left;
 }
 
 .table th:not(.table th:first-of-type) {
-    /* border: 1px solid red; */
     width: 10%;
     min-width: 8rem;
 }
@@ -52,28 +48,23 @@
 /* Table body styles */
 .table tbody tr {
     width: 100%;
-    /* height: 16.5rem; */
-}
-
-.table tbody td:first-of-type {
-    /* border: 1px solid purple; */
-    padding: 1.4375rem 0;
 }
 
 .product {
+    padding: 0.5rem 0;
     display: flex;
     gap: 1.125rem;
+    position: relative;
+    left: -2%;
 }
 
 .imgContainer {
-    /* border: 1px solid red; */
-    width: 10rem;
-    height: 10rem;
+    width: 11rem;
+    height: 11rem;
     overflow: hidden;
 }
 
 .imgContainer img {
-    /* border: 1px solid green; */
     max-width: 100%;
     height: auto;
     display: block;
@@ -83,12 +74,16 @@
     font-size: 1rem;
     font-weight: 300;
     line-height: 1.4rem;
-    margin-top: 0.4375rem;
+    padding-top: 1.25rem;
 }
 
 .meta > p:first-of-type {
     font-size: 1.125rem;
     font-weight: 400;
+}
+
+.meta > p:last-of-type {
+    text-transform: capitalize;
 }
 
 .meta > * {
@@ -101,12 +96,11 @@
     line-height: 1.4rem;
     text-align: center;
     vertical-align: top;
-    padding: 1.6875rem 0;
+    padding: 1.5rem 0;
     position: relative;
 }
 
 .quantityWrapper {
-    /* border: 1px solid blue; */
     width: 100%;
     position: relative;
     bottom: 0.8125rem;
@@ -151,7 +145,6 @@
 
 /* Page footer/last section */
 .cartFooter {
-    /* border: 1px solid blue; */
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -173,6 +166,7 @@
 .cartFooter span {
     color: #572E2E;
     border-bottom: 1px solid #572E2E;
+    cursor: pointer;
 }
 
 .cartFooter button {

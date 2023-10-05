@@ -482,5 +482,6 @@ module.exports = {
     getProductById,
     addProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getProductVariants
 };

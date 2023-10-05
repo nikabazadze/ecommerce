@@ -1,12 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styles from './Cart.module.css';
 import AddIcon from '@mui/icons-material/Add';
 import ClearIcon from '@mui/icons-material/Clear';
-
-import { products } from "../../data/mockData";
+import { loadUserCart, selectCart, selectUser, selectCartIsLoading, selectCartHasError } from "../../store/UserSlice";
 
 function Cart() {
-    const product = products[0];
+    const dispatch = useDispatch();
+    const user = useSelector(selectUser);
+    const cart = useSelector(selectCart);
+    const cartIsLoading = useSelector(selectCartIsLoading);
+    const cartHasError = useSelector(selectCartHasError);
+
+    useEffect(() => {
+        if (user.id) dispatch(loadUserCart(user.id));
+    }, [user, dispatch]);
+
+    if (cartIsLoading || !user.id) {
+        return (
+            <div>Cart is loading</div>
+        );
+    };
+
+    if (cartHasError) {
+        return (
+            <div>Error while loading cart</div>
+        );
+    };
 
     function renderTable() {
         return (
@@ -20,67 +40,50 @@ function Cart() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td className={styles.product}>
-                            <div className={styles.imgContainer}>
-                                <img src={product.url} alt="Product picture" />
-                            </div>
-                            <div className={styles.meta}>
-                                <p>{product.product_name}</p>
-                                <p>Color: Deep Ocean</p>    {/* This hardcoded color should be changed with actual chosen color */}
-                            </div>
-                        </td>
-                        <td className={styles.price}>$28.99</td>
-                        <td className={styles.quantity}>
-                            <div className={styles.quantityWrapper}>
-                                <div>
-                                    <span>1</span>
-                                    <AddIcon className={styles.addIcon}/>
-                                </div>
-                                <div>
-                                    <span>Remove</span>
-                                    <ClearIcon className={styles.clearIcon} fontSize="small"/>
-                                </div>
-                            </div>
-                        </td>
-                        <td className={styles.total}>$28.99</td>
-                    </tr>
-                    <tr>
-                        <td className={styles.product}>
-                            <div className={styles.imgContainer}>
-                                <img src={product.url} alt="Product picture" />
-                            </div>
-                            <div className={styles.meta}>
-                                <p>{product.product_name}</p>
-                                <p>Color: Deep Ocean</p>    {/* This hardcoded color should be changed with actual chosen color */}
-                            </div>
-                        </td>
-                        <td className={styles.price}>$28.99</td>
-                        <td className={styles.quantity}>
-                            <div className={styles.quantityWrapper}>
-                                <div>
-                                    <span>1</span>
-                                    <AddIcon className={styles.addIcon}/>
-                                </div>
-                                <div>
-                                    <span>Remove</span>
-                                    <ClearIcon className={styles.clearIcon} fontSize="small"/>
-                                </div>
-                            </div>
-                        </td>
-                        <td className={styles.total}>$28.99</td>
-                    </tr>
+                    {renderCartItems()}
                 </tbody>
             </table>
         );
+    };
+
+    const renderCartItems = () => {
+        if (!cart.cartItems) return null;
+        return cart.cartItems.map((cartItem) => (
+            <tr key={cartItem.productId}>
+                <td className={styles.product}>
+                    <div className={styles.imgContainer}>
+                        <img src={cartItem.imgUrl} alt="Product picture" />
+                    </div>
+                    <div className={styles.meta}>
+                        <p>{cartItem.productName}</p>
+                        <p>color: {cartItem.colorName}</p>
+                    </div>
+                </td>
+                <td className={styles.price}>{cartItem.unitPrice}</td>
+                <td className={styles.quantity}>
+                    <div className={styles.quantityWrapper}>
+                        <div>
+                            <span>{cartItem.productQuantity}</span>
+                            <AddIcon className={styles.addIcon}/>
+                        </div>
+                        <div>
+                            <span>Remove</span>
+                            <ClearIcon className={styles.clearIcon} fontSize="small"/>
+                        </div>
+                    </div>
+                </td>
+                <td className={styles.total}>{cartItem.unitPrice * cartItem.productQuantity}</td>
+            </tr>
+        ));
     };
     
     return (
         <div className={styles.cartPage}>
             <h1>shopping cart</h1>
+            {console.log("does this gets logged?")}
             <div className={styles.table}>{renderTable()}</div>
             <div className={styles.cartFooter}>
-                <p>Subtotal: $57.98</p>     {/* This hardcoded total should be changed with actual total */}
+                <p>{`Subtotal: $${cart.totalValue}`}</p>
                 <p>Taxes and <span>Shipping</span> calculated at chekout</p>
                 <button>Check Out</button>
             </div>

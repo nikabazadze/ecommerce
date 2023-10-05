@@ -64,12 +64,12 @@ const addProduct = async (req, res) => {
 
     // Check if all the required product fields are in the request body
     if (!requestBody.productName || !requestBody.mainCategoryId || (!requestBody.subCategoryId && requestBody.subCategoryId !== null) || 
-        !requestBody.smallDescription || !requestBody.mainDescription || !requestBody.unitPrice || !requestBody.quantityLeft || 
+        !requestBody.smallDescription || !requestBody.mainDescription || !requestBody.quantityLeft || 
         !requestBody.productVariants || !requestBody.features || !requestBody.specifications || !requestBody.highlights) {
         return res.status(400).json({
             message: "Could not add a product! Include all required fields to add a product.",
             note: "Check example request body for new product in the documentation to properly add a new product",
-            requiredFields: ["productName", "mainCategoryId", "subCategoryId", "smallDescription", "mainDescription", "unitPrice", 
+            requiredFields: ["productName", "mainCategoryId", "subCategoryId", "smallDescription", "mainDescription", 
                              "quantityLeft", "productVariants", "features", "specifications", "highlights"]
         });
     }
@@ -80,8 +80,8 @@ const addProduct = async (req, res) => {
     }
 
     // Check if there are Number values in the respective fields
-    if ((typeof requestBody.mainCategoryId !== "number") || (typeof requestBody.unitPrice !== "number") || (typeof requestBody.quantityLeft !== "number")) {
-        return res.status(400).json({message: "Non numeric value! `mainCategoryId`, `unitPrice` and `quantityLeft` must have `number` value type."});
+    if ((typeof requestBody.mainCategoryId !== "number") || (typeof requestBody.quantityLeft !== "number")) {
+        return res.status(400).json({message: "Non numeric value! `mainCategoryId` and `quantityLeft` must have `number` value type."});
     }
 
     // Check if unitPrice and quantityLeft are positive numbers
@@ -116,15 +116,19 @@ const addProduct = async (req, res) => {
             if ((typeof variant === 'object') && (variant.constructor === Object)) {
                 const fields = Object.keys(variant);
     
-                if (!fields.includes("colorName") || !fields.includes("colorCode") || !fields.includes("imgUrls")) {
+                if (!fields.includes("colorName") || !fields.includes("colorCode") || !fields.includes("unitPrice") || !fields.includes("imgUrls")) {
                     return res.status(400).json({
                         message: "Missing required fields in the `productVariants` object!",
-                        requiredFields: ["colorName", "colorCode", "imgUrls"]
+                        requiredFields: ["colorName", "colorCode", "unitPrice", "imgUrls"]
                     });
                 }
 
                 if ((typeof variant.colorName !== "string") || (typeof variant.colorCode !== "string")) {
                     return res.status(400).json({message: "productVariants's > `colorName` and `colorCode` fields must have values typeof string!"});
+                }
+
+                if ((typeof variant.unitPrice !== "number") || variant.unitPrice <= 0) {
+                    return res.status(400).json({message: "productVariants's > `unitPrice` field must have positive number value!"});
                 }
         
                 if (Array.isArray(variant.imgUrls)) {
@@ -206,10 +210,10 @@ const addProduct = async (req, res) => {
     let step = 1;     // Simply counts number of completed steps before adding a product
     // Fill products table
     let productId = "";
-    const productsTableQuery = 'INSERT INTO products (product_name, main_category_id, sub_category_id, small_description, main_description, unit_price, quantity_left) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id';
+    const productsTableQuery = 'INSERT INTO products (product_name, main_category_id, sub_category_id, small_description, main_description, quantity_left) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id';
     try {
-        const newProduct = await db.query(productsTableQuery, [requestBody.productName, requestBody.mainCategoryId, requestBody.subCategoryId, requestBody.smallDescription, 
-                                                               requestBody.mainDescription, requestBody.unitPrice, requestBody.quantityLeft,]);
+        const newProduct = await db.query(productsTableQuery, [requestBody.productName, requestBody.mainCategoryId, requestBody.subCategoryId, 
+                                                               requestBody.smallDescription, requestBody.mainDescription, requestBody.quantityLeft,]);
         productId = newProduct.rows[0].id;
         console.log(chalk.cyan.bold(`${step++}. Product details added in products table.`));
     } catch (err) {
@@ -239,9 +243,9 @@ const addProduct = async (req, res) => {
         }
 
         // Fill product_colors table
-        const productColorsQuery = 'INSERT INTO product_colors VALUES ($1, $2)';
+        const productColorsQuery = 'INSERT INTO product_colors (product_id, color_id, unit_price) VALUES ($1, $2, $3)';
         try {
-            await db.query(productColorsQuery, [productId, colorId]);
+            await db.query(productColorsQuery, [productId, colorId, variant.unitPrice]);
             console.log(chalk.yellow("--- Product color added in `product_colors` table."));
         } catch (err) {
             console.error('Error adding product color in the product_colors table:', err.message);
@@ -352,7 +356,6 @@ const deleteProduct = async (req, res) => {
 // Helper functions
 
 const retrieveProduct = async (product) => {
-    let error = {};
     const id = product.id;
     const productMeta = product;
 
@@ -375,7 +378,6 @@ const retrieveProduct = async (product) => {
         subCategoryId: productMeta.sub_category_id,
         smallDescription: productMeta.small_description,
         mainDescription: productMeta.main_description,
-        unitPrice: productMeta.unit_price,
         reviewsScore: productMeta.reviews_score,
         reviewsQuantity: productMeta.reviews_quantity,
         quantityLeft: productMeta.quantity_left,
@@ -390,7 +392,7 @@ const retrieveProduct = async (product) => {
 
 const getProductVariants = async (id) => {
     let colors = [];
-    const colorQuery = 'SELECT color_id, name, code FROM product_colors JOIN colors ON product_colors.color_id = colors.id WHERE product_colors.product_id = $1 ORDER BY product_colors.id';
+    const colorQuery = 'SELECT color_id, name, code, unit_price FROM product_colors JOIN colors ON product_colors.color_id = colors.id WHERE product_colors.product_id = $1 ORDER BY product_colors.id';
     try {
         colors = await db.query(colorQuery, [id]);
     } catch (err) {
@@ -415,6 +417,7 @@ const getProductVariants = async (id) => {
         const variant = {
             colorName: colors.rows[i].name,
             colorCode: colors.rows[i].code,
+            unitPrice: colors.rows[i].unit_price,
             imgUrls: []
         };
 

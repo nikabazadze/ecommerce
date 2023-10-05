@@ -8,7 +8,6 @@ router.use(checkUserCart);
 router.param('productId', checkProductId);
 
 router.get('/', db.getUserCart);
-router.get('/items', db.getCartItems);
 router.post('/items/:productId', db.addCartItem);
 router.patch('/items/:productId', db.updateCartItem);
 router.delete('/items/:productId', db.deleteCartItem);

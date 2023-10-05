@@ -1,21 +1,19 @@
 const db = require('../models/index');
-const { checkProductId } = require('../middleware/product.middleware');
+const { getProductVariants } = require('../controllers/product.controllers');
+const { hasError } = require('../utils/error');
 
-// Retrieves user's cart by user id.
-const getUserCart = (req, res) => {
-    res.status(200).json(req.cart);
-};
+// Retrieves user's cart
+const getUserCart = async (req, res) => {
+    const result = {
+        cardId: req.cart.id,
+        totalValue: req.cart.total_value,
+    };
 
-// Retrieves cart items
-const getCartItems = async (req, res) => {
-    const queryString = 'SELECT products.product_name, cart_items.product_quantity FROM cart_items JOIN products ON cart_items.product_id = products.id WHERE cart_items.cart_id = $1';
-    try {
-        const result = await db.query(queryString, [req.cart.id]);
-        res.status(200).json(result.rows);
-    } catch (err) {
-        console.error('Error retrieving cart items:', err.message);
-        res.status(500).json({ message: err.message });
-    }
+    const cartItems = await getCartItems(req.cart.id);
+    if (hasError(cartItems)) return res.status(500).json({ message: "Error retrieving cart items"});
+
+    result.cartItems = cartItems;
+    res.status(200).json(result);
 };
 
 // Adds item in the cart
@@ -47,6 +45,7 @@ const addCartItem = async (req, res) => {
         return;
     };
 
+    // Add cart item
     let cartTotalValue = parseFloat(req.cart.total_value);
     cartTotalValue += parseFloat(req.product.unit_price) * quantity;
     const addItem = 'INSERT INTO cart_items VALUES ($1, $2, $3, $4)';
@@ -189,9 +188,45 @@ const checkoutCart = async (req, res) => {
     };
 };
 
+
+
+// Helper functions
+
+// Retrieves cart items
+const getCartItems = async (cartId) => {
+    // Get product meta of each cart item
+    let products = [];
+    const queryString = 'SELECT products.id, products.product_name, cart_items.product_quantity, cart_items.product_variant FROM cart_items JOIN products ON cart_items.product_id = products.id WHERE cart_items.cart_id = $1';
+    try {
+        const queryResult = await db.query(queryString, [cartId]);
+        products = queryResult.rows;
+    } catch (err) {
+        console.error('Error retrieving product meta from cart:', err.message);
+        return err;
+    }
+
+    let cartItems = [];
+
+    // Get product variants for each product in the cart
+    for (const product of products) {
+        const productVatiants = await getProductVariants(product.id);
+        const variant = productVatiants[product.product_variant];
+        const cartItem = {
+            productId: product.id,
+            productName: product.product_name,
+            productQuantity: product.product_quantity,
+            unit_price: variant.unitPrice,
+            colorName: variant.colorName,
+            imgUrl: variant.imgUrls[0],
+        };
+        cartItems.push(cartItem);
+    }
+
+    return cartItems;
+};
+
 module.exports = {
     getUserCart,
-    getCartItems,
     addCartItem,
     updateCartItem,
     deleteCartItem,

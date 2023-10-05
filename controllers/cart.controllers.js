@@ -249,7 +249,7 @@ const getCartItems = async (cartId) => {
             productId: product.id,
             productName: product.product_name,
             productQuantity: product.product_quantity,
-            unit_price: variant.unitPrice,
+            unitPrice: variant.unitPrice,
             colorName: variant.colorName,
             imgUrl: variant.imgUrls[0],
         };

@@ -83,7 +83,7 @@ function Product() {
                             <Rating name="product-rating" defaultValue={parseFloat(product.reviewsScore)} precision={0.5} readOnly />
                             <p>{product.reviewsQuantity} {product.reviewsQuantity > 1 ? "reviews" : "review"}</p>
                         </div>
-                        <span>${product.unitPrice}</span>
+                        <span>$ {product.productVariants[variant].unitPrice}</span>
                     </div>
                     <div className={styles.colorsContainer}>
                         <p>{chosenColor.name}</p>

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getUserCart } from "../API";
+import { roundToTwoDecimalPlaces } from "../utils/numberConversion";
 
 export const loadUserCart = createAsyncThunk(
     'user/loadUserCart',
@@ -19,6 +20,16 @@ export const userSlice = createSlice({
         setIsLoggedIn: (state, action) => {state.isLoggedIn = action.payload},
         setUser: (state, action) => {state.user = action.payload},
         clearUser: (state) => {state.user = null},
+        updateCartItemQuantity: (state, action) => {
+            const { productId, newQuantity } = action.payload;
+            state.cart.cartItems.forEach(item => {
+                if (item.productId === productId) {
+                    const diff = newQuantity - item.productQuantity;
+                    item.productQuantity = newQuantity;
+                    state.cart.totalValue = roundToTwoDecimalPlaces(parseFloat(state.cart.totalValue) + (diff * item.unitPrice));
+                }
+            });
+        }
     },
     extraReducers: {
         [loadUserCart.pending]: (state, action) => {
@@ -37,7 +48,7 @@ export const userSlice = createSlice({
     }
 });
 
-export const { setIsLoggedIn, setUser, clearUser } = userSlice.actions;
+export const { setIsLoggedIn, setUser, clearUser, updateCartItemQuantity } = userSlice.actions;
 
 export const selectIsLoggedIn = (state) => state.user.isLoggedIn;
 export const selectUser = (state) => state.user.user;

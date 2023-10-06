@@ -2,8 +2,11 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from './Cart.module.css';
 import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import ClearIcon from '@mui/icons-material/Clear';
-import { loadUserCart, selectCart, selectUser, selectCartIsLoading, selectCartHasError } from "../../store/UserSlice";
+import { loadUserCart, selectCart, selectUser, selectCartIsLoading, selectCartHasError, updateCartItemQuantity } from "../../store/UserSlice";
+import { updateCartItem } from "../../API";
+import { roundToTwoDecimalPlaces } from "../../utils/numberConversion";
 
 function Cart() {
     const dispatch = useDispatch();
@@ -63,8 +66,9 @@ function Cart() {
                 <td className={styles.quantity}>
                     <div className={styles.quantityWrapper}>
                         <div>
+                            <RemoveIcon className={styles.minusIcon} onClick={() => handleItemUpdate(cartItem.productId, cartItem.productQuantity -1)} />
                             <span>{cartItem.productQuantity}</span>
-                            <AddIcon className={styles.addIcon}/>
+                            <AddIcon className={styles.addIcon} onClick={() => handleItemUpdate(cartItem.productId, cartItem.productQuantity + 1)} />
                         </div>
                         <div>
                             <span>Remove</span>
@@ -72,15 +76,23 @@ function Cart() {
                         </div>
                     </div>
                 </td>
-                <td className={styles.total}>{cartItem.unitPrice * cartItem.productQuantity}</td>
+                <td className={styles.total}>{roundToTwoDecimalPlaces(cartItem.unitPrice * cartItem.productQuantity)}</td>
             </tr>
         ));
+    };
+
+    const handleItemUpdate = async (productId, newQuantity) => {
+        if (!user.id) return null;
+        const response = await updateCartItem(user.id, productId, newQuantity);
+        if (response.status === 200) {
+            console.log("Cart item updated successfully!");
+            dispatch(updateCartItemQuantity({productId, newQuantity}));
+        }
     };
     
     return (
         <div className={styles.cartPage}>
             <h1>shopping cart</h1>
-            {console.log("does this gets logged?")}
             <div className={styles.table}>{renderTable()}</div>
             <div className={styles.cartFooter}>
                 <p>{`Subtotal: $${cart.totalValue}`}</p>

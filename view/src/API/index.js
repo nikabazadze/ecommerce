@@ -32,7 +32,6 @@ export const login = async (email, password) => {
         headers: { "Content-Type": "application/json", },
         credentials: 'include',
     });
-    console.log(response)
 
     return await response.json();
 };
@@ -45,4 +44,13 @@ export const getCurrentUser = async () => {
 export const getUserCart = async (userId) => {
     const response = await fetch(`${API_ENDPOINT}/users/${userId}/cart`, { credentials: 'include' });
     return await response.json();
+};
+
+export const updateCartItem = async (userId, productId, quantity) => {
+    const response = await fetch(`${API_ENDPOINT}/users/${userId}/cart/items/${productId}?quantity=${quantity}`, {
+        method: "PATCH",
+        credentials: 'include',
+    });
+
+    return response;
 };

@@ -60,6 +60,15 @@ export const deleteCartItem = async (userId, productId) => {
         method: "DELETE",
         credentials: 'include',
     });
-    
+
+    return response;
+};
+
+export const addCartItem = async (userId, productId, variant, quantity) => {
+    const response = await fetch(`${API_ENDPOINT}/users/${userId}/cart/items/${productId}?variant=${variant}&quantity=${quantity}`, {
+        method: "POST",
+        credentials: 'include',
+    });
+
     return response;
 };

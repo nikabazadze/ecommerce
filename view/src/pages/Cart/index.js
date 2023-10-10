@@ -4,22 +4,24 @@ import styles from './Cart.module.css';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import ClearIcon from '@mui/icons-material/Clear';
-import { loadUserCart, selectCart, selectUser, selectCartIsLoading, selectCartHasError, updateCartItemQuantity } from "../../store/UserSlice";
+import { selectUser, selectIsLoggedIn } from "../../store/UserSlice";
+import { loadUserCart, selectCart, selectCartIsLoading, selectCartHasError, updateCartItemQuantity } from "../../store/CartSlice";
 import { updateCartItem } from "../../API";
 import { roundToTwoDecimalPlaces } from "../../utils/numberConversion";
 
 function Cart() {
     const dispatch = useDispatch();
+    const userLoggedIn = useSelector(selectIsLoggedIn);
     const user = useSelector(selectUser);
     const cart = useSelector(selectCart);
     const cartIsLoading = useSelector(selectCartIsLoading);
     const cartHasError = useSelector(selectCartHasError);
 
     useEffect(() => {
-        if (user.id) dispatch(loadUserCart(user.id));
+        if (userLoggedIn) dispatch(loadUserCart(user.id));
     }, [user, dispatch]);
 
-    if (cartIsLoading || !user.id) {
+    if (cartIsLoading || !userLoggedIn) {
         return (
             <div>Cart is loading</div>
         );
@@ -82,11 +84,13 @@ function Cart() {
     };
 
     const handleItemUpdate = async (productId, newQuantity) => {
-        if (!user.id) return null;
-        const response = await updateCartItem(user.id, productId, newQuantity);
-        if (response.status === 200) {
-            console.log("Cart item updated successfully!");
-            dispatch(updateCartItemQuantity({productId, newQuantity}));
+        if (!userLoggedIn) return null;
+        if (newQuantity !== 0) {
+            const response = await updateCartItem(user.id, productId, newQuantity);
+            if (response.status === 200) {
+                console.log("Cart item updated successfully!");
+                dispatch(updateCartItemQuantity({productId, newQuantity}));
+            }
         }
     };
     

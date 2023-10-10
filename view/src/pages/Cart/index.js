@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from './Cart.module.css';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import ClearIcon from '@mui/icons-material/Clear';
 import { selectUser, selectIsLoggedIn } from "../../store/UserSlice";
-import { loadUserCart, selectCart, selectCartIsLoading, selectCartHasError, updateCartItemQuantity } from "../../store/CartSlice";
-import { updateCartItem } from "../../API";
+import { loadUserCart, selectCart, selectCartIsLoading, selectCartHasError, updateCartItemQuantity, removeCartItem } from "../../store/CartSlice";
+import { updateCartItem, deleteCartItem } from "../../API";
 import { roundToTwoDecimalPlaces } from "../../utils/numberConversion";
+import CheckDialog from "../../components/CheckDialog";
 
 function Cart() {
     const dispatch = useDispatch();
@@ -16,6 +17,8 @@ function Cart() {
     const cart = useSelector(selectCart);
     const cartIsLoading = useSelector(selectCartIsLoading);
     const cartHasError = useSelector(selectCartHasError);
+    const [ openDialog, setOpenDialog ] = useState(false);
+    const [ removeProductId, setRemoveProductId ] = useState(null);
 
     useEffect(() => {
         if (userLoggedIn) dispatch(loadUserCart(user.id));
@@ -72,7 +75,7 @@ function Cart() {
                             <span>{cartItem.productQuantity}</span>
                             <AddIcon className={styles.addIcon} onClick={() => handleItemUpdate(cartItem.productId, cartItem.productQuantity + 1)} />
                         </div>
-                        <div>
+                        <div onClick={() => handleItemRemove(cartItem.productId)} >
                             <span>Remove</span>
                             <ClearIcon className={styles.clearIcon} fontSize="small"/>
                         </div>
@@ -85,14 +88,31 @@ function Cart() {
 
     const handleItemUpdate = async (productId, newQuantity) => {
         if (!userLoggedIn) return null;
-        if (newQuantity !== 0) {
+        if (newQuantity > 0) {
             const response = await updateCartItem(user.id, productId, newQuantity);
             if (response.status === 200) {
                 console.log("Cart item updated successfully!");
                 dispatch(updateCartItemQuantity({productId, newQuantity}));
             }
+        } else {
+            setRemoveProductId(productId);
+            setOpenDialog(true);
         }
     };
+
+    const handleItemRemove = (productId) => {
+        // if (!userLoggedIn) return null;
+        setRemoveProductId(productId);
+        setOpenDialog(true);
+    };
+
+    const removeItem = async () => {
+        const response = await deleteCartItem(user.id, removeProductId);
+        if (response.status === 200) {
+            console.log("Cart item deleted successfully!");
+            dispatch(removeCartItem(removeProductId));
+        }
+    }
     
     return (
         <div className={styles.cartPage}>
@@ -101,8 +121,15 @@ function Cart() {
             <div className={styles.cartFooter}>
                 <p>{`Subtotal: $${cart.totalValue}`}</p>
                 <p>Taxes and <span>Shipping</span> calculated at chekout</p>
-                <button>Check Out</button>
+                <button onClick={() => setOpenDialog(true)}>Check Out</button>
             </div>
+            {openDialog && 
+                <CheckDialog 
+                    question={"Do you want to remove the product from your cart?"} 
+                    onClose={setOpenDialog} 
+                    onApprove={approve => approve && removeItem()}
+                />
+            }
         </div>
     );
 };

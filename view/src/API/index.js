@@ -54,3 +54,12 @@ export const updateCartItem = async (userId, productId, quantity) => {
 
     return response;
 };
+
+export const deleteCartItem = async (userId, productId) => {
+    const response = await fetch(`${API_ENDPOINT}/users/${userId}/cart/items/${productId}`, {
+        method: "DELETE",
+        credentials: 'include',
+    });
+    
+    return response;
+};

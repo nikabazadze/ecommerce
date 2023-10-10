@@ -11,6 +11,8 @@ import BasicAccordion from "../../components/Accordion";
 import ProductHighlights from "../../components/ProductHighlights";
 import { selectProductById, selectProducts } from "../../store/ProductsSlice";
 import { getProductColors, getAccordionItems } from "./productUtils";
+import { addCartItem } from "../../API";
+import { selectUser, selectIsLoggedIn } from "../../store/UserSlice";
 
 function Product() {
     let { id } = useParams();
@@ -22,6 +24,8 @@ function Product() {
     const productColors = useMemo(() => getProductColors(product), [product]);
     const productImages = product ? product.productVariants[variant].imgUrls : [];
     const [chosenColor, setChosenColor] = useState(null);
+    const userLoggedIn = useSelector(selectIsLoggedIn);
+    const user = useSelector(selectUser);
 
     useEffect(() => {
         if (productColors.length > 0) {
@@ -68,6 +72,15 @@ function Product() {
         )
     };
 
+    const handleProductAdd = async () => {
+        if (userLoggedIn) {
+            const response = await addCartItem(user.id, id, variant, 1);
+            if (response.status === 200) {
+                console.log("Product added in the cart");
+            }
+        }
+    };
+
     return (
         <div className={styles.productPage}>
             <section className={styles.mainContainer}>
@@ -90,7 +103,7 @@ function Product() {
                         {renderColors()}
                     </div>
                     <div className={styles.buttonsContainer}>
-                        <button>ADD TO CART</button>
+                        <button onClick={handleProductAdd}>ADD TO CART</button>
                         <button>Buy Now</button>
                     </div>
                     <div>

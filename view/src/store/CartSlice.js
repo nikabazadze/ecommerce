@@ -24,7 +24,12 @@ export const cartSlice = createSlice({
                     state.cart.totalValue = roundToTwoDecimalPlaces(parseFloat(state.cart.totalValue) + (diff * item.unitPrice));
                 }
             });
-        }
+        },
+        removeCartItem: (state, action) => {
+            const item = state.cart.cartItems.find(item => item.productId === action.payload);
+            state.cart.totalValue = roundToTwoDecimalPlaces(state.cart.totalValue - (item.unitPrice * item.productQuantity));
+            state.cart.cartItems = state.cart.cartItems.filter(item => item.productId !== action.payload);
+        },
     },
     extraReducers: {
         [loadUserCart.pending]: (state, action) => {
@@ -43,7 +48,7 @@ export const cartSlice = createSlice({
     }
 });
 
-export const { updateCartItemQuantity } = cartSlice.actions;
+export const { updateCartItemQuantity, removeCartItem } = cartSlice.actions;
 
 export const selectCart = (state) => state.cart.cart;
 export const selectCartIsLoading = (state) => state.cart.cartIsLoading;

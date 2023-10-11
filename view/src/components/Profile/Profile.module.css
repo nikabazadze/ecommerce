@@ -1,0 +1,12 @@
+.profile {
+    margin: 0 var(--padding-main);
+    height: calc(100vh - 20rem);    /* Temporary for dev */
+}
+
+.logout {
+    margin-top: 5rem;
+}
+
+.logoutButton {
+    cursor: pointer;
+}

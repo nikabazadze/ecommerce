@@ -1,6 +1,6 @@
 import React from "react";
 import { useState,useMemo, useEffect } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useSearchParams } from 'react-router-dom';
 
 import Rating from '@mui/material/Rating';
@@ -13,6 +13,8 @@ import { selectProductById, selectProducts } from "../../store/ProductsSlice";
 import { getProductColors, getAccordionItems } from "./productUtils";
 import { addCartItem } from "../../API";
 import { selectUser, selectIsLoggedIn } from "../../store/UserSlice";
+import { loadGuestCart } from "../../store/CartSlice";
+import { roundToTwoDecimalPlaces } from "../../utils/numberConversion";
 
 function Product() {
     let { id } = useParams();
@@ -20,12 +22,15 @@ function Product() {
     const variant = searchParams.get('variant');
     const products = useSelector(selectProducts);
     const product = useSelector(selectProductById(id));
+    const unitPrice = product ? product.productVariants[variant].unitPrice : 0;
     const accordionItems = product ? getAccordionItems(product) : [];
     const productColors = useMemo(() => getProductColors(product), [product]);
     const productImages = product ? product.productVariants[variant].imgUrls : [];
     const [chosenColor, setChosenColor] = useState(null);
+    const [ quantity, setQuantity ] = useState(1);
     const userLoggedIn = useSelector(selectIsLoggedIn);
     const user = useSelector(selectUser);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (productColors.length > 0) {
@@ -74,11 +79,48 @@ function Product() {
 
     const handleProductAdd = async () => {
         if (userLoggedIn) {
-            const response = await addCartItem(user.id, id, variant, 1);
+            const response = await addCartItem(user.id, id, variant, quantity);
             if (response.status === 200) {
                 console.log("Product added in the cart");
+                console.log(JSON.parse('{}'));
+                console.log(typeof JSON.parse('{}'));
             }
+            return;
         }
+
+        const newCartItem = {
+            productId: id,
+            productName: product.productName,
+            productQuantity: quantity,
+            productVariant: variant,
+            unitPrice: unitPrice,
+            colorName: chosenColor.name,
+            imgUrl: productImages[0]
+        };
+
+        let updatedCart;
+
+        const guestCart = JSON.parse(localStorage.getItem('guestCart') || '{}');
+        if (Object.keys(guestCart).length > 0) {
+            const existingProduct = guestCart.cartItems ? guestCart.cartItems.find(item => item.productId === newCartItem.productId) : undefined;
+            if (existingProduct) {
+                existingProduct.productQuantity += quantity;
+            } else {
+                if (!guestCart.cartItems) guestCart.cartItems = [];
+                guestCart.cartItems.push(newCartItem);
+            }
+
+            guestCart.totalValue = roundToTwoDecimalPlaces(guestCart.totalValue + (unitPrice * quantity));
+            updatedCart = guestCart;
+        } else {
+            updatedCart = {
+                totalValue: roundToTwoDecimalPlaces(unitPrice * quantity),
+                cartItems: [newCartItem]
+            };
+        }
+
+        dispatch(loadGuestCart(updatedCart));
+        localStorage.setItem('guestCart', JSON.stringify(updatedCart));
     };
 
     return (
@@ -96,7 +138,7 @@ function Product() {
                             <Rating name="product-rating" defaultValue={parseFloat(product.reviewsScore)} precision={0.5} readOnly />
                             <p>{product.reviewsQuantity} {product.reviewsQuantity > 1 ? "reviews" : "review"}</p>
                         </div>
-                        <span>$ {product.productVariants[variant].unitPrice}</span>
+                        <span>$ {unitPrice}</span>
                     </div>
                     <div className={styles.colorsContainer}>
                         <p>{chosenColor.name}</p>

@@ -87,7 +87,7 @@ app.get('/', (req, res) => {
 
 app.get('/logout', (req, res) => {
     req.logout(() => {});
-    res.redirect('/');
+    res.status(200).json({ message: "User logged out successfully!"});
 });
 
 app.get('/currentUser', (req, res) => {

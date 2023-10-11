@@ -31,28 +31,37 @@ const addCartItem = async (req, res) => {
         return res.status(400).json({message: "Could not add cart item! Add `quantity` query parameter with positive integer value."});
     };
 
-    // Check if this product is already in the cart
-    try {
-        const getCartItem = 'SELECT * FROM cart_items WHERE cart_id = $1 AND product_id = $2';
-        const cartItem = await db.query(getCartItem, [req.cart.id, req.productId]);
-        if (cartItem.rowCount !== 0) {
-            return res.status(422).json({message: "Could not add item! This item is already in the cart. You can update or remove it instead of adding it."});
-        };
-    } catch (err) {
-        console.error('Error checking cart item:', err.message);
-        return res.status(500).json({ message: "Error checking cart item" });
-    };
 
-    // Add cart item
+    // Get cart / item info
     let cartTotalValue = parseFloat(req.cart.total_value);
+    const updateCartValue = 'UPDATE cart SET total_value = $1 where id = $2';
 
     const productVariants = await getProductVariants(req.productId);
     const itemVariant = productVariants[variant];
     const itemPrice = itemVariant.unitPrice;
 
+    // If this product is already in the cart then update it's quantity
+    try {
+        const getCartItem = 'SELECT * FROM cart_items WHERE cart_id = $1 AND product_id = $2';
+        const cartItem = await db.query(getCartItem, [req.cart.id, req.productId]);
+        if (cartItem.rowCount !== 0  && cartItem.rows[0].product_variant === variant) {
+            // Update quantity and cart value
+            cartTotalValue += (itemPrice * quantity);
+            const newQuantity = cartItem.rows[0].product_quantity + quantity;
+            const updateItemQuantity = 'UPDATE cart_items SET product_quantity = $1 WHERE cart_id = $2 AND product_id = $3';
+            await db.query(updateItemQuantity, [newQuantity, req.cart.id, req.productId]);
+            await db.query(updateCartValue, [cartTotalValue, req.cart.id]);
+
+            return res.status(200).json({message: `Product quantity with id - ${req.productId} updated in the cart for the user id: ${req.userId}`});
+        };
+    } catch (err) {
+        console.error('Error checking / updating cart item:', err.message);
+        return res.status(500).json({ message: "Error checking / updating cart item" });
+    };
+
+    // Add cart item
     cartTotalValue += parseFloat(itemPrice) * quantity;
     const addItem = 'INSERT INTO cart_items VALUES ($1, $2, $3, $4)';
-    const updateCartValue = 'UPDATE cart SET total_value = $1 where id = $2';
     try {
         await db.query(addItem, [req.cart.id, req.productId, quantity, variant]);
         await db.query(updateCartValue, [cartTotalValue, req.cart.id]);

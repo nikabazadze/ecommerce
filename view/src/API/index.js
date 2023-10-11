@@ -72,3 +72,8 @@ export const addCartItem = async (userId, productId, variant, quantity) => {
 
     return response;
 };
+
+export const logout = async () => {
+    const response = await fetch(`${SERVER_ENDPOINT}/logout`, { credentials: 'include' });
+    return response;
+}

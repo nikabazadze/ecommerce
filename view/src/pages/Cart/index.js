@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import ClearIcon from '@mui/icons-material/Clear';
 import { selectUser, selectIsLoggedIn } from "../../store/UserSlice";
-import { loadUserCart, selectCart, selectCartIsLoading, selectCartHasError, updateCartItemQuantity, removeCartItem } from "../../store/CartSlice";
+import { loadUserCart, loadGuestCart, selectCart, selectCartIsLoading, selectCartHasError, updateCartItemQuantity, removeCartItem } from "../../store/CartSlice";
 import { updateCartItem, deleteCartItem } from "../../API";
 import { roundToTwoDecimalPlaces } from "../../utils/numberConversion";
 import CheckDialog from "../../components/CheckDialog";
@@ -21,10 +21,15 @@ function Cart() {
     const [ removeProductId, setRemoveProductId ] = useState(null);
 
     useEffect(() => {
-        if (userLoggedIn) dispatch(loadUserCart(user.id));
+        if (userLoggedIn) {
+            dispatch(loadUserCart(user.id));
+        } else {
+            const guestCart = JSON.parse(localStorage.getItem('guestCart') || '{}');
+            if (Object.keys(guestCart).length > 0) dispatch(loadGuestCart(guestCart));
+        }
     }, [user, dispatch]);
 
-    if (cartIsLoading || !userLoggedIn) {
+    if (cartIsLoading) {
         return (
             <div>Cart is loading</div>
         );
@@ -33,6 +38,12 @@ function Cart() {
     if (cartHasError) {
         return (
             <div>Error while loading cart</div>
+        );
+    };
+
+    if (Object.keys(cart).length === 0) {
+        return (
+            <div>Your cart is empty</div>
         );
     };
 
@@ -87,30 +98,59 @@ function Cart() {
     };
 
     const handleItemUpdate = async (productId, newQuantity) => {
-        if (!userLoggedIn) return null;
-        if (newQuantity > 0) {
+        if (newQuantity === 0) {
+            handleItemRemove(productId);
+            return;
+        }
+
+        // Registered user
+        if (userLoggedIn) {
             const response = await updateCartItem(user.id, productId, newQuantity);
             if (response.status === 200) {
                 console.log("Cart item updated successfully!");
                 dispatch(updateCartItemQuantity({productId, newQuantity}));
             }
-        } else {
-            setRemoveProductId(productId);
-            setOpenDialog(true);
+            return;
+        };
+
+        // Guest user
+        if (Object.keys(cart).length > 0) {
+            let updatedCart = structuredClone(cart);
+            const cartItem = updatedCart.cartItems.find(item => item.productId === productId);
+            const diff = newQuantity - cartItem.productQuantity;
+            cartItem.productQuantity = newQuantity;
+            updatedCart.totalValue = roundToTwoDecimalPlaces(updatedCart.totalValue + (diff * cartItem.unitPrice));
+
+            dispatch(loadGuestCart(updatedCart));
+            localStorage.setItem('guestCart', JSON.stringify(updatedCart));
         }
     };
 
     const handleItemRemove = (productId) => {
-        // if (!userLoggedIn) return null;
         setRemoveProductId(productId);
         setOpenDialog(true);
     };
 
     const removeItem = async () => {
-        const response = await deleteCartItem(user.id, removeProductId);
-        if (response.status === 200) {
-            console.log("Cart item deleted successfully!");
-            dispatch(removeCartItem(removeProductId));
+        // Registered user
+        if (userLoggedIn) {
+            const response = await deleteCartItem(user.id, removeProductId);
+            if (response.status === 200) {
+                console.log("Cart item deleted successfully!");
+                dispatch(removeCartItem(removeProductId));
+            }
+            return;
+        }
+
+        // Guest user
+        if (Object.keys(cart).length > 0) {
+            let updatedCart = structuredClone(cart);
+            const cartItem = updatedCart.cartItems.find(item => item.productId === removeProductId);
+            updatedCart.totalValue = roundToTwoDecimalPlaces(updatedCart.totalValue - (cartItem.unitPrice * cartItem.productQuantity));
+            updatedCart.cartItems = updatedCart.cartItems.filter(item => item.productId !== removeProductId);
+
+            dispatch(loadGuestCart(updatedCart));
+            localStorage.setItem('guestCart', JSON.stringify(updatedCart));
         }
     }
     
@@ -121,7 +161,7 @@ function Cart() {
             <div className={styles.cartFooter}>
                 <p>{`Subtotal: $${cart.totalValue}`}</p>
                 <p>Taxes and <span>Shipping</span> calculated at chekout</p>
-                <button onClick={() => setOpenDialog(true)}>Check Out</button>
+                <button>Check Out</button>
             </div>
             {openDialog && 
                 <CheckDialog 

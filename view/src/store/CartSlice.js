@@ -30,6 +30,7 @@ export const cartSlice = createSlice({
             state.cart.totalValue = roundToTwoDecimalPlaces(state.cart.totalValue - (item.unitPrice * item.productQuantity));
             state.cart.cartItems = state.cart.cartItems.filter(item => item.productId !== action.payload);
         },
+        loadGuestCart: (state, action) => {state.cart = action.payload},
         clearCart: (state) => {state.cart = {}}
     },
     extraReducers: {
@@ -49,7 +50,7 @@ export const cartSlice = createSlice({
     }
 });
 
-export const { updateCartItemQuantity, removeCartItem, clearCart } = cartSlice.actions;
+export const { updateCartItemQuantity, removeCartItem, addGuestCartItem, loadGuestCart, clearCart } = cartSlice.actions;
 
 export const selectCart = (state) => state.cart.cart;
 export const selectCartIsLoading = (state) => state.cart.cartIsLoading;

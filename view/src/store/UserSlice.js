@@ -9,11 +9,14 @@ export const userSlice = createSlice({
     reducers: {
         setIsLoggedIn: (state, action) => {state.isLoggedIn = action.payload},
         setUser: (state, action) => {state.user = action.payload},
-        clearUser: (state) => {state.user = null}
+        clearUserInfo: (state) => {
+            state.isLoggedIn = false;
+            state.user = {};
+        }
     },
 });
 
-export const { setIsLoggedIn, setUser, clearUser } = userSlice.actions;
+export const { setIsLoggedIn, setUser, clearUserInfo } = userSlice.actions;
 
 export const selectIsLoggedIn = (state) => state.user.isLoggedIn;
 export const selectUser = (state) => state.user.user;

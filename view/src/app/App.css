@@ -1,15 +1,21 @@
 :root {
     --padding-main: 10rem;
+    --height-header: calc(2rem + 4rem);
 }
 
 html,
 body {
     font-family: 'Nunito Sans', sans-serif;
     font-size: 1rem;
+    margin: 0;
+    padding: 0;
 }
 
-main,
-footer {
+main {
     position: relative;
-    top: 6rem;
+    top: var(--height-header);
+}
+
+footer {
+    margin-top: var(--height-header);
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 
+import styles from './Root.module.css';
 import ScrollToTop from "../ScrollToTop";
 import PromoHeader from "../PromoHeader";
 import Header from "../Header";
@@ -8,13 +9,13 @@ import Footer from "../Footer";
 
 function Root() {
     return (
-        <div>
+        <div className={styles.flexContainer}>
             <ScrollToTop />
             <header>
                 <PromoHeader />
                 <Header />
             </header>
-            <main>
+            <main className={styles.flexGrow}>
                 <Outlet />
             </main>
             <footer>

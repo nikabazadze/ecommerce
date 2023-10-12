@@ -19,7 +19,7 @@ export const addUser = async (firstName, lastName, email, password) => {
         credentials: 'include',
     });
 
-    return response.status;
+    return response;
 };
 
 export const login = async (email, password) => {

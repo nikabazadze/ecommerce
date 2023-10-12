@@ -82,8 +82,6 @@ function Product() {
             const response = await addCartItem(user.id, id, variant, quantity);
             if (response.status === 200) {
                 console.log("Product added in the cart");
-                console.log(JSON.parse('{}'));
-                console.log(typeof JSON.parse('{}'));
             }
             return;
         }

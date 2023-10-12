@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import { login } from "../../API";
 import AuthButton from "../AuthButton";
 import { setUser, setIsLoggedIn } from "../../store/UserSlice";
+import { checkGuestCart } from "../../utils/guestCartChecker";
 
 function LoginForm() {
     const [ email, setEmail ] = useState("");
@@ -18,11 +19,11 @@ function LoginForm() {
 
         if (email, password) {
             const response = await login(email, password);
-            
             if (response.success) {
                 console.log(response.message);
                 dispatch(setUser(response.user));
                 dispatch(setIsLoggedIn(true));
+                checkGuestCart(response.user.id);
                 navigate("/");
             } else {
                 console.log(response.message);

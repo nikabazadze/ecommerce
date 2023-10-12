@@ -4,6 +4,7 @@ import styles from './SignUpForm.module.css';
 import TextField from '@mui/material/TextField';
 import { addUser } from "../../API";
 import AuthButton from "../AuthButton";
+import { checkGuestCart } from "../../utils/guestCartChecker";
 
 function SignUpForm() {
     const [ firstName, setFirstName ] = useState("");
@@ -17,10 +18,15 @@ function SignUpForm() {
         e.preventDefault();
 
         if (firstName, lastName, email, password) {
-            const status = await addUser(firstName, lastName, email, password);
+            const response = await addUser(firstName, lastName, email, password);
             
-            if (status === 201) {
+            if (response.status === 201) {
                 console.log("Sign up completed successfuly!");
+
+                const jsonResponse = await response.json();
+                const userId = jsonResponse.user.id;
+                checkGuestCart(userId);
+
                 navigate("/account/login");
             } else {
                 console.log("Error! Sign up wasn't processed.");

@@ -8,7 +8,7 @@ const getUsers = async (req, res) => {
         res.status(200).json(result.rows);
     } catch (err) {
         console.error('Error retrieving users:', err.message);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Error retrieving users" });
     }
 };
 
@@ -24,11 +24,10 @@ const updateUser = async (req, res) => {
 
     // Check if there are any valid fields in the request body to update user
     if (!(requestBody.firstName || requestBody.lastName || requestBody.email || requestBody.password)) {
-        res.status(400).json({
+        return res.status(400).json({
             message: "Could not update user because of no valid user fields in the request body!",
             validFields: ["firstName", "lastName", "email", "password"]
         });
-        return;
     };
 
     // Apply changes from the request body
@@ -43,7 +42,7 @@ const updateUser = async (req, res) => {
         res.status(200).json({message: `User modified with ID: ${req.userId}`});
     } catch (err) {
         console.error('Error updating user:', err.message);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Error updating user" });
     }
 };
 
@@ -55,7 +54,7 @@ const deleteUser = async (req, res) => {
         res.status(200).json({message: `User deleted with ID: ${req.userId}`});
     } catch (err) {
         console.error('Error deleting user:', err.message);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Error deleting user" });
     }
 };
 
@@ -89,15 +88,18 @@ const findUserById = async (id) => {
 // Adds new user in the database and creates empty cart
 const createUser = async (firstName, lastName, email, password, res) => {
     const date = new Date().toUTCString();
-    const addUserQuery = 'INSERT INTO users (first_name, last_name, email, password, created_at) VALUES ($1, $2, $3, $4, $5) RETURNING id';
+    const addUserQuery = 'INSERT INTO users (first_name, last_name, email, password, created_at) VALUES ($1, $2, $3, $4, $5) RETURNING *';
     const createCartQuery = 'INSERT INTO cart (user_id, total_value) VALUES ($1, $2)';
     try {
         const newUser = await db.query(addUserQuery, [firstName, lastName, email, password, date]);
         await db.query(createCartQuery, [newUser.rows[0].id, 0]);
-        res.status(201).json({message: "New user added in the database."})
+        res.status(201).json({
+            message: "New user added in the database.",
+            user: newUser.rows[0]
+        });
     } catch (err) {
         console.error('Error adding new user:', err.message);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Error adding new user" });
     };
 };
 

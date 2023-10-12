@@ -10,6 +10,23 @@
     text-transform: capitalize;
 }
 
+/* Empty cart styles */
+.emptyCart {
+    margin-top: 5.25rem;
+}
+
+.emptyCart p {
+    font-size: 1.25rem;
+    font-weight: 300;
+    text-align: center;
+}
+
+.link {
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px solid;
+    cursor: pointer;
+}
 
 
 /* Table styles */

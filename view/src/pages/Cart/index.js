@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from 'react-router-dom';
+
 import styles from './Cart.module.css';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -38,12 +40,6 @@ function Cart() {
     if (cartHasError) {
         return (
             <div>Error while loading cart</div>
-        );
-    };
-
-    if (Object.keys(cart).length === 0) {
-        return (
-            <div>Your cart is empty</div>
         );
     };
 
@@ -157,18 +153,27 @@ function Cart() {
     return (
         <div className={styles.cartPage}>
             <h1>shopping cart</h1>
-            <div className={styles.table}>{renderTable()}</div>
-            <div className={styles.cartFooter}>
-                <p>{`Subtotal: $${cart.totalValue}`}</p>
-                <p>Taxes and <span>Shipping</span> calculated at chekout</p>
-                <button>Check Out</button>
+            {Object.keys(cart).length > 0 
+                ?
+            <div>
+                <div className={styles.table}>{renderTable()}</div>
+                <div className={styles.cartFooter}>
+                    <p>{`Subtotal: $${cart.totalValue}`}</p>
+                    <p>Taxes and <span>Shipping</span> calculated at chekout</p>
+                    <button>Check Out</button>
+                </div>
+                {openDialog && 
+                    <CheckDialog 
+                        question={"Do you want to remove the product from your cart?"} 
+                        onClose={setOpenDialog} 
+                        onApprove={approve => approve && removeItem()}
+                    />
+                }
             </div>
-            {openDialog && 
-                <CheckDialog 
-                    question={"Do you want to remove the product from your cart?"} 
-                    onClose={setOpenDialog} 
-                    onApprove={approve => approve && removeItem()}
-                />
+                :
+            <div className={styles.emptyCart}>
+                <p>Your cart is currently empty, {!userLoggedIn && <Link to="/account" className={styles.link}>sign in</Link>} or <Link to="/shop" className={styles.link}>continue shopping</Link></p>
+            </div>
             }
         </div>
     );

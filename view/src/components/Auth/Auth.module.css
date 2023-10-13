@@ -84,13 +84,15 @@
     text-align: center;
 }
 
-.question span {
+.link {
+    text-decoration: none;
     font-weight: 600;
     margin-left: 0.5rem;
     color: rgb(0, 140, 255);
+    cursor: pointer;
 }
 
-.question span:hover {
+.link:hover {
     color: rgba(0, 140, 255, 0.9);
 }
  

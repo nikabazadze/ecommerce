@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { Link, useParams } from 'react-router-dom';
 import styles from './Auth.module.css';
 import SignUpForm from "../SignUpForm";
 import LoginForm from "../LoginForm";
@@ -7,7 +8,8 @@ import fbLogo from '../../assets/images/fbLogo.svg';
 import AuthButton from "../AuthButton";
 
 function Auth() {
-    const [ isSignupPage, setIsSignupPage ] = useState(true);
+    let { action } = useParams();
+    const isSignupPage = (typeof action === "undefined") || (action === "signup") ? true : false;
 
     return (
         <div className={styles.mainContainer}>
@@ -18,9 +20,9 @@ function Auth() {
                     {isSignupPage ? <SignUpForm /> : <LoginForm />}
                     <div className={styles.question}>
                         {isSignupPage ? 
-                            <p>Already have an account? <span onClick={() => setIsSignupPage(false)}>Log in</span></p>
+                            <p>Already have an account? <Link to="/account/login" className={styles.link}>Log in</Link></p>
                             :
-                            <p>Don't have an account? <span onClick={() => setIsSignupPage(true)}>Sign up</span></p>
+                            <p>Don't have an account? <Link to="/account/signup" className={styles.link}>Sign up</Link></p>
                         }
                     </div>
                     <div className={styles.divider}>

@@ -10,19 +10,25 @@ import Shop from '../pages/Shop';
 import Product from '../pages/Product';
 import Cart from '../pages/Cart';
 import Account from '../pages/Account';
+import CheckoutWrapper from '../components/CheckoutWrapper';
 
 import { loadProducts } from '../store/ProductsSlice';
 import { getCurrentUser } from '../API';
 import { setUser, setIsLoggedIn } from '../store/UserSlice';
+import Auth from '../components/Auth';
 
 const router = createBrowserRouter(createRoutesFromElements(
-  <Route path='/' element={ <Root /> } >
-    <Route path='/' element={ <Home /> } />
-    <Route path='shop' element={ <Shop /> } />
-    <Route path='cart' element={ <Cart /> } />
-    <Route path='account' element={ <Account /> } />
-    <Route path='products/:id' element={ <Product /> } />
-  </Route>
+  <>
+    <Route path='/' element={ <Root /> } >
+      <Route path='/' element={ <Home /> } />
+      <Route path='shop' element={ <Shop /> } />
+      <Route path='cart' element={ <Cart /> } />
+      <Route path='account' element={ <Account /> } />
+      <Route path='account/:action' element={ <Auth /> } />
+      <Route path='products/:id' element={ <Product /> } />
+    </Route>
+    <Route path='checkout' element={ <CheckoutWrapper /> } />
+  </>
 ));
 
 function App() {

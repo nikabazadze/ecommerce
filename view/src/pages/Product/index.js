@@ -1,7 +1,7 @@
 import React from "react";
 import { useState,useMemo, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 
 import Rating from '@mui/material/Rating';
 import styles from "./Product.module.css";
@@ -13,7 +13,7 @@ import { selectProductById, selectProducts } from "../../store/ProductsSlice";
 import { getProductColors, getAccordionItems } from "./productUtils";
 import { addCartItem } from "../../API";
 import { selectUser, selectIsLoggedIn } from "../../store/UserSlice";
-import { loadGuestCart } from "../../store/CartSlice";
+import { loadUserCart, loadGuestCart } from "../../store/CartSlice";
 import { roundToTwoDecimalPlaces } from "../../utils/numberConversion";
 
 function Product() {
@@ -31,6 +31,7 @@ function Product() {
     const userLoggedIn = useSelector(selectIsLoggedIn);
     const user = useSelector(selectUser);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (productColors.length > 0) {
@@ -78,14 +79,17 @@ function Product() {
     };
 
     const handleProductAdd = async () => {
+        // Registered user
         if (userLoggedIn) {
             const response = await addCartItem(user.id, id, variant, quantity);
             if (response.status === 200) {
+                dispatch(loadUserCart(user.id));
                 console.log("Product added in the cart");
             }
             return;
         }
 
+        // Guest user
         const newCartItem = {
             productId: id,
             productName: product.productName,
@@ -121,6 +125,11 @@ function Product() {
         localStorage.setItem('guestCart', JSON.stringify(updatedCart));
     };
 
+    const handleBuyNow = async () => {
+        await handleProductAdd();
+        navigate('/checkout');
+    };
+
     return (
         <div className={styles.productPage}>
             <section className={styles.mainContainer}>
@@ -144,7 +153,7 @@ function Product() {
                     </div>
                     <div className={styles.buttonsContainer}>
                         <button onClick={handleProductAdd}>ADD TO CART</button>
-                        <button>Buy Now</button>
+                        <button onClick={handleBuyNow}>Buy Now</button>
                     </div>
                     <div>
                         <p className={styles.shipping}>For EU and USA shipped within 1 business day</p>

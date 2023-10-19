@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import styles from './Checkout.module.css';
+import ScrollToTop from "../../components/ScrollToTop";
 import AlertDialog from "../../components/AlertDialog";
+import CartSummary from "../../components/CartSummary";
 
 import CheckIcon from '@mui/icons-material/Check';
 import applePayLogo from '../../assets/logos/paymentLogos/applePay.svg';
@@ -25,6 +27,10 @@ function Checkout() {
     const [ openDialog, setOpenDialog ] = useState(false);
     const [ dialogContent, setDialogContent ] = useState("");
     const dialogTitle = "Could not open the page!"
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
 
     const renderInput = (label, inputId, state, setState, inputType = "text") => {
         return (
@@ -52,6 +58,9 @@ function Checkout() {
 
     return (
         <div className={styles.checkoutPage}>
+            <ScrollToTop />
+
+            {/* Left side */}
             <div className={styles.leftContainer}>
                 <div className={styles.leftContent}>
                     <header>
@@ -124,9 +133,11 @@ function Checkout() {
                     </footer>
                 </div>
             </div>
-            <div className={styles.rightContainer}>
-                <div className={styles.rightContent}>
 
+            {/* Right side */}
+            <div className={styles.rightContainer}>
+                <div className={styles.cartSummaryContainer}>
+                    <CartSummary />
                 </div>
             </div>
             {openDialog && <AlertDialog title={dialogTitle} content={dialogContent} onClose={setOpenDialog} />}

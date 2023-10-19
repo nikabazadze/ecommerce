@@ -12,26 +12,6 @@
     color: #3d3939;
 }
 
-.checkoutPage h2 {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #242121;
-}
-
-.checkoutPage h3 {
-    font-size: 0.9375rem;
-    font-weight: 300;
-    color: #3d3939;
-}
-
-.checkoutPage p,
-.checkoutPage label,
-.checkoutPage footer ul  {
-    font-size: 0.875rem;
-    font-weight: 400;
-    color: #575151;
-}
-
 /* Override App.css styles */
 .checkoutPage main {
     position: relative;
@@ -71,6 +51,9 @@
 
 .inputWrapper label {
     font-family: 'Roboto', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #575151;
     position: absolute;
     transition: all 0.05s ease-in-out;
     z-index: 1;
@@ -91,14 +74,40 @@
 /* Left side styles */
 .leftContainer {
     width: 60%;
+    padding: 3.375rem 4.375rem;
     display: flex;
     justify-content: flex-end;
 }
 
 .leftContent {
     width: 100%;
-    max-width: 45.5rem;
-    padding: 3.375rem 4.375rem;
+    max-width: 36.75rem;
+}
+
+.leftContent h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 4rem;
+    line-height: 5.5rem;
+    color: #3d3939;
+}
+
+.leftContent h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #242121;
+}
+
+.leftContent h3 {
+    font-size: 0.9375rem;
+    font-weight: 300;
+    color: #3d3939;
+}
+
+.leftContent p,
+.leftContent footer ul  {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #575151;
 }
 
 /* Header styles */
@@ -269,10 +278,12 @@
 
 /* Right side styles */
 .rightContainer {
-    border: 1px solid blue;
     width: 40%;
+    padding: 5.375rem 4.875rem;
+    background-color: #fafafa;
 }
 
-.rightContent {
-
+.cartSummaryContainer {
+    width: 100%;
+    max-width: 26.25rem;
 }

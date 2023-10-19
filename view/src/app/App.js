@@ -15,6 +15,7 @@ import CheckoutWrapper from '../components/CheckoutWrapper';
 import { loadProducts } from '../store/ProductsSlice';
 import { getCurrentUser } from '../API';
 import { setUser, setIsLoggedIn } from '../store/UserSlice';
+import { loadUserCart, loadGuestCart } from '../store/CartSlice';
 import Auth from '../components/Auth';
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -51,10 +52,13 @@ function App() {
         if (response.isAuthenticated) {
           dispatch(setUser(response.user));
           dispatch(setIsLoggedIn(true));
+          dispatch(loadUserCart(response.user.id));
         } else {
           dispatch(setIsLoggedIn(false));
           dispatch(setUser(null));
-          console.log(response.message);
+
+          const guestCart = JSON.parse(localStorage.getItem('guestCart') || '{}');
+          if (Object.keys(guestCart).length > 0) dispatch(loadGuestCart(guestCart));
         }
       } catch (error) {
         console.error("Error fetching current user:", error);

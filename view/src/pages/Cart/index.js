@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from 'react-router-dom';
 
@@ -7,7 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import ClearIcon from '@mui/icons-material/Clear';
 import { selectUser, selectIsLoggedIn } from "../../store/UserSlice";
-import { loadUserCart, loadGuestCart, selectCart, selectCartIsLoading, selectCartHasError, updateCartItemQuantity, removeCartItem } from "../../store/CartSlice";
+import { loadGuestCart, selectCart, selectCartIsLoading, selectCartHasError, updateCartItemQuantity, removeCartItem } from "../../store/CartSlice";
 import { updateCartItem, deleteCartItem } from "../../API";
 import { roundToTwoDecimalPlaces } from "../../utils/numberConversion";
 import CheckDialog from "../../components/CheckDialog";
@@ -21,15 +21,6 @@ function Cart() {
     const cartHasError = useSelector(selectCartHasError);
     const [ openDialog, setOpenDialog ] = useState(false);
     const [ removeProductId, setRemoveProductId ] = useState(null);
-
-    useEffect(() => {
-        if (userLoggedIn) {
-            dispatch(loadUserCart(user.id));
-        } else {
-            const guestCart = JSON.parse(localStorage.getItem('guestCart') || '{}');
-            if (Object.keys(guestCart).length > 0) dispatch(loadGuestCart(guestCart));
-        }
-    }, [user, dispatch]);
 
     if (cartIsLoading) {
         return (
@@ -153,14 +144,14 @@ function Cart() {
     return (
         <div className={styles.cartPage}>
             <h1>shopping cart</h1>
-            {Object.keys(cart).length > 0 
+            {Object.keys(cart).length > 0 && cart.cartItems.length > 0
                 ?
             <div>
                 <div className={styles.table}>{renderTable()}</div>
                 <div className={styles.cartFooter}>
                     <p>{`Subtotal: $${cart.totalValue}`}</p>
                     <p>Taxes and <span>Shipping</span> calculated at chekout</p>
-                    <button>Check Out</button>
+                    <Link to="/checkout"><button>Check Out</button></Link>
                 </div>
                 {openDialog && 
                     <CheckDialog 
@@ -172,7 +163,7 @@ function Cart() {
             </div>
                 :
             <div className={styles.emptyCart}>
-                <p>Your cart is currently empty, {!userLoggedIn && <Link to="/account" className={styles.link}>sign in</Link>} or <Link to="/shop" className={styles.link}>continue shopping</Link></p>
+                <p>Your cart is currently empty, {!userLoggedIn && <Link to="/account/signup" className={styles.link}>sign up</Link>} {!userLoggedIn && " or"} <Link to="/shop" className={styles.link}>continue shopping</Link></p>
             </div>
             }
         </div>

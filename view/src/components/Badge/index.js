@@ -1,6 +1,6 @@
 import React from "react";
 
-function Badge({count, size, fontSize, color}) {
+function Badge({count, size, fontSize, color, translate}) {
     const divStyle = {
         fontSize: `${fontSize || "0.75rem"}`,
         fontWeight: 500,
@@ -12,7 +12,7 @@ function Badge({count, size, fontSize, color}) {
         position: "absolute",
         top: 0,
         right: 0,
-        transform: "translate(+40%, -40%)",
+        transform: `translate(+${translate || "40"}%, -${translate || "40"}%)`,
         display: "flex",
         justifyContent: "center",
         alignItems: "center"

@@ -63,3 +63,8 @@
     position: relative;
     bottom: 0.1rem;
 }
+
+.cartIconContainer {
+    display: flex;
+    position: relative;
+}

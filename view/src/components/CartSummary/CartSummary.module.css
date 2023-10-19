@@ -1,0 +1,174 @@
+.rightContent {
+    width: 100%;
+}
+
+/* Input styles */
+.inputWrapper {
+    width: 100%;
+    height: 3rem;
+    padding-left: 0.9375rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.input {
+    border: 1px solid #eaeaea;
+    border-radius: 5px;
+    font-size: 0.875rem;
+    color: #242121;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0 0.9375rem;
+}
+
+.inputWrapper label {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #575151;
+    position: absolute;
+    transition: all 0.05s ease-in-out;
+    z-index: 1;
+}
+
+.smallerLabel {
+    font-size: 0.6875rem !important;
+    font-weight: 300;
+    top: 20%;
+}
+
+.morePadding {
+    padding-top: 2.8%;
+}
+
+
+
+/* Cart items list styles */
+.cartItem {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.imgContainer {
+    width: 4rem;
+    height: 4rem;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #d8d8d8;
+    border-radius: 8px;
+}
+
+.imgContainer img {
+    height: 100%;
+    width: auto;
+    display: block;
+    border-radius: 8px;
+}
+
+.productMetaContainer {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.productMetaContainer p {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #575151;
+}
+
+.productMetaContainer span {
+    font-size: 0.625rem;
+    font-weight: 200;
+    line-height: 0.8125rem;
+    margin-top: 0.25rem;
+    color: #000;
+}
+
+/* Promo code section styles */
+.promoContainer {
+    border-top: 1px solid #eaeaea;
+    border-bottom: 1px solid #eaeaea;
+    margin-top: 1.5rem;
+    padding: 1.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 1.375rem;
+}
+
+.promoContainer .inputWrapper {
+    width: 19rem;
+    height: 2.625rem;
+}
+
+.promoButton {
+    font-size: 0.9375rem;
+    font-weight: 300;
+    color: #575151;
+    width: 5.25rem;
+    height: 2.625rem;
+    background-color: #f1f1f1;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.promoButton:hover {
+    background-color: #e8e8e8;
+}
+
+/* Subtotal section styles */
+.subtotalContainer {
+    border-bottom: 1px solid #eaeaea;
+    padding: 1.25rem 0;
+    color: #000;
+}
+
+.subtotalContainer > div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.subtotalContainer > div:first-of-type {
+    margin-bottom: 0.375rem;
+}
+
+.subtotalContainer p {
+    font-size: 0.875rem;
+}
+
+.subtotalContainer span {
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.shippingPrg {
+    font-size: 0.75rem !important;
+    font-weight: 300;
+}
+
+/* Total section styles */
+.totalContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.75rem;
+    color: #000;
+}
+
+.totalContainer p {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.totalContainer span {
+    font-size: 1.25rem;
+    font-weight: 500;
+}

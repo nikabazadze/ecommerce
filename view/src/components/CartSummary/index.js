@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import styles from './CartSummary.module.css';
 import { selectCart } from "../../store/CartSlice";
 import Input from "../Input";
+import Badge from "../Badge";
 
 
 function CartSummary() {
@@ -12,9 +13,12 @@ function CartSummary() {
     const renderCartItems = () => {
         return (
             cart.cartItems.map(cartItem => (
-                <div className={styles.cartItem}>
-                    <div className={styles.imgContainer}>
-                        <img src={cartItem.imgUrl} alt="Product image" />
+                <div className={styles.cartItem} key={cartItem.productId}>
+                    <div className={styles.imgOuterContainer}>
+                        <div className={styles.imgContainer}>
+                            <img src={cartItem.imgUrl} alt="Product image" />
+                        </div>
+                        <Badge count={cartItem.productQuantity} />
                     </div>
                     <div className={styles.productMetaContainer}>
                         <div>

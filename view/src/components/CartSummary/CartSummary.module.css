@@ -10,6 +10,10 @@
     gap: 0.625rem;
 }
 
+.imgOuterContainer {
+    position: relative;
+}
+
 .imgContainer {
     width: 4rem;
     height: 4rem;

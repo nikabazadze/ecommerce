@@ -2,26 +2,12 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import styles from './CartSummary.module.css';
 import { selectCart } from "../../store/CartSlice";
+import Input from "../Input";
 
 
 function CartSummary() {
     const [ promoCode, setPromoCode ] = useState("");
     const cart = useSelector(selectCart);
-
-    const renderInput = (label, inputId, state, setState, inputType = "text") => {
-        return (
-            <div className={styles.inputWrapper}>
-                <label htmlFor={inputId} className={state && styles.smallerLabel}>{label}</label>
-                <input 
-                    id={inputId}
-                    type={inputType}
-                    onChange={({target}) => setState(target.value)}
-                    value={state}
-                    className={`${styles.input} ${state && styles.morePadding}`}
-                />
-            </div>
-        );
-    };
 
     const renderCartItems = () => {
         return (
@@ -43,12 +29,14 @@ function CartSummary() {
     };
 
     return (
-        <div className={styles.rightContent}>
+        <div className={styles.mainContainer}>
             <div className={styles.cartItems}>
                 {renderCartItems()}
             </div>
             <form className={styles.promoContainer}>
-                {renderInput("Discount code or gift card", "promoCode", promoCode, setPromoCode)}
+                <div>
+                    <Input label={"Discount code or gift card"} inputId={"promoCode"} state={promoCode} setState={setPromoCode} height={"2.625rem"} />
+                </div>
                 <button type="submit" className={styles.promoButton}>Apply</button>
             </form>
             <div className={styles.subtotalContainer}>

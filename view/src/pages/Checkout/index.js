@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import styles from './Checkout.module.css';
+import Input from "../../components/Input";
 import ScrollToTop from "../../components/ScrollToTop";
 import AlertDialog from "../../components/AlertDialog";
 import CartSummary from "../../components/CartSummary";
@@ -30,22 +31,7 @@ function Checkout() {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-    }, [])
-
-    const renderInput = (label, inputId, state, setState, inputType = "text") => {
-        return (
-            <div className={styles.inputWrapper}>
-                <label htmlFor={inputId} className={state && styles.smallerLabel}>{label}</label>
-                <input 
-                    id={inputId}
-                    type={inputType}
-                    onChange={({target}) => setState(target.value)}
-                    value={state}
-                    className={`${styles.input} ${state && styles.morePadding}`}
-                />
-            </div>
-        );
-    };
+    }, []);
 
     const handleDialogClick = ({target}) => {
         if (target.tagName === "IMG") {
@@ -64,7 +50,8 @@ function Checkout() {
             <div className={styles.leftContainer}>
                 <div className={styles.leftContent}>
                     <header>
-                        <h1>ZiPLiX</h1>
+                        
+                        <Link to={"/"} className={styles.link}><h1>ZiPLiX</h1></Link>
                         <div className={styles.breadcrumbs}>
                             <p>Cart &#10095; Infortmation &#10095; Shipping &#10095; Payment</p>
                         </div>
@@ -88,7 +75,7 @@ function Checkout() {
                             <h2>Contact</h2>
                             <p>Have an account? <Link to="/account/login" className={styles.link}>Log In</Link></p>
                         </div>
-                        {renderInput("Email", "email", email, setEmail, "email")}
+                        <Input label={"Email"} inputId={"email"} state={email} setState={setEmail} type={"email"} />
                         <div className={styles.subscribe}>
                             <div className={`${styles.checkbox} ${subscribe && styles.black}`} onClick={() => setSubscribe(!subscribe)}>
                                 {subscribe && <CheckIcon sx={{color: "white", fontSize: 14}} />}
@@ -99,28 +86,27 @@ function Checkout() {
                     <section className={styles.shipping}>
                         <h2>Shipping address</h2>
                         <form>
-                            {renderInput("Country", "country", country, setCountry)}
+                            <Input label={"Country"} inputId={"country"} state={country} setState={setCountry} />
                             <div className={styles.inputsContainer}>
-                                {renderInput("First name", "firstName", firstName, setFirstName)}
-                                {renderInput("Last name", "lastName", lastName, setLastName)}
+                                <Input label={"First name"} inputId={"firstName"} state={firstName} setState={setFirstName} />
+                                <Input label={"Last name"} inputId={"lastName"} state={lastName} setState={setLastName} />
                             </div>
-                            {renderInput("Address", "address", address, setAddress)}
-                            {renderInput("Apartment, suite, etc. (optional)", "apartment", apartment, setApartment)}
+                            <Input label={"Address"} inputId={"address"} state={address} setState={setAddress} />
+                            <Input label={"Apartment, suite, etc. (optional)"} inputId={"apartment"} state={apartment} setState={setApartment} />
                             <div className={styles.inputsContainer}>
-                                {renderInput("City", "city", city, setCity)}
-                                {renderInput("State", "state", state, setState)}
-                                {renderInput("ZIP code", "zipCode", zipCode, setZipCode)}
+                                <Input label={"City"} inputId={"city"} state={city} setState={setCity} />
+                                <Input label={"State"} inputId={"state"} state={state} setState={setState} />
+                                <Input label={"ZIP code"} inputId={"zipCode"} state={zipCode} setState={setZipCode} />
                             </div>
-                            {renderInput("Phone", "phone", phone, setPhone)}
+                            <Input label={"Phone"} inputId={"phone"} state={phone} setState={setPhone} />
                             <div className={styles.formFooter}>
                                 <div>
-                                    <p><span>&#10094;</span> Return to cart</p>
+                                    <Link to={"/cart"} className={styles.link}><span>&#10094;</span> Return to cart</Link>
                                 </div>
                                 <button type="submit" className={styles.submitButton}>Buy Now</button>
                             </div>
                         </form>
                     </section>
-                    <div className={styles.actions}></div>
                     <footer>
                         <nav>
                             <ul>

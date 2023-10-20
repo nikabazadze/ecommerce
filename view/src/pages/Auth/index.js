@@ -1,11 +1,11 @@
 import React from "react";
 import { Link, useParams } from 'react-router-dom';
 import styles from './Auth.module.css';
-import SignUpForm from "../SignUpForm";
-import LoginForm from "../LoginForm";
-import GoogleLogo from '../../assets/images/googleLogo.svg';
+import LoginForm from "../../components/LoginForm";
+import SignUpForm from "../../components/SignUpForm";
+import AuthButton from "../../components/AuthButton";
 import fbLogo from '../../assets/images/fbLogo.svg';
-import AuthButton from "../AuthButton";
+import GoogleLogo from '../../assets/images/googleLogo.svg';
 
 function Auth() {
     let { action } = useParams();

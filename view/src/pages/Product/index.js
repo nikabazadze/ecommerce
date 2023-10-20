@@ -1,10 +1,11 @@
 import React from "react";
-import { useState,useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 
-import Rating from '@mui/material/Rating';
 import styles from "./Product.module.css";
+import Rating from '@mui/material/Rating';
+import CartDrawer from "../../components/CartDrawer";
 import ProductList from "../../components/ProductList";
 import ImageSlider from "../../components/ImageSlider";
 import BasicAccordion from "../../components/Accordion";
@@ -28,6 +29,7 @@ function Product() {
     const productImages = product ? product.productVariants[variant].imgUrls : [];
     const [chosenColor, setChosenColor] = useState(null);
     const [ quantity, setQuantity ] = useState(1);
+    const [ openDrawer, setOpenDrawer ] = useState(false);
     const userLoggedIn = useSelector(selectIsLoggedIn);
     const user = useSelector(selectUser);
     const dispatch = useDispatch();
@@ -84,6 +86,7 @@ function Product() {
             const response = await addCartItem(user.id, id, variant, quantity);
             if (response.status === 200) {
                 dispatch(loadUserCart(user.id));
+                setOpenDrawer(true);
                 console.log("Product added in the cart");
             }
             return;
@@ -123,6 +126,7 @@ function Product() {
 
         dispatch(loadGuestCart(updatedCart));
         localStorage.setItem('guestCart', JSON.stringify(updatedCart));
+        setOpenDrawer(true);
     };
 
     const handleBuyNow = async () => {
@@ -154,6 +158,7 @@ function Product() {
                     <div className={styles.buttonsContainer}>
                         <button onClick={handleProductAdd}>ADD TO CART</button>
                         <button onClick={handleBuyNow}>Buy Now</button>
+                        {openDrawer && <CartDrawer onClose={setOpenDrawer} />}
                     </div>
                     <div>
                         <p className={styles.shipping}>For EU and USA shipped within 1 business day</p>

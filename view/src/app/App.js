@@ -10,13 +10,13 @@ import Shop from '../pages/Shop';
 import Product from '../pages/Product';
 import Cart from '../pages/Cart';
 import Account from '../pages/Account';
+import Auth from '../pages/Auth';
 import CheckoutWrapper from '../components/CheckoutWrapper';
 
 import { loadProducts } from '../store/ProductsSlice';
 import { getCurrentUser } from '../API';
 import { setUser, setIsLoggedIn } from '../store/UserSlice';
 import { loadUserCart, loadGuestCart } from '../store/CartSlice';
-import Auth from '../components/Auth';
 
 const router = createBrowserRouter(createRoutesFromElements(
   <>

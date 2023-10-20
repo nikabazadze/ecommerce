@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from 'react-redux';
-import Auth from "../../components/Auth";
-import Profile from "../../components/Profile";
+import Auth from "../Auth";
+import Profile from "../Profile";
 import { selectIsLoggedIn } from "../../store/UserSlice";
 
 function Account() {

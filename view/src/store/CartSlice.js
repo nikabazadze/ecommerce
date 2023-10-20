@@ -55,5 +55,16 @@ export const { updateCartItemQuantity, removeCartItem, addGuestCartItem, loadGue
 export const selectCart = (state) => state.cart.cart;
 export const selectCartIsLoading = (state) => state.cart.cartIsLoading;
 export const selectCartHasError = (state) => state.cart.cartHasError;
+export const selectCartTotalItems = (state) => {
+    let result = 0;
+
+    if (Object.keys(state.cart.cart).length > 0) {
+        for (const item of state.cart.cart.cartItems) {
+            result += item.productQuantity;
+        }
+    }
+
+    return result;
+};
 
 export default cartSlice.reducer;

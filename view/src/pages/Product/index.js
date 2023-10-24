@@ -87,7 +87,6 @@ function Product() {
             if (response.status === 200) {
                 dispatch(loadUserCart(user.id));
                 setOpenDrawer(true);
-                console.log("Product added in the cart");
             }
             return;
         }

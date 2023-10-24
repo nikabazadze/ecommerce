@@ -5,7 +5,7 @@ const { hasError } = require('../utils/error');
 // Retrieves user's cart
 const getUserCart = async (req, res) => {
     const result = {
-        cardId: req.cart.id,
+        cartId: req.cart.id,
         totalValue: req.cart.total_value,
     };
 
@@ -163,74 +163,6 @@ const clearCart = async (req, res) => {
     };
 };
 
-// Processes cart checkout
-const checkoutCart = async (req, res) => {
-    const cartTotalValue = parseFloat(req.cart.total_value);
-
-    // Check if there is anything in the cart
-    if (cartTotalValue === 0) {
-        return res.status(400).json({message: "Could not checkout cart! There are no items in the cart to checkout."});
-    };
-
-    // Try processing payment
-    const paymentProcessed = true;
-    if (!paymentProcessed) {
-        return res.status(400).json({message: "Payment has not processed successfully! Check your payment details!"});
-    };
-
-    // Place a new order
-    let newOrderId = null;
-    const date = new Date().toUTCString();
-    const addOrderQuery = 'INSERT INTO orders (user_id, total_value, status, created_at) VALUES ($1, $2, $3, $4) RETURNING id';
-    const addOrderItemsQuery = 'INSERT INTO order_items (order_id, product_id, product_quantity, product_variant) SELECT $1, product_id, product_quantity, product_variant FROM cart_items WHERE cart_id = $2';
-    try {
-        const newOrder = await db.query(addOrderQuery, [req.userId, cartTotalValue, 'pending', date]);
-        newOrderId = newOrder.rows[0].id;
-        await db.query(addOrderItemsQuery, [newOrderId, req.cart.id]);
-    } catch (err) {
-        console.error('Error creating order:', err.message);
-        return res.status(500).json({ message: "Error creating order" });
-    };
-
-    // Reduce product quantities from the order
-    let orderItems = [];
-    const getOrderItemsQuery = 'SELECT * FROM order_items WHERE order_id = $1';
-    try {
-        orderItems = await db.query(getOrderItemsQuery, [newOrderId]);
-    } catch (err) {
-        console.error('Error retrieving order items:', err.message);
-        return res.status(500).json({ message: "Error retrieving order items" });
-    }
-
-    for (const item of orderItems.rows) {
-        const productId = item.product_id;
-        const orderItemQuantity = item.product_quantity;
-        const getProductQuery = 'SELECT * FROM products WHERE id = $1';
-        const reduceProductQuantityQuery = 'UPDATE products SET product_quantity = $1 WHERE id = $2';
-        try {
-            const product = await db.query(getProductQuery, [productId]);
-            const currentProductQuantity = product.rows[0].product_quantity;
-            const newQuantity = currentProductQuantity - orderItemQuantity;
-            await db.query(reduceProductQuantityQuery, [newQuantity, productId]);
-        } catch (err) {
-            console.error('Error updating product quantity:', err.message);
-            return res.status(500).json({ message: "Error updating product quantity" });
-        }
-    }
-
-    // Clear cart
-    const clearCart = 'UPDATE cart SET total_value = $1 where id = $2';
-    const clearCartItems = 'DELETE FROM cart_items WHERE cart_id = $1';
-    try {
-        await db.query(clearCart, [0, req.cart.id]);
-        await db.query(clearCartItems, [req.cart.id]);
-        return res.status(201).json({message: "Order placed successfully!"});
-    } catch (err) {
-        console.error('Error clearing cart:', err.message);
-        return res.status(500).json({ message: "Error clearing cart" });
-    };
-};
-
 
 
 // Helper functions
@@ -252,12 +184,13 @@ const getCartItems = async (cartId) => {
 
     // Get product variants for each product in the cart
     for (const product of products) {
-        const productVatiants = await getProductVariants(product.id);
-        const variant = productVatiants[product.product_variant];
+        const productVariants = await getProductVariants(product.id);
+        const variant = productVariants[product.product_variant];
         const cartItem = {
             productId: product.id,
             productName: product.product_name,
             productQuantity: product.product_quantity,
+            productVariant: product.product_variant,
             unitPrice: variant.unitPrice,
             colorName: variant.colorName,
             imgUrl: variant.imgUrls[0],
@@ -273,6 +206,5 @@ module.exports = {
     addCartItem,
     updateCartItem,
     deleteCartItem,
-    clearCart,
-    checkoutCart
+    clearCart
 };

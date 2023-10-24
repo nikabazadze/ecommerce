@@ -88,3 +88,8 @@ export const logout = async () => {
     const response = await fetch(`${SERVER_ENDPOINT}/logout`, { credentials: 'include' });
     return response;
 };
+
+export const getUserOrders = async (userId) => {
+    const response = await fetch(`${API_ENDPOINT}/orders/users/${userId}`, { credentials: 'include' });
+    return await response.json();
+};

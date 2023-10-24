@@ -31,7 +31,10 @@ export const cartSlice = createSlice({
             state.cart.cartItems = state.cart.cartItems.filter(item => item.productId !== action.payload);
         },
         loadGuestCart: (state, action) => {state.cart = action.payload},
-        clearCart: (state) => {state.cart = {}}
+        clearCart: (state) => {
+            state.cart.totalValue = 0;
+            state.cart.cartItems = [];
+        }
     },
     extraReducers: {
         [loadUserCart.pending]: (state, action) => {

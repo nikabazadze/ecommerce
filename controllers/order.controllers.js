@@ -2,59 +2,62 @@ const db = require('../models/index');
 const { hasError } = require('../utils/error');
 const { getProductVariants } = require('../controllers/product.controllers');
 
-// Retrieves user's all orders
-const getOrders = (req, res) => {
-    res.status(200).json(req.orders);
-};
-
-// Retrvieves user's orders filtered by order status
-const getOrdersByStatus = (req, res) => {
-    const { status } = req.query;
-    if (!(status === "pending" || status === "completed")) {
-        res.status(400).json({message: "Invalid status value in the query string! Status value must be `pending` or `completed`!"});
-        return;
+// Retrieves all orders
+const getOrders = async (req, res) => {
+    let ordersMeta = [];
+    const queryString = 'SELECT * FROM orders';
+    try {
+        const queryResult = await db.query(queryString);
+        ordersMeta = queryResult.rows;
+    } catch (err) {
+        console.error('Error getting orders meta:', err.message);
+        return res.status(500).json({ message: "Error getting orders meta." });
     }
 
-    const orders = req.orders;
-    const result = orders.filter((order) => order.status === status);
-    if (result.length > 0) {
-        res.status(200).json(result);
-    } else {
-        res.status(404).json({message: `No orders found with status: ${status}`});
-    };
-};
+    let result = [];
 
+    for (const orderMeta of ordersMeta) {
+        const order = await retrieveOrderInfo(orderMeta);
+        if (hasError(order)) return res.status(500).json({ message: "Error retrieving order info."});
+        result.push(order);
+    }
 
-const getOrderById = async (req, res) => {
-    const result = {
-        orderId: req.orderId,
-        totalValue: req.order.total_value,
-        status: req.order.status,
-        createdAt: req.order.created_at,
-    };
-
-    const orderAddress = await getOrderAddress(req.orderId);
-    if (hasError(orderAddress)) return res.status(500).json({ message: "Error retrieving order address."});
-
-    const orderItems = await getOrderItems(req.orderId);
-    if (hasError(orderItems)) return res.status(500).json({ message: "Error retrieving order items."});
-
-    result.orderAddress = orderAddress;
-    result.orderItems = orderItems;
     res.status(200).json(result);
 };
 
-// Retrieves order items
-// const getOrderItems = async (req, res) => {
-//     const queryString = 'SELECT products.product_name, order_items.product_quantity FROM order_items JOIN products ON order_items.product_id = products.id WHERE order_items.order_id = $1';
-//     try {
-//         const result = await db.query(queryString, [req.orderId]);
-//         res.status(200).json(result.rows);
-//     } catch (err) {
-//         console.error('Error retrieving order items:', err.message);
-//         res.status(500).json({ message: err.message });
-//     }
-// };
+// Retrvieves all orders filtered by order status
+const getOrdersByStatus = async (req, res) => {
+    const { status } = req.query;
+    let ordersMeta = [];
+    const queryString = 'SELECT * FROM orders WHERE status = $1';
+    try {
+        const queryResult = await db.query(queryString, [status.toLowerCase()]);
+        ordersMeta = queryResult.rows;
+    } catch (err) {
+        console.error('Error getting orders meta:', err.message);
+        return res.status(500).json({ message: "Error getting orders meta." });
+    }
+
+    if (ordersMeta.length === 0) return res.status(404).json({ message: `No orders found with the status - ${status}!`});
+
+    let result = [];
+
+    for (const orderMeta of ordersMeta) {
+        const order = await retrieveOrderInfo(orderMeta);
+        if (hasError(order)) return res.status(500).json({ message: "Error retrieving order info."});
+        result.push(order);
+    }
+
+    res.status(200).json(result);
+};
+
+// Gets order by order id
+const getOrderById = async (req, res) => {
+    const result = await retrieveOrderInfo(req.order);
+    if (hasError(result)) return res.status(500).json({ message: "Error retrieving order info."});
+
+    res.status(200).json(result);
+};
 
 // Updates order status
 const updateOrderStatus = async (req, res) => {
@@ -87,6 +90,26 @@ const deleteOrder = async (req, res) => {
 
 
 // Helper functions
+
+// Retrieves order's full info
+const retrieveOrderInfo = async (orderMeta) => {
+    const result = {
+        orderId: orderMeta.id,
+        totalValue: orderMeta.total_value,
+        status: orderMeta.status,
+        createdAt: orderMeta.created_at,
+    };
+
+    const orderAddress = await getOrderAddress(orderMeta.id);
+    if (hasError(orderAddress)) return orderAddress;
+
+    const orderItems = await getOrderItems(orderMeta.id);
+    if (hasError(orderItems)) return orderItems;
+
+    result.orderAddress = orderAddress;
+    result.orderItems = orderItems;
+    return result;
+};
 
 // Gets order address
 const getOrderAddress = async (orderId) => {

@@ -33,13 +33,19 @@ const checkUserOrders = async (req, res, next) => {
  */
 const checkOrderId = async (req, res, next, id) => {
     const orderId = parseInt(id);
-    const order = req.orders.find((order) => order.id === orderId);
-    if (order) {
-        req.order = order;
-        req.orderId = orderId;
-        next();
-    } else {
-        res.status(404).json({ message: `Order with id: ${orderId} was not found!`});
+    const queryString = 'SELECT * FROM orders WHERE id = $1';
+    try {
+        const result = await db.query(queryString, [orderId]);
+        if (result.rowCount !== 0) {
+            req.order = result.rows[0];
+            req.orderId = orderId;
+            next();
+        } else {
+            res.status(404).json({ message: `Order with id: ${orderId} was not found!`});
+        }
+    } catch (err) {
+        console.error('Error checking order id:', err.message);
+        res.status(500).json({ message: "Error checking order id" });
     }
 };
 

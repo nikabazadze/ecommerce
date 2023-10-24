@@ -1,15 +1,21 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
 import styles from './Profile.module.css';
 import { logout } from "../../API";
+import { selectUser } from "../../store/UserSlice";
 import { clearCart } from "../../store/CartSlice";
 import { clearUserInfo } from "../../store/UserSlice";
+import AlertDialog from "../../components/AlertDialog";
+import OrderList from "../../components/OrderList";
 
 function Profile() {
+    const [ openDialog, setOpenDialog ] = useState(false);
+    const dialogContent = "This functionality has not been implemented yet!";
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const user = useSelector(selectUser);
 
     const handleLogout = async () => {
         const response = await logout();
@@ -22,9 +28,30 @@ function Profile() {
     };
 
     return (
-        <div className={styles.profile}>
+        <div className={styles.profilePage}>
             <div className={styles.logout}>
-                <button className={styles.logoutButton} onClick={handleLogout}>Log out</button>
+                <p onClick={handleLogout}>Logout</p>
+            </div>
+            <section className={styles.accountContainer}>
+                <h2>My Account</h2>
+                <p>{`Welcome back, ${user.firstName}!`}</p>
+            </section>
+            <div className={styles.profileFooter}>
+                <section className={styles.ordersContainer}>
+                    <h3>My Orders</h3>
+                    <hr />
+                    <OrderList />
+                </section>
+                <section className={styles.addressContainer}>
+                    <h3>Primary Address</h3>
+                    <hr />
+                    <div className={styles.addressInfo}>
+                        <p>{`${user.firstName} ${user.lastName}`}</p>
+                        <p>USA</p>
+                    </div>
+                    <button className={styles.addressButton} onClick={() => setOpenDialog(true)}>Edit Address</button>
+                    {openDialog && <AlertDialog content={dialogContent} onClose={setOpenDialog} />}
+                </section>
             </div>
         </div>
     );

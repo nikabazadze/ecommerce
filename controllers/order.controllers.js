@@ -51,6 +51,57 @@ const getOrdersByStatus = async (req, res) => {
     res.status(200).json(result);
 };
 
+// Retrieves user's all orders
+const getUserOrders = async (req, res) => {
+    let ordersMeta = [];
+    const queryString = 'SELECT * FROM orders WHERE user_id = $1';
+    try {
+        const queryResult = await db.query(queryString, [req.userId]);
+        ordersMeta = queryResult.rows;
+    } catch (err) {
+        console.error('Error getting order info by user id:', err.message);
+        res.status(500).json({ message: "Error getting order info by user id." });
+    }
+
+    if (ordersMeta.length === 0) return res.status(404).json({ message: `No orders found for the user with id - ${req.userId}!`});
+
+    let result = [];
+
+    for (const orderMeta of ordersMeta) {
+        const order = await retrieveOrderInfo(orderMeta);
+        if (hasError(order)) return res.status(500).json({ message: "Error retrieving order info."});
+        result.push(order);
+    }
+
+    res.status(200).json(result);
+};
+
+// Retrieves user's all orders filtered by status
+const getUserOrdersByStatus = async (req, res) => {
+    const { status } = req.query;
+    let ordersMeta = [];
+    const queryString = 'SELECT * FROM orders WHERE user_id = $1 AND status = $2';
+    try {
+        const queryResult = await db.query(queryString, [req.userId, status.toLowerCase()]);
+        ordersMeta = queryResult.rows;
+    } catch (err) {
+        console.error('Error getting order info by user id and order status:', err.message);
+        res.status(500).json({ message: "Error getting order info by user id and order status." });
+    }
+
+    if (ordersMeta.length === 0) return res.status(404).json({ message: `No orders found for the user id - ${req.userId} with status - ${status}!`});
+
+    let result = [];
+
+    for (const orderMeta of ordersMeta) {
+        const order = await retrieveOrderInfo(orderMeta);
+        if (hasError(order)) return res.status(500).json({ message: "Error retrieving order info."});
+        result.push(order);
+    }
+
+    res.status(200).json(result);
+};
+
 // Gets order by order id
 const getOrderById = async (req, res) => {
     const result = await retrieveOrderInfo(req.order);
@@ -175,8 +226,9 @@ const getOrderItems = async (orderId) => {
 module.exports = {
     getOrders,
     getOrdersByStatus,
+    getUserOrders,
+    getUserOrdersByStatus,
     getOrderById,
-    getOrderItems,
     updateOrderStatus,
     deleteOrder
 };

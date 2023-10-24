@@ -10,4 +10,6 @@ router.use('/users', usersRouter);
 router.use('/products', productsRouter);
 router.use('/orders', ordersRouter)
 
+router.post('/checkout', db.checkoutCart);
+
 module.exports = router;

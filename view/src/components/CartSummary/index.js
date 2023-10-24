@@ -11,25 +11,27 @@ function CartSummary() {
     const cart = useSelector(selectCart);
 
     const renderCartItems = () => {
-        return (
-            cart.cartItems.map(cartItem => (
-                <div className={styles.cartItem} key={cartItem.productId}>
-                    <div className={styles.imgOuterContainer}>
-                        <div className={styles.imgContainer}>
-                            <img src={cartItem.imgUrl} alt="Product image" />
+        if (cart.cartItems) {
+            return (
+                cart.cartItems.map(cartItem => (
+                    <div className={styles.cartItem} key={cartItem.productId}>
+                        <div className={styles.imgOuterContainer}>
+                            <div className={styles.imgContainer}>
+                                <img src={cartItem.imgUrl} alt="Product image" />
+                            </div>
+                            <Badge count={cartItem.productQuantity} />
                         </div>
-                        <Badge count={cartItem.productQuantity} />
-                    </div>
-                    <div className={styles.productMetaContainer}>
-                        <div>
-                            <p>{cartItem.productName}</p>
-                            <span>{cartItem.colorName}</span>
+                        <div className={styles.productMetaContainer}>
+                            <div>
+                                <p>{cartItem.productName}</p>
+                                <span>{cartItem.colorName}</span>
+                            </div>
+                            <p>${cartItem.unitPrice}</p>
                         </div>
-                        <p>${cartItem.unitPrice}</p>
                     </div>
-                </div>
-            ))
-        );
+                ))
+            );
+        }
     };
 
     return (

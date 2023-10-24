@@ -73,7 +73,18 @@ export const addCartItem = async (userId, productId, variant, quantity) => {
     return response;
 };
 
+export const checkout = async (requestBody) => {
+    const response = await fetch(`${API_ENDPOINT}/checkout`, {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: { "Content-Type": "application/json", },
+        credentials: 'include',
+    });
+
+    return response;
+};
+
 export const logout = async () => {
     const response = await fetch(`${SERVER_ENDPOINT}/logout`, { credentials: 'include' });
     return response;
-}
+};

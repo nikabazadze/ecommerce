@@ -6,6 +6,7 @@ import styles from './Profile.module.css';
 import { logout } from "../../API";
 import { selectUser } from "../../store/UserSlice";
 import { clearCart } from "../../store/CartSlice";
+import { clearOrders } from "../../store/OrdersSlice";
 import { clearUserInfo } from "../../store/UserSlice";
 import AlertDialog from "../../components/AlertDialog";
 import OrderList from "../../components/OrderList";
@@ -23,6 +24,7 @@ function Profile() {
             console.log("Successful logout");
             dispatch(clearUserInfo());
             dispatch(clearCart());
+            dispatch(clearOrders());
             navigate('/');
         }
     };

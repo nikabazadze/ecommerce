@@ -22,7 +22,7 @@ const checkUserId = async (req, res, next, id) => {
         }
     } catch (err) {
         console.error('Error checking user id:', err.message);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Error checking user id" });
     }
 }
 

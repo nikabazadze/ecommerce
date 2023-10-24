@@ -39,17 +39,19 @@ const getOrderItems = async (req, res) => {
     }
 };
 
-// Toggles order status
-const toggleOrderStatus = async (req, res) => {
-    const currentStatus = req.order.status;
-    const newStatus = (currentStatus === "pending") ? "completed" : "pending";
+// Updates order status
+const updateOrderStatus = async (req, res) => {
+    const newStatus = req.query.status;
+
+    if (!newStatus) return res.status(400).json({ message: "You must use `status` query string to update order status!"});
+
     const queryString = 'UPDATE orders SET status = $1 WHERE id = $2';
     try {
         await db.query(queryString, [newStatus, req.orderId]);
         res.status(200).json({message: `Order status updated to > '${newStatus}' for the order with ID: ${req.orderId}`});
     } catch (err) {
         console.error('Error updating order status:', err.message);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Error updating order status" });
     }
 };
 
@@ -61,7 +63,7 @@ const deleteOrder = async (req, res) => {
         res.status(200).json({message: `Order with id: ${req.orderId} deleted`});
     } catch (err) {
         console.error('Error deleting order:', err.message);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Error deleting order" });
     }
 };
 
@@ -70,6 +72,6 @@ module.exports = {
     getOrdersByStatus,
     getOrderById,
     getOrderItems,
-    toggleOrderStatus,
+    updateOrderStatus,
     deleteOrder
 };

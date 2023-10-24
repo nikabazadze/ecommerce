@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Checkout.module.css';
 import Input from "../../components/Input";
+import { selectCart, clearCart } from "../../store/CartSlice";
+import { selectIsLoggedIn, selectUser } from "../../store/UserSlice";
 import ScrollToTop from "../../components/ScrollToTop";
 import AlertDialog from "../../components/AlertDialog";
 import CartSummary from "../../components/CartSummary";
+import { checkout } from "../../API";
 
+import MuiAlert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 import CheckIcon from '@mui/icons-material/Check';
 import applePayLogo from '../../assets/logos/paymentLogos/applePay.svg';
 import googlePayLogo from '../../assets/logos/paymentLogos/googlePay.svg';
@@ -25,13 +31,64 @@ function Checkout() {
     const [ zipCode, setZipCode ] = useState("");
     const [ phone, setPhone ] = useState("");
     const [ subscribe, setSubscribe ] = useState(true);
+    const [ openSnackbar, setOpenSnackbar ] = useState(false);
     const [ openDialog, setOpenDialog ] = useState(false);
     const [ dialogContent, setDialogContent ] = useState("");
     const dialogTitle = "Could not open the page!"
+    const cart = useSelector(selectCart);
+    const userLoggedIn = useSelector(selectIsLoggedIn);
+    const user = useSelector(selectUser);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    useEffect(() => {
+        if (userLoggedIn) {
+            setFirstName(user.firstName);
+            setLastName(user.lastName);
+        }
+    }, [userLoggedIn]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (country && firstName && lastName && address && city && state && zipCode && phone) {
+            const requestBody = {
+                cart: cart,
+                userId: userLoggedIn ? user.id : null,
+                firstName: firstName,
+                lastName: lastName,
+                country: country,
+                address: address,
+                apartment: apartment ? apartment : null,
+                city: city,
+                state: state,
+                zipCode: zipCode,
+                phone: phone
+            };
+
+            const response = await checkout(requestBody);
+            if (response.status === 201) {
+                setOpenSnackbar(true);
+                console.log("New order placed successfully!");
+
+                if (!userLoggedIn) localStorage.removeItem('guestCart');
+                dispatch(clearCart());
+                // Navigate to order confirmation page and then clear the cart
+            } else {
+                console.log("New order was not placed!");
+            }
+        } else {
+            console.log("All required fields must be filled to place the order!");
+        }
+    };
 
     const handleDialogClick = ({target}) => {
         if (target.tagName === "IMG") {
@@ -41,6 +98,14 @@ function Checkout() {
         }
         setOpenDialog(true);
     };
+
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpenSnackbar(false);
+      };
 
     return (
         <div className={styles.checkoutPage}>
@@ -59,11 +124,11 @@ function Checkout() {
                     <section className={styles.expressCheckout}>
                         <h3>express checkout</h3>
                         <div className={styles.expressPaymentsContainer}>
-                            <img src={shopPayLogo}   onClick={handleDialogClick} />
-                            <img src={paypalPayLogo} onClick={handleDialogClick} />
-                            <img src={amazonPayLogo} onClick={handleDialogClick} />
-                            <img src={applePayLogo}  onClick={handleDialogClick} />
-                            <img src={googlePayLogo} onClick={handleDialogClick} />
+                            <img src={shopPayLogo}   onClick={handleDialogClick} alt="ShopPay logo" />
+                            <img src={paypalPayLogo} onClick={handleDialogClick} alt="Paypal logo" />
+                            <img src={amazonPayLogo} onClick={handleDialogClick} alt="AmazonPay logo" />
+                            <img src={applePayLogo}  onClick={handleDialogClick} alt="ApplePay logo" />
+                            <img src={googlePayLogo} onClick={handleDialogClick} alt="GooglePay logo" />
                         </div>
                     </section>
                     <div className={styles.divider}>
@@ -73,7 +138,7 @@ function Checkout() {
                     <section className={styles.contact}>
                         <div className={styles.contactHeader}>
                             <h2>Contact</h2>
-                            <p>Have an account? <Link to="/account/login" className={styles.link}>Log In</Link></p>
+                            {!userLoggedIn && <p>Have an account? <Link to="/account/login" className={styles.link}>Log In</Link></p>}
                         </div>
                         <Input label={"Email"} inputId={"email"} state={email} setState={setEmail} type={"email"} />
                         <div className={styles.subscribe}>
@@ -85,14 +150,14 @@ function Checkout() {
                     </section>
                     <section className={styles.shipping}>
                         <h2>Shipping address</h2>
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <Input label={"Country"} inputId={"country"} state={country} setState={setCountry} />
                             <div className={styles.inputsContainer}>
                                 <Input label={"First name"} inputId={"firstName"} state={firstName} setState={setFirstName} />
                                 <Input label={"Last name"} inputId={"lastName"} state={lastName} setState={setLastName} />
                             </div>
                             <Input label={"Address"} inputId={"address"} state={address} setState={setAddress} />
-                            <Input label={"Apartment, suite, etc. (optional)"} inputId={"apartment"} state={apartment} setState={setApartment} />
+                            <Input label={"Apartment, suite, etc. (optional)"} inputId={"apartment"} state={apartment} setState={setApartment} isRequired={"false"} />
                             <div className={styles.inputsContainer}>
                                 <Input label={"City"} inputId={"city"} state={city} setState={setCity} />
                                 <Input label={"State"} inputId={"state"} state={state} setState={setState} />
@@ -106,6 +171,11 @@ function Checkout() {
                                 <button type="submit" className={styles.submitButton}>Buy Now</button>
                             </div>
                         </form>
+                        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleSnackbarClose}>
+                            <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+                                New order placed successfully!
+                            </Alert>
+                        </Snackbar>
                     </section>
                     <footer>
                         <nav>

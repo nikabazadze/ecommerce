@@ -17,6 +17,7 @@ import { loadProducts } from '../store/ProductsSlice';
 import { getCurrentUser } from '../API';
 import { setUser, setIsLoggedIn } from '../store/UserSlice';
 import { loadUserCart, loadGuestCart } from '../store/CartSlice';
+import { loadUserOrders } from '../store/OrdersSlice';
 
 const router = createBrowserRouter(createRoutesFromElements(
   <>
@@ -53,6 +54,7 @@ function App() {
           dispatch(setUser(response.user));
           dispatch(setIsLoggedIn(true));
           dispatch(loadUserCart(response.user.id));
+          dispatch(loadUserOrders(response.user.id));
         } else {
           dispatch(setIsLoggedIn(false));
           dispatch(setUser(null));

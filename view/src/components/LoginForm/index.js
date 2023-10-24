@@ -6,6 +6,8 @@ import TextField from '@mui/material/TextField';
 import { login } from "../../API";
 import AuthButton from "../AuthButton";
 import { setUser, setIsLoggedIn } from "../../store/UserSlice";
+import { loadUserCart } from "../../store/CartSlice";
+import { loadUserOrders } from "../../store/OrdersSlice";
 import { checkGuestCart } from "../../utils/guestCartChecker";
 
 function LoginForm() {
@@ -24,6 +26,8 @@ function LoginForm() {
                 dispatch(setUser(response.user));
                 dispatch(setIsLoggedIn(true));
                 checkGuestCart(response.user.id);
+                dispatch(loadUserCart(response.user.id));
+                dispatch(loadUserOrders(response.user.id));
                 navigate("/");
             } else {
                 console.log(response.message);

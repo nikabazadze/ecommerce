@@ -3,41 +3,17 @@ import { useSelector } from "react-redux";
 import styles from './CartSummary.module.css';
 import { selectCart } from "../../store/CartSlice";
 import Input from "../Input";
-import Badge from "../Badge";
+import ChosenProducts from "../ChosenProducts";
 
 
 function CartSummary() {
     const [ promoCode, setPromoCode ] = useState("");
     const cart = useSelector(selectCart);
 
-    const renderCartItems = () => {
-        if (cart.cartItems) {
-            return (
-                cart.cartItems.map(cartItem => (
-                    <div className={styles.cartItem} key={cartItem.productId}>
-                        <div className={styles.imgOuterContainer}>
-                            <div className={styles.imgContainer}>
-                                <img src={cartItem.imgUrl} alt="Product image" />
-                            </div>
-                            <Badge count={cartItem.productQuantity} />
-                        </div>
-                        <div className={styles.productMetaContainer}>
-                            <div>
-                                <p>{cartItem.productName}</p>
-                                <span>{cartItem.colorName}</span>
-                            </div>
-                            <p>${cartItem.unitPrice}</p>
-                        </div>
-                    </div>
-                ))
-            );
-        }
-    };
-
     return (
         <div className={styles.mainContainer}>
             <div className={styles.cartItems}>
-                {renderCartItems()}
+                {cart.cartItems && <ChosenProducts products={cart.cartItems} />}
             </div>
             <form className={styles.promoContainer}>
                 <div>

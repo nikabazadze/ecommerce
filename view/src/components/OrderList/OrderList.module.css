@@ -5,3 +5,7 @@
 .mainContainer > * {
     margin-bottom: 1.5rem;
 }
+
+.mainContainer > *:last-child {
+    margin-bottom: 0rem;
+}

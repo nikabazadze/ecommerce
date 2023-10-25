@@ -65,12 +65,12 @@
 
 /* Orders list styles */
 .ordersContainer {
-    width: 70%;
+    width: 45rem;
 }
 
 /* Primary address styles */
 .addressContainer {
-    width: 30%;
+    width: 20rem;
 }
 
 .addressInfo {

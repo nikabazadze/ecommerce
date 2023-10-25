@@ -68,6 +68,14 @@
     width: 45rem;
 }
 
+.ordersContainer > p {
+    font-size: 0.875rem;
+    text-decoration: underline;
+    margin-top: 1rem;
+    color: #0D1B2A;
+    cursor: pointer;
+}
+
 /* Primary address styles */
 .addressContainer {
     width: 20rem;

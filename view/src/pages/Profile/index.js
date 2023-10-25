@@ -13,6 +13,7 @@ import OrderList from "../../components/OrderList";
 
 function Profile() {
     const [ openDialog, setOpenDialog ] = useState(false);
+    const [ showMoreOrders, setShowMoreOrders ] = useState(false);
     const dialogContent = "This functionality has not been implemented yet!";
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -42,7 +43,8 @@ function Profile() {
                 <section className={styles.ordersContainer}>
                     <h3>My Orders</h3>
                     <hr />
-                    <OrderList />
+                    <OrderList limit={showMoreOrders ? 10 : 1} />
+                    <p onClick={() => setShowMoreOrders((prev) => !prev)}>{showMoreOrders ? "See less" : "See more"}</p>
                 </section>
                 <section className={styles.addressContainer}>
                     <h3>Primary Address</h3>

@@ -1,3 +1,7 @@
 .mainContainer {
     width: 100%;
 }
+
+.mainContainer > * {
+    margin-bottom: 1.5rem;
+}

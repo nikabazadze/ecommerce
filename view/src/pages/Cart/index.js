@@ -57,11 +57,15 @@ function Cart() {
         return cart.cartItems.map((cartItem) => (
             <tr key={cartItem.productId}>
                 <td className={styles.product}>
-                    <div className={styles.imgContainer}>
-                        <img src={cartItem.imgUrl} alt="Product picture" />
-                    </div>
+                    <Link to={`/products/${cartItem.productId}?variant=${cartItem.productVariant}`}>
+                        <div className={styles.imgContainer}>
+                            <img src={cartItem.imgUrl} alt="Product picture" />
+                        </div>
+                    </Link>
                     <div className={styles.meta}>
-                        <p>{cartItem.productName}</p>
+                        <Link to={`/products/${cartItem.productId}?variant=${cartItem.productVariant}`} className={styles.link}>
+                            <p>{cartItem.productName}</p>
+                        </Link>
                         <p>color: {cartItem.colorName}</p>
                     </div>
                 </td>

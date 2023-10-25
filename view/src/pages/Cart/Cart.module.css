@@ -10,6 +10,12 @@
     text-transform: capitalize;
 }
 
+.link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
 /* Empty cart styles */
 .emptyCart {
     margin-top: 5.25rem;
@@ -21,11 +27,8 @@
     text-align: center;
 }
 
-.link {
-    text-decoration: none;
-    color: inherit;
+.emptyCart .link {
     border-bottom: 1px solid;
-    cursor: pointer;
 }
 
 
@@ -74,6 +77,7 @@
     left: -2%;
 }
 
+/* Product image styles */
 .imgContainer {
     width: 11rem;
     height: 11rem;
@@ -86,6 +90,7 @@
     display: block;
 }
 
+/* Product meta styles */
 .meta {
     font-size: 1rem;
     font-weight: 300;
@@ -93,17 +98,14 @@
     padding-top: 1.25rem;
 }
 
-.meta > p:first-of-type {
+.meta p:first-of-type {
     font-size: 1.125rem;
     font-weight: 400;
 }
 
 .meta > p:last-of-type {
     text-transform: capitalize;
-}
-
-.meta > * {
-    margin-bottom: 0.6875rem;
+    margin-top: 0.6875rem;
 }
 
 .table tbody td:not(.table tbody td:first-of-type) {

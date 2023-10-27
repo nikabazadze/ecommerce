@@ -9,7 +9,7 @@ function OrderList({ limit }) {
 
     return (
         <div className={styles.mainContainer}>
-            {orders.map((order, index) => (
+            {orders.length > 0 && orders.map((order, index) => (
                 (!limit || ((index + 1) <= limit)) && <OrderListItem key={order.orderId} order={order} />
             ))}
         </div>

@@ -1,4 +1,5 @@
 const db = require('../models/index');
+const moment = require('moment');
 const { hasError } = require('../utils/error');
 const { getProductVariants } = require('../controllers/product.controllers');
 
@@ -148,7 +149,7 @@ const retrieveOrderInfo = async (orderMeta) => {
         orderId: orderMeta.id,
         totalValue: orderMeta.total_value,
         status: orderMeta.status,
-        createdAt: orderMeta.created_at,
+        createdAt: moment(orderMeta.created_at).format('MMMM DD, YYYY'),
     };
 
     const orderAddress = await getOrderAddress(orderMeta.id);

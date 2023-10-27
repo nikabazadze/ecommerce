@@ -56,7 +56,7 @@ function Cart() {
     const renderCartItems = () => {
         if (!cart.cartItems) return null;
         return cart.cartItems.map((cartItem) => (
-            <tr>
+            <tr key={`${cartItem.productId}_${cartItem.productVariant}`}>
                 <td className={styles.product}>
                     <Link to={`/products/${cartItem.productId}?variant=${cartItem.productVariant}`}>
                         <div className={styles.imgContainer}>

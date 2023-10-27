@@ -5,7 +5,7 @@ import Badge from "../Badge";
 function ChosenProducts({ products }) {
     return (
         products.map(product => (
-            <div className={styles.mainContainer} key={product.productId}>
+            <div className={styles.mainContainer} key={`${product.productId}_${product.productVariant}`}>
                 <div className={styles.imgOuterContainer}>
                     <div className={styles.imgContainer}>
                         <img src={product.imgUrl} alt="Product image" />

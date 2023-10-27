@@ -18,7 +18,7 @@ function ProductList({products, position = "grid"}) {
         const product = list.children[0];
         const productWidth = product.offsetWidth;
         const flexGap = 2 * 16;
-        const scrollSize = productWidth + flexGap;
+        const scrollSize = (productWidth + flexGap) * 2;
         list.scrollBy({
             top: 0,
             left: `${direction === "right" ? scrollSize : -scrollSize}`,

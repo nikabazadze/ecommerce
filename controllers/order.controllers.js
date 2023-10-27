@@ -6,7 +6,7 @@ const { getProductVariants } = require('../controllers/product.controllers');
 // Retrieves all orders
 const getOrders = async (req, res) => {
     let ordersMeta = [];
-    const queryString = 'SELECT * FROM orders';
+    const queryString = 'SELECT * FROM orders ORDER BY id DESC';
     try {
         const queryResult = await db.query(queryString);
         ordersMeta = queryResult.rows;
@@ -30,7 +30,7 @@ const getOrders = async (req, res) => {
 const getOrdersByStatus = async (req, res) => {
     const { status } = req.query;
     let ordersMeta = [];
-    const queryString = 'SELECT * FROM orders WHERE status = $1';
+    const queryString = 'SELECT * FROM orders WHERE status = $1 ORDER BY id DESC';
     try {
         const queryResult = await db.query(queryString, [status.toLowerCase()]);
         ordersMeta = queryResult.rows;
@@ -55,7 +55,7 @@ const getOrdersByStatus = async (req, res) => {
 // Retrieves user's all orders
 const getUserOrders = async (req, res) => {
     let ordersMeta = [];
-    const queryString = 'SELECT * FROM orders WHERE user_id = $1';
+    const queryString = 'SELECT * FROM orders WHERE user_id = $1 ORDER BY id DESC';
     try {
         const queryResult = await db.query(queryString, [req.userId]);
         ordersMeta = queryResult.rows;
@@ -81,7 +81,7 @@ const getUserOrders = async (req, res) => {
 const getUserOrdersByStatus = async (req, res) => {
     const { status } = req.query;
     let ordersMeta = [];
-    const queryString = 'SELECT * FROM orders WHERE user_id = $1 AND status = $2';
+    const queryString = 'SELECT * FROM orders WHERE user_id = $1 AND status = $2 ORDER BY id DESC';
     try {
         const queryResult = await db.query(queryString, [req.userId, status.toLowerCase()]);
         ordersMeta = queryResult.rows;

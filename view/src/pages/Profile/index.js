@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './Profile.module.css';
 import { logout } from "../../API";
 import { selectUser } from "../../store/UserSlice";
+import { selectOrders } from "../../store/OrdersSlice";
 import { clearCart } from "../../store/CartSlice";
 import { clearOrders } from "../../store/OrdersSlice";
 import { clearUserInfo } from "../../store/UserSlice";
@@ -18,6 +19,7 @@ function Profile() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector(selectUser);
+    const orders = useSelector(selectOrders);
 
     const handleLogout = async () => {
         const response = await logout();
@@ -43,8 +45,9 @@ function Profile() {
                 <section className={styles.ordersContainer}>
                     <h3>My Orders</h3>
                     <hr />
-                    <OrderList limit={showMoreOrders ? 10 : 1} />
-                    <p onClick={() => setShowMoreOrders((prev) => !prev)}>{showMoreOrders ? "See less" : "See more"}</p>
+                    {orders.length > 0 && <OrderList limit={showMoreOrders ? 10 : 1} />}
+                    {orders.length > 1 && <span onClick={() => setShowMoreOrders((prev) => !prev)}>{showMoreOrders ? "See less" : "See more"}</span>}
+                    {orders.length === 0 && <p>You haven't placed any orders yet.</p>}
                 </section>
                 <section className={styles.addressContainer}>
                     <h3>Primary Address</h3>

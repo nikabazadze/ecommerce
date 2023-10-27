@@ -22,7 +22,7 @@ export const ordersSlice = createSlice({
             state.ordersHaveError = false;
         },
         [loadUserOrders.fulfilled]: (state, action) => {
-            state.orders = action.payload;
+            Array.isArray(action.payload) ? state.orders = action.payload : state.orders = [];
             state.ordersAreLoading = false;
             state.ordersHaveError = false;
         },

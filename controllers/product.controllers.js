@@ -1,4 +1,4 @@
-const { hasError, sendError500 } = require('../utils/error');
+const { hasError } = require('../utils/error');
 const db = require('../models/index');
 const chalk = require('chalk');
 
@@ -6,18 +6,18 @@ const chalk = require('chalk');
 // Retrieves a single product by product id
 const getProductById = async (req, res) => {
     const product = await retrieveProduct(req.product);
-    hasError(product) ? sendError500(res, product) : res.status(200).json(product);
+    hasError(product) ? res.status(500).json({ message: "Error retrieving product!" }) : res.status(200).json(product);
 };
 
 // Retrvieves all products
 const getProducts = async (req, res) => {
-    const queryString = 'SELECT * FROM products';
+    const queryString = 'SELECT * FROM products ORDER BY id ASC';
     try {
         const products = await db.query(queryString);
         const result = [];
         for (const product of products.rows) {
             const retrievedProduct = await retrieveProduct(product);
-            if (hasError(retrievedProduct)) return sendError500(res, retrievedProduct);
+            if (hasError(retrievedProduct)) return res.status(500).json({ message: "Error retrieving product!" });
             result.push(retrievedProduct);
             console.log(chalk.cyan.bold("Retrieved a product from database."));
         }
@@ -26,7 +26,7 @@ const getProducts = async (req, res) => {
         res.status(200).json(result);
     } catch (err) {
         console.error('Error retrieving products:', err.message);
-        sendError500(res, err);
+        res.status(500).json({ message: "Error retrieving products!" });
     }
 };
 
@@ -42,7 +42,7 @@ const getProductsByCategoryId = async (req, res) => {
             const result = [];
             for (const product of products.rows) {
                 const retrievedProduct = await retrieveProduct(product);
-                if (hasError(retrievedProduct)) return sendError500(res, retrievedProduct);
+                if (hasError(retrievedProduct)) return res.status(500).json({ message: "Error retrieving product!" });
                 result.push(retrievedProduct);
                 console.log(chalk.cyan.bold(`Retrieved a product with category id: ${id} from database.`));
             }
@@ -54,7 +54,7 @@ const getProductsByCategoryId = async (req, res) => {
         }
     } catch (err) {
         console.error('Error retrieving products by category id:', err.message);
-        sendError500(res, err);
+        res.status(500).json({ message: "Error retrieving products by category id!" });
     }
 };
 
@@ -106,7 +106,7 @@ const addProduct = async (req, res) => {
         }
     } catch (err) {
         console.error('Error checking main or subCategory Id:', err.message);
-        return sendError500(res, err);
+        return res.status(500).json({ message: "Error checking main or subCategory Id!" });
     }
 
     // Check if there is at least 1 valid product variant in req.body
@@ -218,7 +218,7 @@ const addProduct = async (req, res) => {
         console.log(chalk.cyan.bold(`${step++}. Product details added in products table.`));
     } catch (err) {
         console.error('Error adding product:', err.message);
-        return sendError500(res, err);
+        return res.status(500).json({ message: "Error adding product!" });
     }
 
     // Fill product_colors and product_images tables
@@ -239,7 +239,7 @@ const addProduct = async (req, res) => {
             }
         } catch (err) {
             console.error('Error checking/adding color in the colors table:', err.message);
-            return sendError500(res, err);
+            return res.status(500).json({ message: "Error checking/adding color in the colors table!" });
         }
 
         // Fill product_colors table
@@ -249,7 +249,7 @@ const addProduct = async (req, res) => {
             console.log(chalk.yellow("--- Product color added in `product_colors` table."));
         } catch (err) {
             console.error('Error adding product color in the product_colors table:', err.message);
-            return sendError500(res, err);
+            return res.status(500).json({ message: "Error adding product color in the product_colors table!" });
         }
 
         // Fill product_images table
@@ -259,7 +259,7 @@ const addProduct = async (req, res) => {
                 await db.query(productImagesQuery, [productId, colorId, url]);
             } catch (err) {
                 console.error('Error adding product image in the product_images table:', err.message);
-                return sendError500(res, err);
+                return res.status(500).json({ message: "Error adding product image in the product_images table!" });
             }
         };
         console.log(chalk.yellow(`--- Product images for color: ${variant.colorName} added in product_images table.`));
@@ -273,7 +273,7 @@ const addProduct = async (req, res) => {
             await db.query(featuresQuery, [productId, feature]);
         } catch (err) {
             console.error('Error adding product feature in the product_features table:', err.message);
-            return sendError500(res, err);
+            return res.status(500).json({ message: "Error adding product feature in the product_features table!" });
         }
     };
     console.log(chalk.cyan.bold(`${step++}. Product features added in product_features table.`));
@@ -285,7 +285,7 @@ const addProduct = async (req, res) => {
             await db.query(specificationsQuery, [productId, spec.specName, spec.specContent]);
         } catch (err) {
             console.error('Error adding product specification in the product_specifications table:', err.message);
-            return sendError500(res, err);
+            return res.status(500).json({ message: "Error adding product specification in the product_specifications table!" });
         }
     };
     console.log(chalk.cyan.bold(`${step++}. Product specifications added in product_specifications table.`));
@@ -298,7 +298,7 @@ const addProduct = async (req, res) => {
             await db.query(highlightsQuery, [productId, highlight.title, highlight.content, highlight.imgUrl]);
         } catch (err) {
             console.error('Error adding product highlight in the product_highlights table:', err.message);
-            return sendError500(res, err);
+            return res.status(500).json({ message: "Error adding product highlight in the product_highlights table!" });
         }
     };
     console.log(chalk.cyan.bold(`${step++}. Product highlights added in product_highlights table.`));
@@ -335,7 +335,7 @@ const updateProduct = async (req, res) => {
         res.status(200).json({message: `Product with ID: ${req.productId} modified!`});
     } catch (err) {
         console.error('Error updating product:', err.message);
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ message: "Error updating product!" });
     }
 };
 
@@ -347,7 +347,7 @@ const deleteProduct = async (req, res) => {
         res.status(200).json({message: `Product with ID: ${req.productId} deleted!`});
     } catch (err) {
         console.error('Error deleting product:', err.message);
-        sendError500(res, err);
+        res.status(500).json({ message: "Error deleting product!" });
     }
 };
 

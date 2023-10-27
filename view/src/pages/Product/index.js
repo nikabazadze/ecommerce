@@ -106,7 +106,8 @@ function Product() {
 
         const guestCart = JSON.parse(localStorage.getItem('guestCart') || '{}');
         if (Object.keys(guestCart).length > 0) {
-            const existingProduct = guestCart.cartItems ? guestCart.cartItems.find(item => item.productId === newCartItem.productId) : undefined;
+            const existingProduct = guestCart.cartItems ? 
+                guestCart.cartItems.find(item => (item.productId === newCartItem.productId && item.productVariant === newCartItem.productVariant)) : undefined;
             if (existingProduct) {
                 existingProduct.productQuantity += quantity;
             } else {

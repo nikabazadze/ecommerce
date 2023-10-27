@@ -21,6 +21,7 @@ function Cart() {
     const cartHasError = useSelector(selectCartHasError);
     const [ openDialog, setOpenDialog ] = useState(false);
     const [ removeProductId, setRemoveProductId ] = useState(null);
+    const [ removeProductVariant, setRemoveProductVariant ] = useState(null);
 
     if (cartIsLoading) {
         return (
@@ -55,7 +56,7 @@ function Cart() {
     const renderCartItems = () => {
         if (!cart.cartItems) return null;
         return cart.cartItems.map((cartItem) => (
-            <tr key={cartItem.productId}>
+            <tr>
                 <td className={styles.product}>
                     <Link to={`/products/${cartItem.productId}?variant=${cartItem.productVariant}`}>
                         <div className={styles.imgContainer}>
@@ -73,11 +74,11 @@ function Cart() {
                 <td className={styles.quantity}>
                     <div className={styles.quantityWrapper}>
                         <div>
-                            <RemoveIcon className={styles.minusIcon} onClick={() => handleItemUpdate(cartItem.productId, cartItem.productQuantity -1)} />
+                            <RemoveIcon className={styles.minusIcon} onClick={() => handleItemUpdate(cartItem.productId, cartItem.productVariant, cartItem.productQuantity -1)} />
                             <span>{cartItem.productQuantity}</span>
-                            <AddIcon className={styles.addIcon} onClick={() => handleItemUpdate(cartItem.productId, cartItem.productQuantity + 1)} />
+                            <AddIcon className={styles.addIcon} onClick={() => handleItemUpdate(cartItem.productId, cartItem.productVariant, cartItem.productQuantity + 1)} />
                         </div>
-                        <div onClick={() => handleItemRemove(cartItem.productId)} >
+                        <div onClick={() => handleItemRemove(cartItem.productId, cartItem.productVariant)} >
                             <span>Remove</span>
                             <ClearIcon className={styles.clearIcon} fontSize="small"/>
                         </div>
@@ -88,7 +89,7 @@ function Cart() {
         ));
     };
 
-    const handleItemUpdate = async (productId, newQuantity) => {
+    const handleItemUpdate = async (productId, variant, newQuantity) => {
         if (newQuantity === 0) {
             handleItemRemove(productId);
             return;
@@ -96,10 +97,10 @@ function Cart() {
 
         // Registered user
         if (userLoggedIn) {
-            const response = await updateCartItem(user.id, productId, newQuantity);
+            const response = await updateCartItem(user.id, productId, variant, newQuantity);
             if (response.status === 200) {
                 console.log("Cart item updated successfully!");
-                dispatch(updateCartItemQuantity({productId, newQuantity}));
+                dispatch(updateCartItemQuantity({productId, variant, newQuantity}));
             }
             return;
         };
@@ -107,7 +108,7 @@ function Cart() {
         // Guest user
         if (Object.keys(cart).length > 0) {
             let updatedCart = structuredClone(cart);
-            const cartItem = updatedCart.cartItems.find(item => item.productId === productId);
+            const cartItem = updatedCart.cartItems.find(item => (item.productId === productId && item.productVariant === variant));
             const diff = newQuantity - cartItem.productQuantity;
             cartItem.productQuantity = newQuantity;
             updatedCart.totalValue = roundToTwoDecimalPlaces(updatedCart.totalValue + (diff * cartItem.unitPrice));
@@ -117,18 +118,23 @@ function Cart() {
         }
     };
 
-    const handleItemRemove = (productId) => {
+    const handleItemRemove = (productId, productVariant) => {
         setRemoveProductId(productId);
+        setRemoveProductVariant(productVariant);
         setOpenDialog(true);
     };
 
     const removeItem = async () => {
         // Registered user
         if (userLoggedIn) {
-            const response = await deleteCartItem(user.id, removeProductId);
+            const response = await deleteCartItem(user.id, removeProductId, removeProductVariant);
             if (response.status === 200) {
                 console.log("Cart item deleted successfully!");
-                dispatch(removeCartItem(removeProductId));
+                const deleteProductMeta = {
+                    productId: removeProductId,
+                    variant: removeProductVariant
+                }
+                dispatch(removeCartItem(deleteProductMeta));
             }
             return;
         }
@@ -136,14 +142,17 @@ function Cart() {
         // Guest user
         if (Object.keys(cart).length > 0) {
             let updatedCart = structuredClone(cart);
-            const cartItem = updatedCart.cartItems.find(item => item.productId === removeProductId);
+            const cartItem = updatedCart.cartItems.find(item => (item.productId === removeProductId && item.productVariant === removeProductVariant));
             updatedCart.totalValue = roundToTwoDecimalPlaces(updatedCart.totalValue - (cartItem.unitPrice * cartItem.productQuantity));
-            updatedCart.cartItems = updatedCart.cartItems.filter(item => item.productId !== removeProductId);
+            updatedCart.cartItems = updatedCart.cartItems.filter(item => !(item.productId === removeProductId && item.productVariant === removeProductVariant));
 
             dispatch(loadGuestCart(updatedCart));
             localStorage.setItem('guestCart', JSON.stringify(updatedCart));
         }
-    }
+
+        setRemoveProductId("");
+        setRemoveProductVariant("");
+    };
     
     return (
         <div className={styles.cartPage}>

@@ -46,8 +46,8 @@ export const getUserCart = async (userId) => {
     return await response.json();
 };
 
-export const updateCartItem = async (userId, productId, quantity) => {
-    const response = await fetch(`${API_ENDPOINT}/users/${userId}/cart/items/${productId}?quantity=${quantity}`, {
+export const updateCartItem = async (userId, productId, variant, quantity) => {
+    const response = await fetch(`${API_ENDPOINT}/users/${userId}/cart/items/${productId}?variant=${variant}&quantity=${quantity}`, {
         method: "PATCH",
         credentials: 'include',
     });
@@ -55,8 +55,8 @@ export const updateCartItem = async (userId, productId, quantity) => {
     return response;
 };
 
-export const deleteCartItem = async (userId, productId) => {
-    const response = await fetch(`${API_ENDPOINT}/users/${userId}/cart/items/${productId}`, {
+export const deleteCartItem = async (userId, productId, variant) => {
+    const response = await fetch(`${API_ENDPOINT}/users/${userId}/cart/items/${productId}?variant=${variant}`, {
         method: "DELETE",
         credentials: 'include',
     });

@@ -16,9 +16,9 @@ export const cartSlice = createSlice({
     },
     reducers: {
         updateCartItemQuantity: (state, action) => {
-            const { productId, newQuantity } = action.payload;
+            const { productId, variant, newQuantity } = action.payload;
             state.cart.cartItems.forEach(item => {
-                if (item.productId === productId) {
+                if (item.productId === productId && item.productVariant === variant) {
                     const diff = newQuantity - item.productQuantity;
                     item.productQuantity = newQuantity;
                     state.cart.totalValue = roundToTwoDecimalPlaces(parseFloat(state.cart.totalValue) + (diff * item.unitPrice));
@@ -26,9 +26,10 @@ export const cartSlice = createSlice({
             });
         },
         removeCartItem: (state, action) => {
-            const item = state.cart.cartItems.find(item => item.productId === action.payload);
+            const { productId, variant } = action.payload;
+            const item = state.cart.cartItems.find(item => (item.productId === productId && item.productVariant === variant));
             state.cart.totalValue = roundToTwoDecimalPlaces(state.cart.totalValue - (item.unitPrice * item.productQuantity));
-            state.cart.cartItems = state.cart.cartItems.filter(item => item.productId !== action.payload);
+            state.cart.cartItems = state.cart.cartItems.filter(item => !(item.productId === productId && item.productVariant === variant));
         },
         loadGuestCart: (state, action) => {state.cart = action.payload},
         clearCart: (state) => {

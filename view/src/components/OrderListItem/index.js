@@ -37,7 +37,7 @@ function OrderListItem({ order }) {
             <section className={styles.header}>
                 <div>
                     <p>order placed</p>
-                    <p>December 27, 2022</p>
+                    <p>{order.createdAt}</p>
                 </div>
                 <div>
                     <p>total</p>

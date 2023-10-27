@@ -8,19 +8,31 @@ import ChosenProducts from "../ChosenProducts";
 
 function CartSummary() {
     const [ promoCode, setPromoCode ] = useState("");
+    const [ isValidPromoCode, setIsValidPromoCode ] = useState(true);
+    const validPromoCodes = [];
     const cart = useSelector(selectCart);
+
+    const handlePromoSubmit = (e) => {
+        e.preventDefault();
+        if (!validPromoCodes.includes(promoCode)) setIsValidPromoCode(false);
+    };
 
     return (
         <div className={styles.mainContainer}>
             <div className={styles.cartItems}>
                 {cart.cartItems && <ChosenProducts products={cart.cartItems} />}
             </div>
-            <form className={styles.promoContainer}>
-                <div>
-                    <Input label={"Discount code or gift card"} inputId={"promoCode"} state={promoCode} setState={setPromoCode} height={"2.625rem"} />
-                </div>
-                <button type="submit" className={styles.promoButton}>Apply</button>
-            </form>
+            <div className={styles.promoContainer} >
+                <form 
+                    onSubmit={handlePromoSubmit}
+                >
+                    <div>
+                        <Input label={"Discount code or gift card"} inputId={"promoCode"} state={promoCode} setState={setPromoCode} height={"2.625rem"} />
+                    </div>
+                    <button type="submit" className={styles.promoButton}>Apply</button>
+                </form>
+                <p style={isValidPromoCode ? {display: "none"} : {}}>This promo code is not valid!</p>
+            </div>
             <div className={styles.subtotalContainer}>
                 <div>
                     <p>Subtotal</p>

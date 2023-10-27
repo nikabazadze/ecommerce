@@ -13,12 +13,15 @@
     border-bottom: 1px solid #eaeaea;
     margin-top: 1.5rem;
     padding: 1.5rem 0;
+}
+
+.promoContainer form {
     display: flex;
     justify-content: space-between;
     gap: 1.375rem;
 }
 
-.promoContainer > div {
+.promoContainer form div {
     width: 19rem;
 }
 
@@ -36,6 +39,13 @@
 
 .promoButton:hover {
     background-color: #e8e8e8;
+}
+
+.promoContainer p {
+    font-size: 0.875rem;
+    margin-top: 1rem;
+    padding-left: 0.25rem;
+    color: #ff7961;
 }
 
 /* Subtotal section styles */

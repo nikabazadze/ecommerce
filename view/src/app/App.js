@@ -7,17 +7,18 @@ import './App.css';
 import Root from '../components/Root';
 import Home from '../pages/Home';
 import Shop from '../pages/Shop';
-import Product from '../pages/Product';
 import Cart from '../pages/Cart';
-import Account from '../pages/Account';
 import Auth from '../pages/Auth';
+import Account from '../pages/Account';
+import Product from '../pages/Product';
+import OrderConfirm from '../pages/OrderConfirm';
 import CheckoutWrapper from '../components/CheckoutWrapper';
 
-import { loadProducts } from '../store/ProductsSlice';
 import { getCurrentUser } from '../API';
+import { loadUserOrders } from '../store/OrdersSlice';
+import { loadProducts } from '../store/ProductsSlice';
 import { setUser, setIsLoggedIn } from '../store/UserSlice';
 import { loadUserCart, loadGuestCart } from '../store/CartSlice';
-import { loadUserOrders } from '../store/OrdersSlice';
 
 const router = createBrowserRouter(createRoutesFromElements(
   <>
@@ -28,6 +29,7 @@ const router = createBrowserRouter(createRoutesFromElements(
       <Route path='account' element={ <Account /> } />
       <Route path='account/:action' element={ <Auth /> } />
       <Route path='products/:id' element={ <Product /> } />
+      <Route path='orderConfirm' element={<OrderConfirm /> } />
     </Route>
     <Route path='checkout' element={ <CheckoutWrapper /> } />
   </>

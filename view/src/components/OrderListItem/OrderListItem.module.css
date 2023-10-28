@@ -39,11 +39,6 @@
     text-transform: uppercase;
 }
 
-.shippingContainer {
-    position: absolute;
-    left: 35rem;
-}
-
 .shippingContainer div {
     font-weight: 500;
     color: #145ea8;
@@ -79,5 +74,5 @@
 /* Content styles */
 .contentContainer {
     padding: 1.5rem 1.25rem 0.5rem 1.25rem;
-    max-width: 28.75rem;
+    max-width: 28.5rem;
 }

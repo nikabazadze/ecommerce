@@ -45,12 +45,12 @@
 }
 
 .card h3 {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     font-weight: 600;
 }
 
 .card p {
-    font-size: 1rem;
+    font-size: 0.9375rem;
 }
 
 /* Product reviews */
@@ -76,7 +76,7 @@
 
 /* Product price */
 .productMeta > div:last-of-type > span {
-    font-size: 1.0625rem;
+    font-size: 1rem;
     font-weight: 500;
     word-spacing: -0.125rem;
 }

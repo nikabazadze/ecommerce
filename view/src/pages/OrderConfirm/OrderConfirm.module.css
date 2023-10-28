@@ -1,0 +1,38 @@
+.mainContainer {
+    margin: 0 var(--padding-main);
+    position: relative;
+}
+
+.mainContainer > h2 {
+    font-family: 'Clash Grotesk', sans-serif;
+    font-size: 1.125rem;
+    letter-spacing: 0.05rem;
+    margin-top: 3rem;
+    color: #0D1B2A;
+}
+
+.orderContainer {
+    width: 40rem;
+    margin: 2rem 0 3rem 0;
+    position: relative;
+}
+
+
+/* Continue shopping section */
+.continueShoppingContainer {
+    margin: 7rem 0;
+    position: relative;
+}
+
+.continueShoppingContainer h2 {
+    font-family: 'Clash Grotesk', sans-serif;
+    font-size: 1.375rem;
+    text-align: center;
+    letter-spacing: 0.06rem;
+    margin-bottom: 2rem;
+    color: #0D1B2A;
+}
+
+.suggestion > div > div > div:first-of-type {
+    top: 0.875rem;
+}

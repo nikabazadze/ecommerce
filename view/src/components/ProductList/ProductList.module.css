@@ -8,6 +8,7 @@
     overflow: hidden;
     width: 100vw;
     padding: 1rem 0;
+    padding-right: 14rem;
     position: relative;
     left: calc(-1 * var(--padding-main));
 }

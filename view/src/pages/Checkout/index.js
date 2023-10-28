@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
+
+import { checkout } from "../../API";
 import styles from './Checkout.module.css';
 import Input from "../../components/Input";
-import { selectCart, clearCart } from "../../store/CartSlice";
-import { selectIsLoggedIn, selectUser } from "../../store/UserSlice";
+import { selectCart } from "../../store/CartSlice";
 import ScrollToTop from "../../components/ScrollToTop";
 import AlertDialog from "../../components/AlertDialog";
 import CartSummary from "../../components/CartSummary";
-import { checkout } from "../../API";
+import { loadUserOrders } from "../../store/OrdersSlice";
+import { selectIsLoggedIn, selectUser } from "../../store/UserSlice";
 
-import MuiAlert from '@mui/material/Alert';
-import Snackbar from '@mui/material/Snackbar';
 import CheckIcon from '@mui/icons-material/Check';
+import shopPayLogo from '../../assets/logos/paymentLogos/shopPay.svg';
 import applePayLogo from '../../assets/logos/paymentLogos/applePay.svg';
 import googlePayLogo from '../../assets/logos/paymentLogos/googlePay.svg';
 import paypalPayLogo from '../../assets/logos/paymentLogos/paypalPay.svg';
-import shopPayLogo from '../../assets/logos/paymentLogos/shopPay.svg';
 import amazonPayLogo from '../../assets/logos/paymentLogos/amazonPay.svg';
 
 function Checkout() {
@@ -31,7 +31,6 @@ function Checkout() {
     const [ zipCode, setZipCode ] = useState("");
     const [ phone, setPhone ] = useState("");
     const [ subscribe, setSubscribe ] = useState(true);
-    const [ openSnackbar, setOpenSnackbar ] = useState(false);
     const [ openDialog, setOpenDialog ] = useState(false);
     const [ dialogContent, setDialogContent ] = useState("");
     const dialogTitle = "Could not open the page!"
@@ -40,10 +39,6 @@ function Checkout() {
     const user = useSelector(selectUser);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const Alert = React.forwardRef(function Alert(props, ref) {
-        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-    });
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -76,12 +71,10 @@ function Checkout() {
 
             const response = await checkout(requestBody);
             if (response.status === 201) {
-                setOpenSnackbar(true);
                 console.log("New order placed successfully!");
-
                 if (!userLoggedIn) localStorage.removeItem('guestCart');
-                dispatch(clearCart());
-                // Navigate to order confirmation page and then clear the cart
+                dispatch(loadUserOrders(user.id));
+                navigate('/orderConfirm', { state: { fromCheckout: true } });
             } else {
                 console.log("New order was not placed!");
             }
@@ -99,14 +92,6 @@ function Checkout() {
         setOpenDialog(true);
     };
 
-    const handleSnackbarClose = (event, reason) => {
-        if (reason === 'clickaway') {
-          return;
-        }
-    
-        setOpenSnackbar(false);
-      };
-
     return (
         <div className={styles.checkoutPage}>
             <ScrollToTop />
@@ -117,9 +102,9 @@ function Checkout() {
                     <header>
                         
                         <Link to={"/"} className={styles.link}><h1>ZiPLiX</h1></Link>
-                        <div className={styles.breadcrumbs}>
+                        {/* <div className={styles.breadcrumbs}>
                             <p>Cart &#10095; Infortmation &#10095; Shipping &#10095; Payment</p>
-                        </div>
+                        </div> */}
                     </header>
                     <section className={styles.expressCheckout}>
                         <h3>express checkout</h3>
@@ -171,11 +156,6 @@ function Checkout() {
                                 <button type="submit" className={styles.submitButton}>Buy Now</button>
                             </div>
                         </form>
-                        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleSnackbarClose}>
-                            <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
-                                New order placed successfully!
-                            </Alert>
-                        </Snackbar>
                     </section>
                     <footer>
                         <nav>

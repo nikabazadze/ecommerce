@@ -71,10 +71,11 @@ function Checkout() {
 
             const response = await checkout(requestBody);
             if (response.status === 201) {
-                console.log("New order placed successfully!");
-                if (!userLoggedIn) localStorage.removeItem('guestCart');
-                dispatch(loadUserOrders(user.id));
-                navigate('/orderConfirm', { state: { fromCheckout: true } });
+                const jsonResponse = await response.json();
+                const newOrder = jsonResponse.order;
+                console.log(jsonResponse.message);
+                userLoggedIn ? dispatch(loadUserOrders(user.id)) : localStorage.removeItem('guestCart');
+                navigate('/orderConfirm', { state: { fromCheckout: true, order: newOrder } });
             } else {
                 console.log("New order was not placed!");
             }

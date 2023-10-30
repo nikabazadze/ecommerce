@@ -1,17 +1,40 @@
 import React from "react";
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 
 import styles from './Search.module.css';
 import SearchIcon from '@mui/icons-material/Search';
+import { setSearchTerm, selectSearchTerm } from "../../store/SearchSlice";
 
 function Search() {
     const [ localSearchTerm, setLocalSearchTerm ] = useState('');
+    const currentSearchTerm = useSelector(selectSearchTerm);
+    const iconRef = useRef(null);
     const inputRef = useRef(null);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    // When clicked on, search bar becomes wider to see input text
+    useEffect(() => {
+        if (currentSearchTerm) {
+            navigate('/shop');
+        }
+    }, [currentSearchTerm, navigate]);
+
+    // Dispatches search term to the redux store
+    function handleKeyDown(e) {
+        if (e.key === "Enter" && localSearchTerm) {
+            e.preventDefault();
+            inputRef.current.blur();
+            showInput(false);
+            dispatch(setSearchTerm(localSearchTerm));
+            setLocalSearchTerm('');
+        };
+    };
+
+    // When clicked on, search bar becomes wider to see input field
     function handleClick() {
-        const input = document.getElementById("search-input");
-        input.style.display = "block";
+        inputRef.current.style.display = "block";
         inputRef.current.focus();
         showInput(true);
     };
@@ -23,24 +46,22 @@ function Search() {
 
     // Hides or shows search input
     function showInput(show) {
-        const input = document.getElementById("search-input");
-        const icon = document.getElementById("search-icon");
-        input.style.display = show ? "block" : "none";
-        input.style.width = show ? "100%" : "0";
-        icon.style.left = show ? "2rem" : "0";
+        inputRef.current.style.display = show ? "block" : "none";
+        inputRef.current.style.width = show ? "100%" : "0";
+        iconRef.current.style.left = show ? "2rem" : "0";
     };
 
     return (
         <div className={styles.container} onBlur={handleBlur} >
-            <SearchIcon className={styles.icon} id="search-icon" onClick={handleClick} />
+            <SearchIcon className={styles.icon} onClick={handleClick} ref={iconRef} />
             <input
-                id="search-input"
-                className={styles.input}
                 type="text"
-                value={localSearchTerm}
                 ref={inputRef}
-                onChange={(({target}) => setLocalSearchTerm(target.value))}
                 placeholder="Search"
+                value={localSearchTerm}
+                className={styles.input}
+                onKeyDown={handleKeyDown}
+                onChange={(({target}) => setLocalSearchTerm(target.value))}
             />
         </div>
     );

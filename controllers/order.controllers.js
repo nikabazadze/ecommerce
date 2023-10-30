@@ -231,5 +231,6 @@ module.exports = {
     getUserOrdersByStatus,
     getOrderById,
     updateOrderStatus,
-    deleteOrder
+    deleteOrder,
+    retrieveOrderInfo
 };

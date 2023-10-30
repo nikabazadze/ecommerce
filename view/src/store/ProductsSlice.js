@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getProducts } from "../API";
+import { selectSearchTerm } from "./SearchSlice";
 
 // Fetches all products
 export const loadProducts = createAsyncThunk(
@@ -32,7 +33,13 @@ export const productsSlice = createSlice({
     }
 });
 
-export const selectProducts = (state) => state.products.products;
+export const selectProducts = (state) => {
+    const searchTerm = selectSearchTerm(state);
+    return searchTerm
+        ? state.products.products.filter(product =>
+            product.productName.toLowerCase().includes(searchTerm.toLowerCase()))
+        : state.products.products;
+};
 export const selectProductsAreLoading = (state) => state.products.productsAreLoading;
 export const selectProductsHaveError = (state) => state.products.productsHaveError;
 

@@ -11,7 +11,7 @@ function OrderListItem({ order }) {
     const tooltipContent = (
         <div className={styles.tooltipContentContainer}>
             <p>{`${address.firstName} ${address.lastName}`}</p>
-            <p>{`${address.address}${address.apartment && `, ${address.apartment}`}`}</p>
+            <p>{`${address.address}${address.apartment ? `, ${address.apartment}` : ""}`}</p>
             <p>{`${address.city}, ${address.state}, ${address.zipCode}`}</p>
             <p>{address.country}</p>
             <p>{`Phone: ${address.phone}`}</p>

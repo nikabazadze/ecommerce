@@ -1,5 +1,7 @@
 const db = require('../models/index');
 const chalk = require('chalk');
+const { hasError } = require('../utils/error');
+const { retrieveOrderInfo } = require('./order.controllers');
 
 // Handles checkout process
 const checkoutCart = async (req, res) => {
@@ -25,11 +27,13 @@ const checkoutCart = async (req, res) => {
 
     // Fill orders table
     let newOrderId = null;
+    let newOrderMeta = null;
     const date = new Date().toUTCString();
-    const addOrderQuery = 'INSERT INTO orders (user_id, total_value, status, created_at) VALUES ($1, $2, $3, $4) RETURNING id';
+    const addOrderQuery = 'INSERT INTO orders (user_id, total_value, status, created_at) VALUES ($1, $2, $3, $4) RETURNING *';
     try {
-        const newOrder = await db.query(addOrderQuery, [requestBody.userId ? requestBody.userId : null, requestBody.cart.totalValue, 'processing', date]);
-        newOrderId = newOrder.rows[0].id;
+        const result = await db.query(addOrderQuery, [requestBody.userId ? requestBody.userId : null, requestBody.cart.totalValue, 'processing', date]);
+        newOrderId = result.rows[0].id;
+        newOrderMeta = result.rows[0];
     } catch (err) {
         console.error('Error creating new order:', err.message);
         return res.status(500).json({ message: "Error creating new order" });
@@ -104,9 +108,13 @@ const checkoutCart = async (req, res) => {
         };
     }
 
+    // Send response
+    const newOrder = await retrieveOrderInfo(newOrderMeta);
+    if (hasError(newOrder)) return res.status(500).json({ message: "Error retrieving new order info."});
+
     console.log(chalk.magentaBright.bold
         (`New order with order id - ${newOrderId} has been placed for the ${requestBody.userId ? `user with id - ${requestBody.userId}!` : "guest user!"}`));
-    res.status(201).json({message: "Order placed successfully!"});
+    res.status(201).json({ message: "Order placed successfully!", order: newOrder });
 };
 
 module.exports = { checkoutCart };

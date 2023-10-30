@@ -6,7 +6,6 @@
 .homepage > section:first-of-type {
     margin-top: 5rem;
     position: relative;
-    width: calc(100% - var(--padding-main));
 }
 
 .homepage h2 {

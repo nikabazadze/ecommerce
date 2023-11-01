@@ -10,6 +10,7 @@ import ScrollToTop from "../../components/ScrollToTop";
 import AlertDialog from "../../components/AlertDialog";
 import CartSummary from "../../components/CartSummary";
 import { loadUserOrders } from "../../store/OrdersSlice";
+import { formatPhoneNumber } from "../../utils/phoneNumberFormat";
 import { selectIsLoggedIn, selectUser } from "../../store/UserSlice";
 
 import CheckIcon from '@mui/icons-material/Check';
@@ -93,6 +94,11 @@ function Checkout() {
         setOpenDialog(true);
     };
 
+    const handlePhoneChange = (value) => {
+        const formattedPhoneNumber = formatPhoneNumber(value);
+        setPhone(formattedPhoneNumber);
+    };
+
     return (
         <div className={styles.checkoutPage}>
             <ScrollToTop />
@@ -149,7 +155,7 @@ function Checkout() {
                                 <Input label={"State"} inputId={"state"} state={state} setState={setState} />
                                 <Input label={"ZIP code"} inputId={"zipCode"} state={zipCode} setState={setZipCode} />
                             </div>
-                            <Input label={"Phone"} inputId={"phone"} state={phone} setState={setPhone} />
+                            <Input label={"Phone"} inputId={"phone"} state={phone} setState={handlePhoneChange} type={"tel"} isRequired={true} placeholder="(xxx) xxx-xxxx" />
                             <div className={styles.formFooter}>
                                 <div>
                                     <Link to={"/cart"} className={styles.link}><span>&#10094;</span> Return to cart</Link>

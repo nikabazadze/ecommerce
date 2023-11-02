@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useParams } from 'react-router-dom';
 import styles from './Auth.module.css';
 import LoginForm from "../../components/LoginForm";
 import SignUpForm from "../../components/SignUpForm";
 import AuthButton from "../../components/AuthButton";
+import AlertDialog from "../../components/AlertDialog";
 import fbLogo from '../../assets/images/fbLogo.svg';
 import GoogleLogo from '../../assets/images/googleLogo.svg';
 
 function Auth() {
     let { action } = useParams();
     const isSignupPage = (typeof action === "undefined") || (action === "signup") ? true : false;
+
+    const [ openDialog, setOpenDialog ] = useState(false);
+    const dialogContent = "This auth method has not been implemented yet! It is rendered only for visual purposes.";
+    const dialogTitle = "Could not open the page!";
 
     return (
         <div className={styles.mainContainer}>
@@ -30,11 +35,16 @@ function Auth() {
                         <span>OR</span>
                     </div>
                     <div className={styles.ssoContainer}>
-                        <AuthButton type="sso" action="Continue with Google" src={GoogleLogo} />
-                        <AuthButton type="sso" action="Continue with Facebook" src={fbLogo} imgPadding="0.375rem" />
+                        <div onClick={() => setOpenDialog(true)} >
+                            <AuthButton type="sso" action="Continue with Google" src={GoogleLogo} />
+                        </div>
+                        <div onClick={() => setOpenDialog(true)} >
+                            <AuthButton type="sso" action="Continue with Facebook" src={fbLogo} imgPadding="0.375rem" />
+                        </div>
                     </div>
                 </div>
             </div>
+            {openDialog && <AlertDialog title={dialogTitle} content={dialogContent} onClose={setOpenDialog} />}
         </div>
     );
 };

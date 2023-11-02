@@ -17,7 +17,7 @@
     text-transform: uppercase;
     text-decoration: none;
     color: #FFF;
-    transition: transform 0.2s, opacity 0.2s;
+    transition: transform 0.1s, opacity 0.1s;
 }
 
 .slideIn {
@@ -27,7 +27,7 @@
 
 .slideOut {
     opacity: 0;
-    transform: translateY(-20%);
+    transform: translateY(-50%);
 }
 
 .divPromoText {

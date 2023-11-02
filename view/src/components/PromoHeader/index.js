@@ -30,7 +30,7 @@ function PromoHeader() {
             setTimeout(() => {
                 setCurrentPromoIndex(nextPromoIndex);
                 setAnimationClass(styles.slideIn);
-            }, 200);
+            }, 100);
         }
     }, [animationClass, currentPromoIndex, promos.length]);
 

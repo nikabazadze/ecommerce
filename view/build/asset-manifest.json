@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/static/css/main.3598c183.css",
+    "main.js": "/static/js/main.2c811d5c.js",
+    "static/js/787.54ab60a8.chunk.js": "/static/js/787.54ab60a8.chunk.js",
+    "static/media/login.jpg": "/static/media/login.2f3affcae085606d663e.jpg",
+    "static/media/signup.jpg": "/static/media/signup.954769b1ddeba171bdb0.jpg",
+    "static/media/banner2.png": "/static/media/banner2.470001f960167fe422e7.png",
+    "static/media/shopBanner.webp": "/static/media/shopBanner.c431ed69112cc0bc0f3c.webp",
+    "static/media/banner1.jpg": "/static/media/banner1.6fccfac3171e0863c23c.jpg",
+    "static/media/shopPay.svg": "/static/media/shopPay.009806ccc5b78c9950e411e973dba440.svg",
+    "static/media/amazonPay.svg": "/static/media/amazonPay.7f9e2c96627232d94d00c6f36d74eec3.svg",
+    "static/media/paypalPay.svg": "/static/media/paypalPay.2d2f48e0ba53f5f8b32df7b769f105cb.svg",
+    "static/media/googlePay.svg": "/static/media/googlePay.44607920880941a2f45046cfdf5efa79.svg",
+    "static/media/googleLogo.svg": "/static/media/googleLogo.efa560d32653a615a1db742bbf78c815.svg",
+    "static/media/applePay.svg": "/static/media/applePay.8465af89da3e67822918924fbd8cbe84.svg",
+    "index.html": "/index.html",
+    "static/media/fbLogo.svg": "/static/media/fbLogo.e51fbc69217473df4fbbd21e3968b17b.svg",
+    "main.3598c183.css.map": "/static/css/main.3598c183.css.map",
+    "main.2c811d5c.js.map": "/static/js/main.2c811d5c.js.map",
+    "787.54ab60a8.chunk.js.map": "/static/js/787.54ab60a8.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3598c183.css",
+    "static/js/main.2c811d5c.js"
+  ]
+}

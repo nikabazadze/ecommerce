@@ -1,4 +1,4 @@
-const SERVER_ENDPOINT = "http://localhost:3000";
+const SERVER_ENDPOINT = "https://ziplix-ecomm-75a00800f633.herokuapp.com";
 const API_ENDPOINT = `${SERVER_ENDPOINT}/api`;
 
 export const getProducts = async () => {

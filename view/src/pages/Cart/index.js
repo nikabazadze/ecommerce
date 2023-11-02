@@ -91,7 +91,7 @@ function Cart() {
 
     const handleItemUpdate = async (productId, variant, newQuantity) => {
         if (newQuantity === 0) {
-            handleItemRemove(productId);
+            handleItemRemove(productId, variant);
             return;
         }
 

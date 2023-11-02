@@ -7,7 +7,6 @@ const helmet = require("helmet");
 const session = require("express-session");
 const pgSession = require('connect-pg-simple')(session);
 const { pool } = require('./models'); 
-// const store = new session.MemoryStore();    // Only for development
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 require("dotenv").config();
@@ -19,7 +18,7 @@ const { hashPassword, comparePasswords } = require('./utils/passwordHash');
 const PORT = process.env.PORT || 3000;
 
 const corsOptions = {
-    origin: 'http://localhost:3001',
+    origin: 'https://ziplix.netlify.app',
     credentials: true
 };
   

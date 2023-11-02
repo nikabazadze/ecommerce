@@ -27,8 +27,8 @@ function CategoryList() {
             url: "https://www.ekster.com/cdn/shop/files/5_113c1018-7914-458c-8b50-16b2f975601d.jpg?v=1688732574&width=540"
         },
         {
-            name: "cases",
-            url: "https://www.ekster.com/cdn/shop/files/bags_cases.png?v=1663596199&width=360"
+            name: "shop all",
+            url: "https://www.ekster.com/cdn/shop/files/Product_Gallery_Carrousel_5519922b-08ce-4a58-998f-1d9343275791.jpg?v=1669635845&width=900"
         }
     ];
 

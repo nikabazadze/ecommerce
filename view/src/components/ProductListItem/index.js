@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
 
 import styles from './ProductListItem.module.css';
 
 function ProductListItem({ product }) {
+    const [ imageIndex, setImageIndex ] = useState(0);
+
     return (
-        <Link to={`/products/${product.id}?variant=0`} className={styles.link}>
+        <Link 
+            to={`/products/${product.id}?variant=0`} 
+            onMouseEnter={() => setImageIndex(1)}
+            onMouseLeave={() => setImageIndex(0)}
+            className={styles.link}
+        >
             <div className={styles.card} >
                 <div className={styles.imgContainer}>
-                    <img src={product.productVariants[0].imgUrls[0]} alt="Product photo"/>
+                    <img src={product.productVariants[0].imgUrls[imageIndex]} alt="Product photo" />
                 </div>
                 <div className={styles.productMeta}>
                     <div>

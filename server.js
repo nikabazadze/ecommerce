@@ -23,11 +23,18 @@ const corsOptions = {
 };
   
 app.use(cors(corsOptions));
-app.use(helmet());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'view', 'build')));
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+            "img-src": ["'self'", "project-ziplix.s3.amazonaws.com"],
+        },
+    },
+}));
 
 // Session config
 app.use(session({
@@ -154,7 +161,6 @@ app.post('/signup', async (req, res) => {
     };
 });
 
-// Test comment
 const absolutePath = path.resolve(__dirname, 'view', 'build', 'index.html');
 
 app.get('*', (req, res) => {

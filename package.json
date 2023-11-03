@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon server.js",
     "start:frontend": "cd view && npm start",
-    "dev": "concurrently \"npm start\" \"npm run start:frontend\""
+    "dev": "concurrently \"npm start\" \"npm run start:frontend\"",
+    "postinstall": "cd view && npm install && npm run build"
   },
   "keywords": [],
   "author": "",

@@ -154,6 +154,7 @@ app.post('/signup', async (req, res) => {
     };
 });
 
+// Test comment
 const absolutePath = path.resolve(__dirname, 'view', 'build', 'index.html');
 
 app.get('*', (req, res) => {

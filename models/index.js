@@ -1,5 +1,16 @@
-const Pool = require('pg').Pool
-const pool = new Pool();
+const { Pool } = require('pg');
+const dbConfig = {
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASS,
+  port: process.env.DB_PORT,
+  ssl: {
+    rejectUnauthorized: false
+  }
+};
+
+const pool = new Pool(dbConfig);
 
 const query = async (text, params) => {
     const start = Date.now();

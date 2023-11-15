@@ -22,12 +22,6 @@ const corsOptions = {
     credentials: true
 };
 
-app.options('*', cors());
-app.use(cors(corsOptions));
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'view', 'build')));
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
@@ -35,7 +29,15 @@ app.use(helmet({
             "img-src": ["'self'", "project-ziplix.s3.amazonaws.com"],
         },
     },
+    crossOriginResourcePolicy: false,
 }));
+app.use(cors(corsOptions));
+app.options('*', cors());
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'view', 'build')));
+
 
 // Session config
 app.use(session({

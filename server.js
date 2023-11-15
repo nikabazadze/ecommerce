@@ -21,7 +21,8 @@ const corsOptions = {
     origin: 'https://ziplix.netlify.app',
     credentials: true
 };
-  
+
+app.options('*', cors());
 app.use(cors(corsOptions));
 app.use(logger('dev'));
 app.use(express.json());

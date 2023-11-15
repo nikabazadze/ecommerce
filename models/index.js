@@ -1,13 +1,10 @@
 const { Pool } = require('pg');
 const dbConfig = {
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASS,
-  port: process.env.DB_PORT,
-  ssl: {
-    rejectUnauthorized: false
-  }
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: true,
+      ca: fs.readFileSync('./config/us-east-1-bundle.pem').toString()
+    }
 };
 
 const pool = new Pool(dbConfig);

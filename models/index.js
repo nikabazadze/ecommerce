@@ -3,7 +3,8 @@ const { Pool } = require('pg');
 const dbConfig = {
     connectionString: process.env.DATABASE_URL,
     ssl: {
-      rejectUnauthorized: false
+      rejectUnauthorized: true,
+      ca: fs.readFileSync('./config/us-east-1-bundle.pem').toString()
     }
 };
 

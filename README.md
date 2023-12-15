@@ -4,7 +4,7 @@
 
 ZiPLix is a full-stack ecommerce project developed to demonstrate advanced web development skills. This platform, created as a final project in a full-stack development course, encompasses a wide range of technologies and features, offering a seamless shopping experience for users.
 
-![ZiPLix Screenshot](https://ecomm-project-ziplix.s3.amazonaws.com/ziplix.png)
+![ZiPLix Screenshot](/ziplix-screenshot.png)
 
 ## Live Demo
 

@@ -8,7 +8,7 @@ const dbConfig = {
     }
 };
 
-const pool = new Pool(dbConfig);
+const pool = new Pool((process.env.NODE_ENV === 'production') ? dbConfig : {});
 
 const query = async (text, params) => {
     const start = Date.now();

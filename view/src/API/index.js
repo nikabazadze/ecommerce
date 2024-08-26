@@ -1,4 +1,4 @@
-const SERVER_ENDPOINT = "https://ziplix-ecomm-a65ab840df75.herokuapp.com";
+const SERVER_ENDPOINT = process.env.REACT_APP_API_URL;
 const API_ENDPOINT = `${SERVER_ENDPOINT}/api`;
 
 export const getProducts = async () => {

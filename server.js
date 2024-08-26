@@ -18,7 +18,7 @@ const { hashPassword, comparePasswords } = require('./utils/passwordHash');
 const PORT = process.env.PORT || 3000;
 
 const corsOptions = {
-    origin: 'https://ziplix.netlify.app',
+    origin: (process.env.NODE_ENV === 'production') ? 'https://ziplix.netlify.app' : 'http://localhost:3001',
     credentials: true
 };
 

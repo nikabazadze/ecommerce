@@ -15,10 +15,10 @@ function Socials() {
 
     return (
         <div className={styles.container}>
-            <FacebookIcon   fontSize="large"        onClick={() => setOpenDialog(true)} />
-            <InstagramIcon  fontSize="large"        onClick={() => setOpenDialog(true)} />
-            <TwitterIcon    fontSize="large"        onClick={() => setOpenDialog(true)} />
-            <YouTubeIcon    sx={{ fontSize: 44 }}   onClick={() => setOpenDialog(true)} />
+            <FacebookIcon   className={styles.icon}          onClick={() => setOpenDialog(true)} />
+            <InstagramIcon  className={styles.icon}          onClick={() => setOpenDialog(true)} />
+            <TwitterIcon    className={styles.icon}          onClick={() => setOpenDialog(true)} />
+            <YouTubeIcon    className={styles.youtubeIcon}   onClick={() => setOpenDialog(true)} />
             {openDialog && <AlertDialog title={dialogTitle} content={dialogContent} onClose={setOpenDialog} />}
         </div>
     );

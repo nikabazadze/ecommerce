@@ -9,6 +9,30 @@
     cursor: pointer;
 }
 
-.container > *:hover {
-    color: #d8d8d8;
+.icon {
+    font-size: 34px;
+}
+
+.youtubeIcon {
+    font-size: 44px;
+}
+
+@media only screen and (min-width: 851px) {
+    .container > *:hover {
+        color: #d8d8d8;
+    }
+}
+
+@media only screen and (max-width: 850px) {
+    .container {
+        gap: 1rem;
+    }
+
+    .icon {
+        font-size: 30px;
+    }
+    
+    .youtubeIcon {
+        font-size: 40px;
+    }
 }

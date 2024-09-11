@@ -1,6 +1,8 @@
 :root {
-    --padding-main: 10rem;
-    --height-header: calc(2rem + 4rem);
+    --padding-main: 10rem;  /* Needs to be removed */
+    --padding-header: 4rem;
+    --height-promoHeader: 2rem;
+    --height-mainHeader: 4rem;
 }
 
 html,
@@ -13,9 +15,24 @@ body {
 
 main {
     position: relative;
-    top: var(--height-header);
+    top: calc(var(--height-promoHeader) + var(--height-mainHeader));
 }
 
 footer {
-    margin-top: var(--height-header);
+    margin-top: calc(var(--height-promoHeader) + var(--height-mainHeader));
+}
+
+@media only screen and (max-width: 1200px) {
+    :root {
+        --padding-header: 2rem;
+        --height-mainHeader: 3rem;
+    }
+}
+
+@media only screen and (max-width: 850px) {
+    :root {
+        --padding-header: 1rem;
+        --height-promoHeader: 1.8125rem;
+        --height-mainHeader: 2.5rem;
+    }
 }

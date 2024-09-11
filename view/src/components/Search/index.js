@@ -7,9 +7,10 @@ import styles from './Search.module.css';
 import SearchIcon from '@mui/icons-material/Search';
 import { setSearchTerm, selectSearchTerm } from "../../store/SearchSlice";
 
-function Search() {
+function Search({ direction = "left" }) {
     const [ localSearchTerm, setLocalSearchTerm ] = useState('');
     const currentSearchTerm = useSelector(selectSearchTerm);
+    const containerRef = useRef(null);
     const iconRef = useRef(null);
     const inputRef = useRef(null);
     const dispatch = useDispatch();
@@ -46,14 +47,23 @@ function Search() {
 
     // Hides or shows search input
     function showInput(show) {
+        if (window.innerWidth < 800) {
+            // Window width - (2 * header padding) - menu icon, person icon and cart icon widths - gaps between icons
+            const containerWidth = window.innerWidth - (2 * 16) - 30 - 22 - 20 - (3 * 14) + 10;
+            containerRef.current.style.width = show ? `${containerWidth}px` : "auto";
+        }
         inputRef.current.style.display = show ? "block" : "none";
         inputRef.current.style.width = show ? "100%" : "0";
         iconRef.current.style.left = show ? "2rem" : "0";
     };
 
     return (
-        <div className={styles.container} onBlur={handleBlur} >
-            <SearchIcon className={styles.icon} onClick={handleClick} ref={iconRef} />
+        <div style={{justifyContent: (direction === "left") ? "flex-end" : "flex-start"}}
+             className={styles.container}
+             ref={containerRef}
+             onBlur={handleBlur}
+        >
+            <SearchIcon className={styles.searchIcon} onClick={handleClick} ref={iconRef} />
             <input
                 type="text"
                 ref={inputRef}

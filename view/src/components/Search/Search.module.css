@@ -1,11 +1,11 @@
 .container {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
     position: relative;
 }
 
-.icon {
+.searchIcon {
+    font-size: 24px;
     position: relative;
     top: 0.04rem;
     cursor: pointer;
@@ -31,4 +31,19 @@
 
 .input::placeholder {
     font-size: 0.95rem;
+}
+
+@media only screen and (max-width: 1200px) {
+    .searchIcon {
+        font-size: 22px;
+    }
+
+    .input {
+        font-size: 0.9375rem;
+        height: 1.875rem;
+    }
+
+    .input::placeholder {
+        font-size: 0.875rem;
+    }
 }

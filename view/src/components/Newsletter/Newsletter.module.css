@@ -1,18 +1,21 @@
 .container {
     min-width: 13.5rem;
-    max-width: 25rem;
+    max-width: 24rem;
 }
 
 .container h2 {
     font-size: 1.75rem;
-    font-weight: 500;
+    font-weight: 600;
+    letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 1rem;
 }
 
 .container > p {
-    font-size: 1.25rem;
-    line-height: 1.5;
+    font-size: 1.125rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: #eee;
 }
 
 .container form {
@@ -23,24 +26,78 @@
     font-size: 1rem;
     color: #454545;
     width: 100%;
-    height: 3rem;
+    height: 2.75rem;
     margin-bottom: 1rem;
     padding: 0.5rem;
     outline: none;
 }
 
+.input::placeholder {
+    font-size: 0.9375rem;
+    color: #959595;
+}
+
 .button {
-    font-size: 1rem;
+    font-size: 0.9375rem;
     font-weight: 500;
-    letter-spacing: 0.05rem;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
     display: block;
     width: 100%;
     height: 3rem;
     color: #454545;
+    background-color: #fff;
+    border: none;
 }
 
 .subscribeSuccess {
     margin-top: 2.5rem;
     display: none;
+}
+
+
+@media only screen and (max-width: 1250px) {
+    .container {
+        max-width: 22rem;
+    }
+}
+
+@media only screen and (max-width: 1050px) {
+    .container h2 {
+        font-size: 1.625rem;
+    }
+
+    .container > p {
+        font-size: 1.125rem;
+        line-height: 1.625;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .container h2 {
+        font-size: 1.25rem;
+        margin-bottom: 0.625rem;
+    }
+
+    .container > p {
+        font-size: 1rem;
+        line-height: 1.375;
+    }
+
+    .container form {
+        margin-top: 2rem;
+    }
+
+    .input {
+        height: 2.5rem;
+    }
+
+    .button {
+        height: 2.75rem;
+        font-size: 0.875rem;
+    }
+
+    .desktop {
+        display: none;
+    }
 }

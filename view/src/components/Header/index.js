@@ -7,9 +7,9 @@ import styles from './Header.module.css';
 import Search from "../Search";
 import Badge from "../Badge";
 import Menu from "../Menu/Menu";
-import menuIcon from "../../assets/logos/menuIcon.svg"
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
+import menuIcon from "./icons/menuIcon.svg";
+import cartIcon from "./icons/cartIcon.svg";
+import personIcon from "./icons/personIcon.svg";
 import { selectIsLoggedIn, selectUser } from "../../store/UserSlice";
 import { selectCartTotalItems } from "../../store/CartSlice";
 
@@ -34,12 +34,15 @@ function Header() {
         return (
             <ul className={styles.list}>
                 <li><Search /></li>
-                <li><Link to="account"><PersonOutlinedIcon className={styles.personIcon} /><span>{`Hello, ${isLoggedIn ? user.firstName : "Sign up"}`}</span></Link></li>
+                <li><Link to="account">
+                    <img src={personIcon} alt="Person icon" className={styles.personIcon} />
+                    <span>{`Hello, ${isLoggedIn ? user.firstName : "Sign up"}`}</span>
+                </Link></li>
                 <li>
                     <Link to="cart">
                         <div className={styles.cartIconContainer}>
-                            <ShoppingCartOutlinedIcon sx={{fontSize: 22}} className={styles.cartIcon} />
-                            {cartTotalItems > 0 && <Badge count={cartTotalItems} size={"0.875rem"} fontSize={"0.625rem"} translate={"30"} />}
+                            <img src={cartIcon} alt="Cart icon" className={styles.cartIcon} />
+                            {cartTotalItems > 0 && <Badge count={cartTotalItems} size={"0.875rem"} fontSize={"0.625rem"} translate={"20"} />}
                         </div>
                         <span>Cart</span>
                     </Link>

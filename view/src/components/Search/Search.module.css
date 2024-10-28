@@ -5,9 +5,9 @@
 }
 
 .searchIcon {
-    font-size: 24px;
+    width: 21px;
+    height: 21px;
     position: relative;
-    top: 0.04rem;
     cursor: pointer;
 }
 
@@ -35,7 +35,8 @@
 
 @media only screen and (max-width: 1200px) {
     .searchIcon {
-        font-size: 22px;
+        width: 19px;
+        height: 19px;
     }
 
     .input {

@@ -1,5 +1,4 @@
 .container {
-    margin-top: 2rem;
     display: flex;
     align-items: center;
     gap: 1.5rem;
@@ -9,12 +8,9 @@
     cursor: pointer;
 }
 
-.icon {
-    font-size: 34px;
-}
-
-.youtubeIcon {
-    font-size: 44px;
+.logo {
+    width: 22px;
+    height: 22px;
 }
 
 @media only screen and (min-width: 851px) {
@@ -26,13 +22,5 @@
 @media only screen and (max-width: 850px) {
     .container {
         gap: 1rem;
-    }
-
-    .icon {
-        font-size: 30px;
-    }
-    
-    .youtubeIcon {
-        font-size: 40px;
     }
 }

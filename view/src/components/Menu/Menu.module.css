@@ -20,9 +20,10 @@
 
 .mainContainer a {
     font-size: 0.875rem;
-    font-weight: 600;
+    font-weight: 700;
     text-decoration: none;
     text-transform: uppercase;
+    letter-spacing: 0.75px;
     color: inherit;
     width: 100%;
     height: 100%;
@@ -40,7 +41,13 @@
 }
 
 .arrowIcon {
-    font-size: 16px;
+    width: 20px;
+    height: 20px;
+}
+
+.socialsContainer {
+    margin-top: 2rem;
+    padding-left: 1rem;
 }
 
 
@@ -64,12 +71,13 @@
 }
 
 
-@media only screen and (max-width: 350px) {
+@media only screen and (max-width: 550px) {
     .mainContainer a {
         font-size: 0.8125rem;
     }
 
     .arrowIcon {
-        font-size: 15px;
+        width: 19px;
+        height: 19px;
     }
 }

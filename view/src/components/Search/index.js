@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 
 import styles from './Search.module.css';
-import SearchIcon from '@mui/icons-material/Search';
+import searchIcon from "./searchIcon.svg";
 import { setSearchTerm, selectSearchTerm } from "../../store/SearchSlice";
 
 function Search({ direction = "left" }) {
@@ -63,7 +63,7 @@ function Search({ direction = "left" }) {
              ref={containerRef}
              onBlur={handleBlur}
         >
-            <SearchIcon className={styles.searchIcon} onClick={handleClick} ref={iconRef} />
+            <img src={searchIcon} className={styles.searchIcon} onClick={handleClick} ref={iconRef} alt="Search icon" />
             <input
                 type="text"
                 ref={inputRef}

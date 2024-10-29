@@ -48,6 +48,7 @@
     color: #454545;
     background-color: #fff;
     border: none;
+    cursor: pointer;
 }
 
 .subscribeSuccess {

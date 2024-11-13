@@ -1,0 +1,79 @@
+/* Header styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.header > div {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    padding-right: 3rem;
+}
+
+.arrowContainer {
+    display: flex;
+    gap: 2rem;
+}
+
+.arrowContainer > * {
+    cursor: pointer;
+    color: #454545;
+}
+
+.arrowContainer > *:active {
+    color: #454545aa;
+}
+
+.arrowContainer + a {
+    border-bottom: 1.5px solid #454545;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: inherit;
+}
+
+
+/* Carousel styles */
+.carouselContainer {
+    display: flex;
+    gap: 1.5rem;
+    overflow: hidden;
+    width: 100vw;
+    padding: 1rem 0;
+    position: relative;
+    left: calc(-1 * var(--padding-main));
+}
+
+.carouselContainer > * {
+    position: relative;
+    left: var(--padding-main);
+}
+
+@media only screen and (max-width: 1400px) {
+    .header {
+        margin-bottom: 0.25rem;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .header {
+        margin-bottom: 0rem;
+    }
+
+    .arrowContainer + a {
+        font-size: 0.875rem;
+    }
+}
+
+@media only screen and (max-width: 850px) {
+    .header > div {
+        display: none;
+    }
+
+    .carouselContainer {
+        gap: 1.25rem;
+    }
+}

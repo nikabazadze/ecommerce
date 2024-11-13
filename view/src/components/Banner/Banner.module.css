@@ -38,9 +38,9 @@
 }
 
 .h1 {
-    font-size: 3rem;
+    font-size: 2.875rem;
     font-weight: 600;
-    letter-spacing: 6px;
+    letter-spacing: 5px;
     line-height: 4rem;
     text-align: center;
     text-transform: uppercase;
@@ -52,6 +52,10 @@
     content: "\00a0 \00a0";
 }
 
+.contentContainer a {
+    text-decoration: none;
+}
+
 .button {
     font-family: inherit;
     font-size: 1rem;
@@ -60,7 +64,7 @@
     text-transform: uppercase;
     width: 250px;
     padding: 12px;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     color: #fff;
     background-color: #dea54b;
     border: none;
@@ -71,7 +75,7 @@
 .button:hover {
     background-color: transparent;
     border: 0.875px solid #fff;
-    margin-top: calc(2rem - 0.875px);
+    margin-top: calc(1.5rem - 0.875px);
 }
 
 
@@ -89,18 +93,22 @@
         display: none;
     }
 
+    .banner1 {
+        height: calc(75vh - var(--height-mainHeader) - var(--height-promoHeader));
+    }
+
     .contentContainer {
         flex-direction: column;
         justify-content: flex-end;
         align-items: flex-start;
-        padding-bottom: 160px;
+        padding-bottom: 80px;
         padding-left: 90px;
     }
 
     .h1 {
-        font-size: 2.375rem;
-        line-height: 3.5rem;
-        letter-spacing: 5px;
+        font-size: 2rem;
+        line-height: 3rem;
+        letter-spacing: 3px;
         text-align: start;
         padding-left: 0rem;
     }
@@ -116,41 +124,58 @@
 
 @media only screen and (max-width: 650px) {
     .contentContainer {
-        align-items: center;
-        padding-bottom: 140px;
-        padding-left: 0px;
+        padding-left: 100px;
     }
 
     .h1 {
-        font-size: 2.125rem;
-        line-height: 3rem;
-        letter-spacing: 4px;
-        text-align: center;
+        font-size: 1.875rem;
+        line-height: 2.75rem;
     }
 
     .button {
         font-size: 0.9375rem;
         width: 220px;
         padding: 10px;
-        margin-top: 1.5rem;
+        margin-top: 1.25rem;
     }
 
     .button:hover {
-        margin-top: calc(1.5rem - 0.875px);
+        margin-top: calc(1.25rem - 0.875px);
     }
 }
 
 @media only screen and (max-width: 500px) {
+    .contentContainer {
+        align-items: center;
+        padding-left: 0px;
+    }
+
     .h1 {
-        font-size: 1.875rem;
-        line-height: 2.75rem;
+        font-size: 1.625rem;
+        line-height: 2.5rem;
+        text-align: center;
+    }
+
+    .button {
+        width: 200px;
+    }
+
+    .banner1 {
+        display: none;
+    }
+
+    .banner2 {
+        display: block;
+        height: calc(78vh - var(--height-mainHeader) - var(--height-promoHeader));
+        position: relative;
+        bottom: 2rem;
     }
 }
 
 @media only screen and (max-width: 400px) {
     .h1 {
-        font-size: 1.625rem;
-        line-height: 2.5rem;
+        font-size: 1.5rem;
+        line-height: 2.375rem;
     }
 
     .button {

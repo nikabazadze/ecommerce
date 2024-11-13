@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import styles from './Banner.module.css';
 
 function Banner() {
@@ -12,7 +13,7 @@ function Banner() {
             </div>
             <div className={styles.contentContainer}>
                 <h1 className={styles.h1}>best quality<br />pop up wallets</h1>
-                <button className={styles.button}>shop now</button>
+                <Link to={"/shop"} ><button className={styles.button}>shop now</button></Link>
             </div>
         </div>
     );

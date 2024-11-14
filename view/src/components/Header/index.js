@@ -8,6 +8,7 @@ import Search from "../Search";
 import Badge from "../Badge";
 import Menu from "../Menu/Menu";
 import menuIcon from "./icons/menuIcon.svg";
+import closeIcon from "./icons/closeIcon.svg";
 import cartIcon from "./icons/cartIcon.svg";
 import personIcon from "./icons/personIcon.svg";
 import { selectIsLoggedIn, selectUser } from "../../store/UserSlice";
@@ -57,7 +58,7 @@ function Header() {
             <div className={styles.outerContainer}>
                 <div className={styles.innerContainer}>
                     <div className={styles.menuIconContainer} onClick={() => setShowMenu(!showMenu)} >
-                        <img src={menuIcon} className={styles.menuIcon} alt="Dropdown menu icon" />
+                        <img src={showMenu ? closeIcon : menuIcon} className={styles.menuIcon} alt="Dropdown menu icon" />
                     </div>
                     <nav className={styles.leftNav}>{renderLeftNav()}</nav>
                     <span className={styles.logo}><Link to="/">ZiPLiX</Link></span>

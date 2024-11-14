@@ -166,7 +166,7 @@
 
 @media only screen and (max-width: 850px) {
     .menuIconContainer {
-        display: block;
+        display: flex;
     }
 
     .leftNav {

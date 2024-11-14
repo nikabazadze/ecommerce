@@ -69,15 +69,3 @@
     opacity: 1;
     visibility: visible;
 }
-
-
-@media only screen and (max-width: 550px) {
-    .mainContainer a {
-        font-size: 0.8125rem;
-    }
-
-    .arrowIcon {
-        width: 19px;
-        height: 19px;
-    }
-}

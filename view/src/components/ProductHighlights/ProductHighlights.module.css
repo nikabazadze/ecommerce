@@ -43,6 +43,13 @@
 
 
 /* Media queries */
+/* Desktop */
+@media only screen and (min-width: 2200px) {
+    .highlight {
+        max-width: 2000px;
+    }
+}
+
 @media only screen and (max-width: 2200px) {
     .highlight {
         gap: 3rem;
@@ -59,6 +66,7 @@
     }
 }
 
+/* Tablet */
 @media only screen and (max-width: 850px) {
     .highlight {
         flex-direction: column-reverse !important;
@@ -89,6 +97,7 @@
     }
 }
 
+/* Mobile */
 @media only screen and (max-width: 500px) {
     .highlight > * {
         width: 98%;

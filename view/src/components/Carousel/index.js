@@ -7,8 +7,9 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 import ProductCard from "../ProductCard";
+import CategoryListItem from "../CategoryListItem";
 
-function Carousel({ title, items }) {
+function Carousel({ title, items, itemType = "product" }) {
     const carouselRef = useRef(null);
     const [touchStartX, setTouchStartX] = useState(0);
     const [touchEndX, setTouchEndX] = useState(0);
@@ -65,7 +66,9 @@ function Carousel({ title, items }) {
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
             >
-                {items.map((item) => <ProductCard product={item} key={item.id} />)}
+                {(itemType === "product") ? 
+                items.map((item) => <ProductCard product={item} key={item.id} />) : 
+                items.map((item) => <CategoryListItem category={item} />)}
             </div>
         </div>
     );

@@ -3,25 +3,24 @@ import { useSelector } from "react-redux";
 
 import styles from './Home.module.css';
 import Banner from "../../components/Banner";
-import ProductList from "../../components/ProductList";
+import Carousel from "../../components/Carousel";
 import CategoryList from "../../components/CategoryList";
 import ProductHighlights from "../../components/ProductHighlights";
 import { selectProducts, selectProductsAreLoading, selectProductsHaveError } from "../../store/ProductsSlice";
 
 function Home() { 
-    const bestProducts = useSelector(selectProducts);
+    const bestProducts = useSelector(selectProducts).slice(0, 10);
 
     return (
         <div className={styles.homepage}>
             <Banner />
             <section>
-                <h2>best sellers</h2>
-                <ProductList products={bestProducts} position="horizontal"/>
+                <Carousel items={bestProducts} title="best sellers" />
             </section>
             <section className={styles.highlights}>
                 <ProductHighlights 
                     position="left"
-                    url="https://ecomm-project-ziplix.s3.amazonaws.com/homepage-images/highlight1.webp"
+                    url="https://ecomm-project-ziplix.s3.amazonaws.com/homepage-images/highlight1.png"
                     title="Slim, Modern, Secure"
                     description="There is a better way to carry cards and cash. Ditch the bulk of the traditional leather bi-fold and get a slim, RFID blocking wallet that is ready to go wherever you do and stand the test of time."
                 />
@@ -33,7 +32,6 @@ function Home() {
                 />
             </section>
             <section>
-                <h2>shop by category</h2>
                 <CategoryList />
             </section>
         </div>

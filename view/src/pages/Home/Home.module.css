@@ -1,20 +1,100 @@
-.homepage section {
+.homepage > section {
     margin: 7rem var(--padding-main);
+    position: relative;
     color: #454545;
 }
 
-.homepage > section:first-of-type {
-    margin-top: 5rem;
-    position: relative;
-}
-
 .homepage h2 {
-    font-size: 2rem;
-    font-weight: 500;
+    font-size: 1.75rem;
+    font-weight: 600;
+    letter-spacing: 0.25px;
     text-transform: uppercase;
-    margin-bottom: 2rem;
 }
 
-.highlights > * {
-    margin-bottom: 4rem;
+.highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    align-items: center;
+    padding: 0 5rem;
+}
+
+
+/* Media Queries */
+/* Desktop */
+@media only screen and (max-width: 1750px) {
+    .homepage > section {
+        margin: 6rem var(--padding-main);
+    }
+
+    .homepage > section:first-of-type {
+        margin-top: 4rem;
+    }
+
+    .highlights {
+        padding: 0;
+    }
+}
+
+@media only screen and (max-width: 1400px) {
+    .homepage > section {
+        margin: 5rem var(--padding-main);
+    }
+
+    .homepage h2 {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+    }
+}
+
+@media only screen and (max-width: 1050px) {
+    .homepage > section {
+        margin: 4rem var(--padding-main);
+    }
+
+    .homepage > section:first-of-type {
+        margin-top: 3rem;
+    }
+
+    .highlights {
+        gap: 3rem;
+    }
+}
+
+/* Tablet */
+@media only screen and (max-width: 850px) {
+    .highlights {
+        gap: 4rem;
+    }
+
+    .homepage h2 {
+        font-size: 1.375rem;
+        letter-spacing: 0.5px;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    .homepage > section {
+        margin: 3rem var(--padding-main);
+    }
+
+    .homepage > section:first-of-type {
+        margin-top: 2rem;
+    }
+}
+
+/* Mobile */
+@media only screen and (max-width: 500px) {
+    .homepage > section:first-of-type {
+        margin-top: 0;
+    }
+
+    .homepage h2 {
+        font-size: 1.25rem;
+        letter-spacing: 0.25px;
+    }
+
+    .highlights {
+        gap: 3.5rem;
+    }
 }

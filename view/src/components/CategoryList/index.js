@@ -1,7 +1,6 @@
 import React from "react";
-import Grid from '@mui/material/Grid';
-
 import styles from './CategoryList.module.css';
+import Carousel from "../Carousel";
 import CategoryListItem from "../CategoryListItem";
 
 function CategoryList() {
@@ -34,15 +33,15 @@ function CategoryList() {
 
     return (
         <div>
-            <Grid container spacing={3}>
-                {
-                    categories.map((category, index) => (
-                        <Grid item xs={4} key={index}>
-                            <CategoryListItem category={category} />
-                        </Grid>
-                    ))
-                }
-            </Grid>
+            <div className={styles.desktop}>
+                <h2>shop by category</h2>
+                <div className={styles.flexContainer}>
+                    {categories.map((category) => (<CategoryListItem category={category} />))}
+                </div>
+            </div>
+            <div className={styles.carouselContainer}>
+                <Carousel title="shop by category" items={categories} itemType="category" />
+            </div>
         </div>
     );
 };

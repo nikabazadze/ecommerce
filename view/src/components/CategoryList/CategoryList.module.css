@@ -1,0 +1,40 @@
+.flexContainer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+}
+
+.flexContainer > * {
+    width: calc((100% - (2 * 1.25rem)) / 3);
+}
+
+.carouselContainer {
+    display: none;
+}
+
+
+/* Desktop */
+@media only screen and (max-width: 1400px) {
+    .flexContainer {
+        margin-top: 1.25rem;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .flexContainer {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Tablet-Mobile */
+@media only screen and (max-width: 850px) {
+    .desktop {
+        display: none;
+    }
+
+    .carouselContainer {
+        display: block;
+    }
+}

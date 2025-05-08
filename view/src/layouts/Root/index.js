@@ -2,10 +2,10 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 
 import styles from './Root.module.css';
-import ScrollToTop from "../ScrollToTop";
-import PromoHeader from "../PromoHeader";
-import Header from "../Header";
-import Footer from "../Footer";
+import ScrollToTop from "../../components/ScrollToTop";
+import PromoHeader from "../../components/PromoHeader";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 function Root() {
     return (

@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 
 import './App.css';
-import Root from '../components/Root';
+import Root from '../layouts/Root';
 import Home from '../pages/Home';
 import Shop from '../pages/Shop';
 import Cart from '../pages/Cart';

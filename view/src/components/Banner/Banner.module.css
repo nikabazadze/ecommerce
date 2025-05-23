@@ -131,22 +131,12 @@
         font-size: 1.875rem;
         line-height: 2.75rem;
     }
-
-    .button {
-        font-size: 0.9375rem;
-        width: 220px;
-        padding: 10px;
-        margin-top: 1.25rem;
-    }
-
-    .button:hover {
-        margin-top: calc(1.25rem - 0.875px);
-    }
 }
 
 @media only screen and (max-width: 500px) {
     .contentContainer {
         align-items: center;
+        padding-bottom: 60px;
         padding-left: 0px;
     }
 
@@ -157,7 +147,12 @@
     }
 
     .button {
-        width: 200px;
+        width: 80vw;
+        margin-top: 3rem;
+    }
+
+    .button:hover {
+        margin-top: calc(3rem - 0.875px);
     }
 
     .banner1 {
@@ -176,9 +171,5 @@
     .h1 {
         font-size: 1.5rem;
         line-height: 2.375rem;
-    }
-
-    .button {
-        width: 200px;
     }
 }

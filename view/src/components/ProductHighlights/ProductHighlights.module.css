@@ -84,26 +84,14 @@
     }
 
     .highlightText h2 {
-        margin-bottom: 1rem;
+        margin-bottom: 1.25rem;
     }
 }
 
 /* Mobile */
 @media only screen and (max-width: 500px) {
-    .highlight {
-        gap: 1rem;
-    }
-
-    .highlight > * {
-        width: 100%;
-    }
-
     .highlightText {
         padding: 0rem 1rem;
-    }
-
-    .highlightText h2 {
-        margin-bottom: 0.75rem;
     }
 
     .highlightText p {

@@ -83,7 +83,7 @@ function Footer() {
                         <div className={styles.desktop}><Socials /></div>
                     </div>
                     <div className={styles.copyright}>
-                        <p>&copy; 2023 Ziplix, all rights reserved.</p>
+                        <p>&copy; 2025 Ziplix, all rights reserved.</p>
                     </div>
                 </div>
             </div>

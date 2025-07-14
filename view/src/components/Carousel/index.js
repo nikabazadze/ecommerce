@@ -16,10 +16,10 @@ function Carousel({ title, items, itemType = "product" }) {
 
     // Moves carousel left or right
     function handleClick(direction) {
-        const product = carouselRef.current.children[0];
-        const productWidth = product.offsetWidth;
+        const carouselItem = carouselRef.current.children[0];
+        const carouselItemWidth = carouselItem.offsetWidth;
         const flexGap = 2 * 16;
-        const scrollSize = (productWidth + flexGap) * 2;
+        const scrollSize = (carouselItemWidth + flexGap) * 2;
         carouselRef.current.scrollBy({
             top: 0,
             left: `${direction === "right" ? scrollSize : -scrollSize}`,

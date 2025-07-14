@@ -201,15 +201,6 @@
 
 /* Product suggestions section */
 .suggestion {
-    margin: 6.25rem 0 13rem 0;
+    margin: 6.25rem 0;
     position: relative;
-}
-
-.suggestion h2 {
-    text-align: center;
-    margin-bottom: 4.6875rem;
-}
-
-.suggestion > div > div > div:first-of-type {
-    top: 0.875rem;
 }

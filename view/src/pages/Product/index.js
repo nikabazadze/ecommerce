@@ -5,8 +5,8 @@ import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 
 import styles from "./Product.module.css";
 import Rating from '@mui/material/Rating';
+import Carousel from "../../components/Carousel";
 import CartDrawer from "../../components/CartDrawer";
-import ProductList from "../../components/ProductList";
 import ImageSlider from "../../components/ImageSlider";
 import BasicAccordion from "../../components/Accordion";
 import ProductHighlights from "../../components/ProductHighlights";
@@ -173,8 +173,7 @@ function Product() {
                 {renderHighlights()}
             </section>
             <section className={styles.suggestion}>
-                <h2>You May also Like</h2>
-                <ProductList position="horizontal" products={products} />
+                <Carousel items={products} title="You May also Like" />
             </section>
         </div>
     );

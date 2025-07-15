@@ -1,20 +1,16 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useLocation } from 'react-router-dom';
+import { useSelector } from "react-redux";
 import styles from "./Shop.module.css";
-import ProductList from "../../components/ProductList";
+import ProductGrid from "../../components/ProductGrid";
 import { selectProducts } from "../../store/ProductsSlice";
 
 function Shop() {
-    const dispatch = useDispatch();
-    const location = useLocation();
     const products = useSelector(selectProducts);
 
     return (
         <div className={styles.shopPage}>
             <div className={styles.banner}></div>
             <div className={styles.container}>
-                <ProductList products={products} />
+                <ProductGrid products={products} />
             </div>
         </div>
     );

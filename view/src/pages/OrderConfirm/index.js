@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import styles from './OrderConfirm.module.css';
 import { clearCart } from "../../store/CartSlice";
-import ProductList from "../../components/ProductList";
+import Carousel from "../../components/Carousel";
 import OrderListItem from "../../components/OrderListItem";
 import { selectProducts } from "../../store/ProductsSlice";
 
@@ -33,8 +33,7 @@ function OrderConfirm() {
                 </div>
             )}
             <section className={styles.continueShoppingContainer}>
-                <h2>Continue Shopping</h2>
-                <ProductList position="horizontal" products={products} />
+                <Carousel items={products} title="Continue Shopping" />
             </section>
         </div>
     );

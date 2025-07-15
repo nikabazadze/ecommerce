@@ -1,7 +1,7 @@
 .div {
     width: 100%;
     height: var(--height-promoHeader);
-    background-color: #454545;
+    background-color: var(--background-color-promo1);
     display: flex;
     justify-content: center;
     align-items: center;

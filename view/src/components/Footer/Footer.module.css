@@ -11,7 +11,7 @@
 
 .innerContainer {
     width: 100%;
-    max-width: 1500px;
+    max-width: var(--max-width-header);
     display: flex;
     justify-content: space-between;
     gap: 10rem;

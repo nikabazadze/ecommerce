@@ -14,7 +14,6 @@ function ModalSlider({images, open, setOpen, mainSlideIndex}) {
     const sliderWidth = images.length * 100;
 
     const [touchStartX, setTouchStartX] = useState(null);
-    const [touchEndX, setTouchEndX] = useState(null);
 
     useEffect(() => {
         if (open) {
@@ -54,9 +53,9 @@ function ModalSlider({images, open, setOpen, mainSlideIndex}) {
     };
 
     const handleTouchEnd = (e) => {
-        setTouchEndX(e.changedTouches[0].clientX);
         if (touchStartX === null) return;
 
+        const touchEndX = e.changedTouches[0].clientX;
         const deltaX = touchStartX - touchEndX;
 
         if (deltaX > 30) {
@@ -66,7 +65,6 @@ function ModalSlider({images, open, setOpen, mainSlideIndex}) {
         }
 
         setTouchStartX(null);
-        setTouchEndX(null);
     };
 
     return (

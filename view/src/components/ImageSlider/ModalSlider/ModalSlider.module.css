@@ -81,6 +81,14 @@
     background-color: rgba(0, 0, 0, 0.8);
 }
 
+/* Tablet */
+@media only screen and (max-width: 768px) {
+    .prev,
+    .next {
+        display: none;
+    }
+}
+
 /* Mobile */
 @media only screen and (max-width: 600px) {
     .modalMainContainer {

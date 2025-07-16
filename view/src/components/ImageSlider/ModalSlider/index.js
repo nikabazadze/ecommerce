@@ -13,6 +13,9 @@ function ModalSlider({images, open, setOpen, mainSlideIndex}) {
     const [ currentIndex, setCurrentIndex ] = useState(mainSlideIndex);
     const sliderWidth = images.length * 100;
 
+    const [touchStartX, setTouchStartX] = useState(null);
+    const [touchEndX, setTouchEndX] = useState(null);
+
     useEffect(() => {
         if (open) {
             setCurrentIndex(mainSlideIndex);
@@ -46,6 +49,26 @@ function ModalSlider({images, open, setOpen, mainSlideIndex}) {
         setCurrentIndex(newIndex);
     };
 
+    const handleTouchStart = (e) => {
+        setTouchStartX(e.touches[0].clientX);
+    };
+
+    const handleTouchEnd = (e) => {
+        setTouchEndX(e.changedTouches[0].clientX);
+        if (touchStartX === null) return;
+
+        const deltaX = touchStartX - touchEndX;
+
+        if (deltaX > 30) {
+            showNext();
+        } else if (deltaX < -30) {
+            showPrevious();
+        }
+
+        setTouchStartX(null);
+        setTouchEndX(null);
+    };
+
     return (
         <Modal
             open={open}
@@ -53,7 +76,11 @@ function ModalSlider({images, open, setOpen, mainSlideIndex}) {
             aria-describedby="modal-modal-description"
         >
             <div className={styles.modalMainContainer} onClick={handleClose}>
-                <div className={styles.modalImgContainer} ref={modalImageContainerRef} >
+                <div className={styles.modalImgContainer}
+                     ref={modalImageContainerRef}
+                     onTouchStart={handleTouchStart}
+                     onTouchEnd={handleTouchEnd}
+                >
                     <div 
                         ref={modalMainImageRef}
                         className={styles.imageSlider}  

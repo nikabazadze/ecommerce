@@ -70,7 +70,7 @@ function ModalSlider({images, open, setOpen, mainSlideIndex}) {
                 </div>                    
                 <div className={styles.prev} onClick={showPrevious} ref={leftArrowRef} >&#10094;</div>
                 <div className={styles.next} onClick={showNext}  ref={rightArrowRef} >&#10095;</div>
-                <CloseIcon className={styles.closeIcon} sx={{fontSize: 33}}/>
+                <CloseIcon className={styles.closeIcon} />
             </div>
         </Modal>
     );

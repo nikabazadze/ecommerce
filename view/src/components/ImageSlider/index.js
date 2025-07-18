@@ -1,4 +1,3 @@
-import React from "react";
 import { useState, useRef, useEffect } from "react";
 import styles from './ImageSlider.module.css';
 import ModalSlider from "./ModalSlider";
@@ -41,21 +40,30 @@ function ImageSlider({images}) {
         if (imageListRef.current) {
             const imageElements = imageListRef.current.childNodes;
             const currentImageElem = imageElements[currentIndex];
-    
+
             if (currentImageElem) {
-                const containerLeft = imageListRef.current.scrollLeft;
-                const containerRight = containerLeft + imageListRef.current.clientWidth;
-                const imageLeft = currentImageElem.offsetLeft;
-                const imageRight = imageLeft + currentImageElem.clientWidth;
-    
-                // Check if image is out of view on the left
-                if (imageLeft < containerLeft) {
-                    imageListRef.current.scrollLeft = imageLeft - 10;
-                } 
-                // Check if image is out of view on the right
-                else if (imageRight > containerRight) {
-                    const overflow = imageRight - containerRight;
-                    imageListRef.current.scrollLeft += overflow + 10;
+                const container = imageListRef.current;
+
+                const containerTop = imageListRef.current.scrollTop;
+                const containerBottom = containerTop + imageListRef.current.clientHeight;
+
+                const imageTop = currentImageElem.offsetTop;
+                const imageBottom = imageTop + currentImageElem.clientHeight;
+
+                // Image is out of view above
+                if (imageTop < containerTop) {
+                    container.scrollTo({
+                        top: imageTop - 10,
+                        behavior: "smooth",
+                    });
+                }
+                // Image is out of view below
+                else if (imageBottom > containerBottom) {
+                    const overflow = imageBottom - containerBottom;
+                    container.scrollTo({
+                        top: container.scrollTop + overflow + 10,
+                        behavior: "smooth",
+                    });
                 }
             }
         }
@@ -82,9 +90,9 @@ function ImageSlider({images}) {
                         ></div>
                     ))}
                 </div>
+                <div className={styles.prev} onClick={showPrevious} >&#10094;</div>
+                <div className={styles.next} onClick={showNext} >&#10095;</div>
             </div>
-            <div className={styles.prev} onClick={showPrevious} >&#10094;</div>
-            <div className={styles.next} onClick={showNext} >&#10095;</div>
             <ul ref={imageListRef} className={styles.smallImagesContainer}>
                 {images.map((image, index) => (
                     <li key={index} 
@@ -92,10 +100,9 @@ function ImageSlider({images}) {
                         onClick={() => setCurrentIndex(index)}
                         style={{ 
                             backgroundImage: `url(${image})`, 
-                            border: `${index === currentIndex ? "2px solid rgb(107, 133, 206)" : ""} `,
-                            boxShadow: `${index === currentIndex ? "0px 1px 5px magenta" : ""} `
+                            boxShadow: `${index === currentIndex ? "0px 2px 18px rgba(0,0,0,0.15)" : ""} `
                         }}
-                    ></li>
+                    ><div className={index !== currentIndex && styles.overlay}></div></li>
                 ))}
             </ul>
             <ModalSlider images={images} open={openModal} setOpen={setOpenModal} mainSlideIndex={currentIndex} />

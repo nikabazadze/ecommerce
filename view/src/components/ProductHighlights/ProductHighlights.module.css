@@ -36,9 +36,11 @@
 }
 
 .highlightText p {
-    font-size: 1.125rem;
-    text-align: center;
-    line-height: 1.4;
+    font-size: 1.25rem;
+    font-weight: 200;
+    line-height: 2rem;
+    letter-spacing: 0.125rem;
+    text-align: start;
     max-width: 650px;
 }
 
@@ -65,6 +67,10 @@
     .highlightText {
         padding: 2rem;
     }
+
+    .highlightText p {
+        font-size: 1.125rem;
+    }
 }
 
 /* Tablet */
@@ -85,6 +91,10 @@
 
     .highlightText h2 {
         margin-bottom: 1.25rem;
+    }
+
+    .highlightText p {
+        line-height: 1.875rem;
     }
 }
 

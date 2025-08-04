@@ -32,17 +32,18 @@
 }
 
 
-/* Small images list styles */
-.smallImagesContainer {
+/* Thumbnail list styles */
+.thumbnail {
     width: 10rem;
     height: 100%;
+    min-height: 39rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
     overflow: hidden;
 }
 
-.smallImagesContainer li {
+.thumbnail li {
     width: 100%;
     height: auto;
     aspect-ratio: 1 / 1;
@@ -63,12 +64,12 @@
 /* Arrow icons styles */
 .prev,
 .next {
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.6);
-    font-size: 1.25rem;
+    border-radius: var(--border-radius-card);
+    background-color: #fff;
+    font-size: 1.125rem;
     color: #454545;
-    width: 1.7rem;
-    height: 1.7rem;
+    width: 2.25rem;
+    height: 2.25rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -78,17 +79,61 @@
     z-index: 1;
 }
 
-.prev:hover,
-.next:hover {
-    background-color: #fff;
-}
-
 .prev {
     left: 1rem;
-    padding-right: 0.1rem;
+    /* padding-right: 0.1rem; */
 }
 
 .next {
     right: 1rem;
-    padding-left: 0.1rem;
+    /* padding-left: 0.1rem; */
+}
+
+
+
+/* Media Queries */
+/* Desktop */
+@media only screen and (max-width: 1200px) {
+    .thumbnail {
+        width: 8rem;
+    }
+}
+
+@media only screen and (max-width: 1050px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+        gap: 2.5rem;
+    }
+
+    .thumbnail {
+        width: 100%;
+        height: auto;
+        min-height: 0;
+        padding: 0.3rem 0;
+        flex-direction: row;
+        justify-content: center;
+        gap: 1.5rem;
+        overflow: hidden;
+    }
+
+    .thumbnail li {
+        width: 0.3rem;
+        height: 0.3rem;
+        border-radius: 50%;
+        background-color: #454545;
+        transition: transform .2s linear;
+        opacity: 0.5;
+    }
+
+    .overlay {
+        display: none;
+    }
+}
+
+/* Tablet */
+@media only screen and (max-width: 850px) {
+    .thumbnail {
+        display: none;
+    }
 }

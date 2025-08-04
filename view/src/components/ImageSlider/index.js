@@ -73,6 +73,17 @@ function ImageSlider({images}) {
         scrollToCurrentImage();
     }, [currentIndex]);
 
+    const getthumbnailStyle = (image, index) => {
+        return (window.innerWidth > 1050) ? { 
+            backgroundImage: `url(${image})`, 
+            boxShadow: `${index === currentIndex ? "0px 2px 18px rgba(0,0,0,0.15)" : ""} `
+        } : 
+        (index === currentIndex ? {
+            transform: "scale(1.35, 1.35)",
+            opacity: "1",
+        } : {});
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.mainImageContainer} ref={containerRef}>
@@ -93,15 +104,12 @@ function ImageSlider({images}) {
                 <div className={styles.prev} onClick={showPrevious} >&#10094;</div>
                 <div className={styles.next} onClick={showNext} >&#10095;</div>
             </div>
-            <ul ref={imageListRef} className={styles.smallImagesContainer}>
+            <ul ref={imageListRef} className={styles.thumbnail}>
                 {images.map((image, index) => (
                     <li key={index} 
-                        className={styles.img}
+                        className={(window.innerWidth > 1050) ? styles.img : styles.dot}
                         onClick={() => setCurrentIndex(index)}
-                        style={{ 
-                            backgroundImage: `url(${image})`, 
-                            boxShadow: `${index === currentIndex ? "0px 2px 18px rgba(0,0,0,0.15)" : ""} `
-                        }}
+                        style={getthumbnailStyle(image, index)}
                     ><div className={index !== currentIndex && styles.overlay}></div></li>
                 ))}
             </ul>

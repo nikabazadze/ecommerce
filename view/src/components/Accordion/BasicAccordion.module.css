@@ -1,0 +1,8 @@
+.accordion::before {
+    background-color: transparent !important;
+}
+
+.accordionSummary {
+    font-size: 1rem;
+    font-weight: 600;
+}

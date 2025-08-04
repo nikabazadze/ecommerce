@@ -1,6 +1,11 @@
 .productPage {
-    margin: 0 var(--padding-main);
+    margin: 0 var(--padding-header);
     color: #454545;
+}
+
+.productPage > section {
+    max-width: var(--max-width-header);
+    margin: 3rem auto;
 }
 
 .productPage h2 {
@@ -10,159 +15,140 @@
 }
 
 .mainContainer {
-    margin: 5rem 0;
     display: flex;
+    justify-content: space-between;
+    gap: 2rem;
 }
-
 
 
 /* left section styles */
 .leftSection {
-    width: 50%;
+    width: 60%;
 }
 
 .imageSliderContainer {
-    margin-top: 2.0625rem;
-    width: calc(100% - 4rem);
-    max-width: 35rem;
-    height: 40rem;
+    height: 45vw;
+    max-height: 44rem;
 }
-
 
 
 /* Right section styles */
 .rightSection {
-    width: 50%;
-    padding-right: 7.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.375rem;
+    width: 40%;
+}
+
+.rightSection > div:first-of-type {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    padding: 3rem;
+    border-radius: var(--border-radius-card);
+    box-shadow: var(--box-shadow-card);
 }
 
 /* Product meta styles */
 .productMeta {
     display: flex;
     flex-direction: column;
-    gap: 1.375rem;
+    gap: 1.25rem;
 }
 
-/* Product rating */
+.productMeta > div:first-of-type {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.productMeta h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.price {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: #606060;
+    word-spacing: -0.25rem;
+}
+
 .rating {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     position: relative;
     left: -0.1rem;
-    margin-bottom: 0.5rem;
 }
 
 .rating > span {
-    font-size: 1.25rem;
+    font-size: 1rem;
 }
 
 .rating > p {
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    position: relative;
-    top: 0.05rem;
-}
-
-/* Price */
-.productMeta > span {
-    font-size: 2.1875rem;
-    line-height: 2.5625rem;
-    word-spacing: -0.375rem;
 }
 
 /* Colors section */
-.colorsContainer {
-    margin-top: 1.5625rem;
-}
-
 .colorsContainer p {
-    font-size: 1.25rem;
+    font-size: 0.9375rem;
     font-weight: 200;
-    line-height: 2.3125rem;
     text-transform: capitalize;
-    margin: 1.5rem 0;
-}
-
-.colorsContainer ul {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    position: relative;
-    left: calc(-2px - 0.1rem);
-}
-
-.colorsContainer li {
-    border-radius: 50%;
-    padding: 0.1rem;
-    border: 2px solid #fff;
-}
-
-.color {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.chosenColorBorder {
-    border: 2px solid #868686 !important;
+    margin-bottom: 0.625rem;
 }
 
 /* Action buttons */
 .buttonsContainer {
-    margin-top: 1.42rem;
-    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .buttonsContainer button {
     font-family: inherit;
-    font-size: 1.25rem;
-    line-height: 2rem;
+    font-size: 1rem;
+    font-weight: 700;
     width: 100%;
-    height: 3.75rem;
+    height: 3.25rem;
     cursor: pointer;
+    color: #fff;
+    border: none;
+    border-radius: var(--border-radius-button);
 }
 
 .buttonsContainer button:first-of-type {
-    margin-bottom: 0.625rem;
-    color: #3d3939;
-    background-color: #fff;
-    border: 1px solid #b3b3b3;
-    box-shadow: 0px 4px 4px 0 rgba(0, 0, 0, 0.1);
+    background-color: rgb(68, 68, 68);
 }
 
 .buttonsContainer button:first-of-type:hover {
-    color: #fff;
-    background-color: #dea54b;
+    color: rgb(68, 68, 68);
+    background-color: #fff;
+    border: 1px solid rgb(68, 68, 68);
 }
 
 .buttonsContainer button:last-of-type {
-    color: #fff;
-    background-color: #3d3939;
-    border: 1px solid #dbdbdb;
-    box-shadow: 0px 4px 4px 0 rgba(0, 0, 0, 0.25);
+    background-color: var(--color-cta-button);
 }
 
-.buttonsContainer button:last-of-type:hover {
-    background-color: #000;
-}
 
 .shipping {
-    line-height: 1.125rem;
+    font-size: 0.875rem;
+    font-weight: 500;
 }
 
 .description {
-    font-size: 1.25rem;
+    font-size: 1.0625rem;
     font-weight: 200;
-    line-height: 2rem;
-    letter-spacing: 0.125rem;
-    margin: 2.1875rem 0;
+    line-height: 1.6rem;
+    margin-top: 1.25rem;
 }
 
 /* Accordion */
 .accordion ul {
-    padding-left: 1rem;
+    padding-left: 1.5rem;
 }
 
 .accordion li {
@@ -171,6 +157,9 @@
     color: #454545;
 }
 
+.accordion p {
+    padding: 0 0.5rem;
+}
 
 
 /* Product highlights section */
@@ -203,4 +192,115 @@
 .suggestion {
     margin: 6.25rem 0;
     position: relative;
+}
+
+
+
+/* Media Queries */
+/* Desktop */
+@media only screen and (max-width: 1200px) {
+    .rightSection > div:first-of-type {
+        padding: 2.5rem;
+    }
+
+    .buttonsContainer button:last-of-type {
+        height: 3rem;
+    }
+
+    .description {
+        font-size: 1rem;
+        font-weight: 300;
+        line-height: 1.5rem;
+    }
+}
+
+@media only screen and (max-width: 1050px) {
+    .imageSliderContainer {
+        height: 60vw;
+    }
+
+    .rightSection > div {
+        position: relative;
+        left: 1rem;
+    }
+
+    .rightSection > div:first-of-type {
+        padding: 1.75rem;
+    }
+}
+
+/* Tablet */
+@media only screen and (max-width: 850px) {
+    .productPage > section:first-of-type {
+        margin-top: 0;
+    }
+
+    .mainContainer {
+        gap: 2.5rem;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Left section */
+    .leftSection {
+        width: 95vw;
+    }
+
+    .imageSliderContainer {
+        height: 95vh;
+    }
+
+    /* Right section */
+    .rightSection {
+        gap: 3rem;
+        width: 100%;
+    }
+
+    .rightSection > div {
+        left: 0rem;
+    }
+
+    .rightSection > div:first-of-type {
+        gap: 1.375rem;
+        padding: 0;
+        border-radius: none;
+        box-shadow: none;
+    }
+
+    /* Product meta */
+    .productMeta {
+        gap: 1rem;
+    }
+
+    .productMeta > div:first-of-type {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .productMeta h3 {
+        font-size: 1.25rem;
+        color: #353535;
+    }
+
+    .price {
+        font-size: 1.25rem;
+    }
+}
+
+@media only screen and (max-width: 730px) {
+    .leftSection {
+        width: 100vw;
+    }
+
+    .imageSliderContainer {
+        height: 75vh;
+    }
+}
+
+/* Mobile */
+@media only screen and (max-width: 600px) {
+    .imageSliderContainer {
+        height: 64vh;
+    }
 }

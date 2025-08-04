@@ -1,4 +1,3 @@
-import React from "react";
 import { useState, useMemo, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
@@ -9,6 +8,7 @@ import Carousel from "../../components/Carousel";
 import CartDrawer from "../../components/CartDrawer";
 import ImageSlider from "../../components/ImageSlider";
 import BasicAccordion from "../../components/Accordion";
+import ColorSelector from "../../components/ColorSelector";
 import ProductHighlights from "../../components/ProductHighlights";
 import { selectProductById, selectProducts } from "../../store/ProductsSlice";
 import { getProductColors, getAccordionItems } from "./productUtils";
@@ -47,21 +47,6 @@ function Product() {
 
     if (!product || !chosenColor) {
         return <div>Loading...</div>;
-    };
-
-    const renderColors = () => {
-        return (
-            <ul>
-                {
-                    productColors.map((color) => (
-                        <li key={color.code} 
-                            className={`${color.code === chosenColor.code && styles.chosenColorBorder}`}
-                            onClick={() => setChosenColor(color)}
-                        ><div className={styles.color} style={{ backgroundColor: `${color.code}` }}></div></li>
-                    ))
-                }
-            </ul>
-        );
     };
 
     const renderHighlights = () => {
@@ -143,29 +128,33 @@ function Product() {
                     </div>
                 </div>
                 <div className={styles.rightSection}>
-                    <div className={styles.productMeta}>
-                        <h2>{product.productName}</h2>
-                        <div className={styles.rating}>
-                            <Rating name="product-rating" defaultValue={parseFloat(product.reviewsScore)} precision={0.5} readOnly />
-                            <p>{product.reviewsQuantity} {product.reviewsQuantity > 1 ? "reviews" : "review"}</p>
-                        </div>
-                        <span>$ {unitPrice}</span>
-                    </div>
-                    <div className={styles.colorsContainer}>
-                        <p>{chosenColor.name}</p>
-                        {renderColors()}
-                    </div>
-                    <div className={styles.buttonsContainer}>
-                        <button onClick={handleProductAdd}>ADD TO CART</button>
-                        <button onClick={handleBuyNow}>Buy Now</button>
-                        {openDrawer && <CartDrawer onClose={setOpenDrawer} />}
-                    </div>
                     <div>
-                        <p className={styles.shipping}>For EU and USA shipped within 1 business day</p>
-                        <p className={styles.description}>{product.mainDescription}</p>
+                        <div className={styles.productMeta}>
+                            <div>
+                                <h3>{product.productName}</h3>
+                                <span className={styles.price}>$ {unitPrice}</span>
+                            </div>
+                            <div className={styles.rating}>
+                                <Rating name="product-rating" defaultValue={parseFloat(product.reviewsScore)} precision={0.5} readOnly />
+                                <p>{product.reviewsQuantity} {product.reviewsQuantity > 1 ? "reviews" : "review"}</p>
+                            </div>
+                        </div>
+                        <div className={styles.colorsContainer}>
+                            <p>{chosenColor.name}</p>
+                            <ColorSelector colors={productColors} chosenColor={chosenColor} setChosenColor={setChosenColor} />
+                        </div>
+                        <div className={styles.buttonsContainer}>
+                            <button onClick={handleProductAdd}>Add to cart</button>
+                            <button onClick={handleBuyNow}>BUY NOW</button>
+                            {openDrawer && <CartDrawer onClose={setOpenDrawer} />}
+                        </div>
+                        <div>
+                            <p className={styles.shipping}>For EU and USA shipped within 1 business day</p>
+                            <p className={styles.description}>{product.mainDescription}</p>
+                        </div>
                     </div>
                     <div className={styles.accordion}>
-                        <BasicAccordion items={accordionItems} />
+                        <BasicAccordion items={accordionItems} placement="card" />
                     </div>
                 </div>
             </section>

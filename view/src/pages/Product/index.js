@@ -51,17 +51,14 @@ function Product() {
 
     const renderHighlights = () => {
         return (
-            <div className={styles.highlights}>
-                {product.highlights.map((highlight, index) => (
+                product.highlights.map((highlight, index) => (
                     <ProductHighlights 
-                        key={highlight.title}
                         position={`${index % 2 === 0 ? "right" : "left"}`}
                         url={highlight.url}
                         title={highlight.title}
                         description={highlight.content}
                     />
-                ))}
-            </div>
+                ))
         )
     };
 
@@ -158,7 +155,7 @@ function Product() {
                     </div>
                 </div>
             </section>
-            <section>
+            <section className={styles.highlights}>
                 {renderHighlights()}
             </section>
             <section className={styles.suggestion}>

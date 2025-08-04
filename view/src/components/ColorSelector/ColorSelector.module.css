@@ -1,9 +1,8 @@
 .container {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 0.25rem;
-    position: relative;
-    left: calc(-2px - 0.1rem);
 }
 
 .container li {

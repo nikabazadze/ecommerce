@@ -68,8 +68,13 @@
         padding: 2rem;
     }
 
+    .highlightText h2 {
+        margin-bottom: 1.25rem;
+    }
+
     .highlightText p {
         font-size: 1.125rem;
+        line-height: 1.875rem;
     }
 }
 
@@ -89,12 +94,8 @@
         padding: 0rem 4rem;
     }
 
-    .highlightText h2 {
-        margin-bottom: 1.25rem;
-    }
-
     .highlightText p {
-        line-height: 1.875rem;
+        line-height: 1.75rem;
     }
 }
 
@@ -106,7 +107,7 @@
 
     .highlightText p {
         font-size: 1rem;
-    }
+        line-height: 1.625rem; }
 
     .imgContainer {
         width: 100vw;

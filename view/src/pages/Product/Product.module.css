@@ -208,6 +208,10 @@
 }
 
 @media only screen and (max-width: 1050px) {
+    .productPage h2 {
+        line-height: 2.5rem;
+    }
+
     .imageSliderContainer {
         height: 60vw;
     }
@@ -295,6 +299,7 @@
 @media only screen and (max-width: 600px) {
     .productPage h2 {
         font-size: 1.5rem;
+        line-height: 2rem;
     }
 
     .imageSliderContainer {

@@ -10,7 +10,7 @@
 
 .input {
     border: 1px solid #eaeaea;
-    border-radius: 5px;
+    border-radius: var(--border-radius-button);
     font-size: 0.875rem;
     color: #242121;
     position: absolute;

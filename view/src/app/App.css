@@ -2,16 +2,22 @@
     --padding-main: 2rem;
     --padding-header: 4rem;
     --padding-footer: 4rem;
+
     --height-promoHeader: 2rem;
     --height-mainHeader: 4rem;
     --max-width-header: 1500px;
+
     --border-radius-card: 4px;
     --border-radius-button: 4px;
     --box-shadow-card: 0px 2px 18px rgba(0, 0, 0, 0.15);
+
     --color-cta-button: #f0b404;
+
     --background-color-promo1: #e1a800;
     --background-color-promo2: #08244c;
     --background-color-promo3: #8b0000;
+    --background-color-checkout-btn: #4bb259;
+    --background-color-checkout-btn-hover: #7acc86;
 }
 
 html,

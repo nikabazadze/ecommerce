@@ -31,8 +31,8 @@ function CartDrawer({onClose}) {
                 <div className={styles.footer}>
                     <Link className={styles.link} to={"/checkout"}>
                         <button className={styles.checkoutButton}>
-                            <LockIcon />
-                            Checkout
+                            <LockIcon className={styles.lockIcon}/>
+                            checkout
                         </button>
                     </Link>
                 </div>

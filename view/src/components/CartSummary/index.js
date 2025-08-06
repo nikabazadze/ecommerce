@@ -29,14 +29,14 @@ function CartSummary() {
                     <div>
                         <Input label={"Discount code or gift card"} inputId={"promoCode"} state={promoCode} setState={setPromoCode} height={"2.625rem"} />
                     </div>
-                    <button type="submit" className={styles.promoButton}>Apply</button>
+                    <button type="submit" className={styles.promoButton}>apply</button>
                 </form>
                 <p style={isValidPromoCode ? {display: "none"} : {}}>This promo code is not valid!</p>
             </div>
             <div className={styles.subtotalContainer}>
                 <div>
                     <p>Subtotal</p>
-                    <span>{cart.totalValue}</span>
+                    <span>${cart.totalValue}</span>
                 </div>
                 <div>
                     <p>Shipping</p>
@@ -45,7 +45,7 @@ function CartSummary() {
             </div>
             <div className={styles.totalContainer}>
                 <p>Total</p>
-                <span>{cart.totalValue}</span>
+                <span>${cart.totalValue}</span>
             </div>
         </div>
     );

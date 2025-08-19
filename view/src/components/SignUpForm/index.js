@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import styles from './SignUpForm.module.css';
-import TextField from '@mui/material/TextField';
 import { addUser } from "../../API";
 import AuthButton from "../AuthButton";
+import Input from "../Input";
 import { checkGuestCart } from "../../utils/guestCartChecker";
 
 function SignUpForm() {
@@ -43,38 +43,12 @@ function SignUpForm() {
 
     return (
         <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={styles.name}>
-                <TextField 
-                    id="firstName" 
-                    label="First Name" 
-                    value={firstName}
-                    onChange={({target}) => setFirstName(target.value)}
-                    sx={{width: "50%"}} 
-                />
-                <TextField 
-                    id="lastName" 
-                    label="Last Name" 
-                    value={lastName}
-                    onChange={({target}) => setLastName(target.value)}
-                    sx={{width: "50%"}} 
-                />
+            <div className={styles.name} >
+                <Input label="First Name" inputId="firstName" state={firstName} setState={setFirstName} isRequired="true" />
+                <Input label="Last Name" inputId="lastName" state={lastName} setState={setLastName} isRequired="true" />
             </div>
-            <TextField 
-                id="email" 
-                type="email" 
-                value={email}
-                onChange={({target}) => setEmail(target.value)}
-                label="Email" 
-                fullWidth 
-            />
-            <TextField 
-                id="password" 
-                type="password" 
-                value={password}
-                onChange={({target}) => setPassword(target.value)}
-                label="Password" 
-                fullWidth 
-            />
+            <Input label="Email" inputId="email" inputType="email" state={email} setState={setEmail} isRequired="true" />
+            <Input label="Password" inputId="password" inputType="password" state={password} setState={setPassword} isRequired="true" />
             <AuthButton type="submit" action="Sign up" />
         </form>
     );

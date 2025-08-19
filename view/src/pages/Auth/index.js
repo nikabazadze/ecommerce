@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useParams } from 'react-router-dom';
 import styles from './Auth.module.css';
 import LoginForm from "../../components/LoginForm";
@@ -18,10 +18,8 @@ function Auth() {
 
     return (
         <div className={styles.mainContainer}>
-            <div className={isSignupPage ? styles.signupWallpaper : styles.loginWallpaper}></div>
-            <div className={styles.rightContainer}>
                 <div className={styles.authContainer}>
-                    {isSignupPage ? <h1>JOIN ZiPLiX <br />FOR THE BEST GEAR</h1> : <h1>Log in</h1>}
+                    {isSignupPage ? <h1>JOIN ZiPLiX</h1> : <h1>Log in</h1>}
                     {isSignupPage ? <SignUpForm /> : <LoginForm />}
                     <div className={styles.question}>
                         {isSignupPage ? 
@@ -43,7 +41,6 @@ function Auth() {
                         </div>
                     </div>
                 </div>
-            </div>
             {openDialog && <AlertDialog title={dialogTitle} content={dialogContent} onClose={setOpenDialog} />}
         </div>
     );

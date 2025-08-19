@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import styles from './LoginForm.module.css';
-import TextField from '@mui/material/TextField';
 import { login } from "../../API";
 import AuthButton from "../AuthButton";
+import Input from "../Input";
 import { setUser, setIsLoggedIn } from "../../store/UserSlice";
 import { loadUserCart } from "../../store/CartSlice";
 import { loadUserOrders } from "../../store/OrdersSlice";
@@ -22,7 +22,6 @@ function LoginForm() {
         if (email, password) {
             const response = await login(email, password);
             if (response.success) {
-                console.log(response.message);
                 dispatch(setUser(response.user));
                 dispatch(setIsLoggedIn(true));
                 checkGuestCart(response.user.id);
@@ -42,22 +41,8 @@ function LoginForm() {
 
     return (
         <form className={styles.form} onSubmit={handleSubmit}>
-            <TextField 
-                id="email" 
-                type="email" 
-                value={email}
-                onChange={({target}) => setEmail(target.value)}
-                label="Email" 
-                fullWidth 
-            />
-            <TextField 
-                id="password" 
-                type="password" 
-                value={password}
-                onChange={({target}) => setPassword(target.value)}
-                label="Password" 
-                fullWidth 
-            />
+            <Input label="Email" inputId="email" inputType="email" state={email} setState={setEmail} isRequired="true" />
+            <Input label="Password" inputId="password" inputType="password" state={password} setState={setPassword} isRequired="true" />
             <AuthButton type="submit" action="Log in" />
         </form>
     );

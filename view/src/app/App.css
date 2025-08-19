@@ -9,9 +9,12 @@
 
     --border-radius-card: 4px;
     --border-radius-button: 4px;
+    --border-radius-auth: 28px;
     --box-shadow-card: 0px 2px 18px rgba(0, 0, 0, 0.15);
 
     --color-cta-button: #f0b404;
+    --color-auth: rgb(0, 140, 255);
+    --color-auth-hover: rgba(0, 140, 255, 0.9);
 
     --background-color-promo1: #e1a800;
     --background-color-promo2: #08244c;

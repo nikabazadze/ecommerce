@@ -1,9 +1,13 @@
-import React from "react";
 import styles from './input.module.css';
 
-function Input({label, inputId, state, setState, inputType, isRequired, placeholder, height}) {
+function Input({label, inputId, inputType, state, setState, isRequired, placeholder, width, height}) {
+    let wrapperStyles = {};
+
+    width && (wrapperStyles.width = width);
+    height && (wrapperStyles.height = height);
+
     return (
-        <div className={styles.inputWrapper} style={height ? {height: height} : {}}>
+        <div className={styles.inputWrapper} style={wrapperStyles}>
             <label htmlFor={inputId} className={(state || placeholder) && styles.smallerLabel}>{label}</label>
             <input 
                 id={inputId}

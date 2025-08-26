@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
+
 import styles from './CartDrawer.module.css';
 import CartSummary from "../CartSummary";
 import Drawer from '@mui/material/Drawer';
 import LockIcon from '@mui/icons-material/Lock';
 import CloseIcon from '@mui/icons-material/Close';
+import { selectCart } from "../../store/CartSlice";
 
-function CartDrawer({onClose}) {
+function CartDrawer({ onClose, allowUpdate = true }) {
     const [ open, setOpen ] = useState(true);
+    const cart = useSelector(selectCart);
 
     const handleClose = () => {
         setOpen(false);
@@ -25,17 +29,27 @@ function CartDrawer({onClose}) {
                     <h3>your cart</h3>
                     <CloseIcon className={styles.closeIcon} onClick={handleClose} />
                 </div>
-                <div className={styles.cartSummaryContainer}>
-                    <CartSummary />
+                {Object.keys(cart).length > 0 && cart.cartItems.length > 0
+                    ?
+                <>
+                    <div className={styles.cartSummaryContainer}>
+                        <CartSummary allowUpdate={allowUpdate} />
+                    </div>
+                    <div className={styles.footer}>
+                        <Link className={styles.link} to={"/checkout"}>
+                            <button className={styles.checkoutButton}>
+                                <LockIcon className={styles.lockIcon}/>
+                                checkout
+                            </button>
+                        </Link>
+                    </div>
+                </>
+                    :
+                <div className={styles.emptyCart}>
+                    <p>Your cart is empty!</p>
+                    <Link to={"/shop"} className={styles.buttonContainer}><button className={styles.button}>shop now</button></Link>
                 </div>
-                <div className={styles.footer}>
-                    <Link className={styles.link} to={"/checkout"}>
-                        <button className={styles.checkoutButton}>
-                            <LockIcon className={styles.lockIcon}/>
-                            checkout
-                        </button>
-                    </Link>
-                </div>
+                }
             </div>
         </Drawer>
     );

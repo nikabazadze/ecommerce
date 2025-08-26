@@ -1,5 +1,5 @@
 .drawerContainer {
-    background-color: #fafafa;
+    background-color: #fff;
     width: 100vw;
     max-width: 27.5rem;
     height: 100vh;
@@ -101,4 +101,43 @@
     width: 100%;
     display: flex;
     justify-content: center;
+}
+
+
+/* Empty cart styles */
+.emptyCart {
+    gap: 1rem;
+    width: 100%;
+    position: relative;
+    top: 30%;
+}
+
+.emptyCart p {
+    font-size: 1.125rem;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.button {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    width: 80%;
+    height: 3.25rem;
+    margin-top: 3.5rem;
+    cursor: pointer;
+    color: #fff;
+    background-color: rgb(68, 68, 68);
+    border: none;
+    border-radius: var(--border-radius-button);
 }

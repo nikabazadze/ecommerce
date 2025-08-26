@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import styles from './CartSummary.module.css';
 import { selectCart } from "../../store/CartSlice";
@@ -6,7 +6,7 @@ import Input from "../Input";
 import ChosenProducts from "../ChosenProducts";
 
 
-function CartSummary() {
+function CartSummary({allowUpdate}) {
     const [ promoCode, setPromoCode ] = useState("");
     const [ isValidPromoCode, setIsValidPromoCode ] = useState(true);
     const validPromoCodes = [];
@@ -20,7 +20,7 @@ function CartSummary() {
     return (
         <div className={styles.mainContainer}>
             <div className={styles.cartItems}>
-                {cart.cartItems && <ChosenProducts products={cart.cartItems} />}
+                {cart.cartItems && <ChosenProducts products={cart.cartItems} allowUpdate={allowUpdate}/>}
             </div>
             <div className={styles.promoContainer} >
                 <form 

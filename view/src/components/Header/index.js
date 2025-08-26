@@ -1,9 +1,9 @@
-import React from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
 
 import styles from './Header.module.css';
+import CartDrawer from "../CartDrawer";
 import Search from "../Search";
 import Badge from "../Badge";
 import Menu from "../Menu/Menu";
@@ -16,6 +16,7 @@ import { selectCartTotalItems } from "../../store/CartSlice";
 
 function Header() {
     const [ showMenu, setShowMenu ] = useState(false);
+    const [ openDrawer, setOpenDrawer ] = useState(false);
     const isLoggedIn = useSelector(selectIsLoggedIn);
     const user = useSelector(selectUser);
     const cartTotalItems = useSelector(selectCartTotalItems);
@@ -40,13 +41,13 @@ function Header() {
                     <span>{`Hello, ${isLoggedIn ? user.firstName : "Sign up"}`}</span>
                 </Link></li>
                 <li>
-                    <Link to="cart">
+                    <div onClick={() => setOpenDrawer(true)} className={styles.cartContainer}>
                         <div className={styles.cartIconContainer}>
                             <img src={cartIcon} alt="Cart icon" className={styles.cartIcon} />
                             {cartTotalItems > 0 && <Badge count={cartTotalItems} size={"0.875rem"} fontSize={"0.625rem"} translate={"20"} />}
                         </div>
                         <span>Cart</span>
-                    </Link>
+                    </div>
                 </li>
             </ul>
         );
@@ -65,6 +66,9 @@ function Header() {
                     <nav className={styles.rightNav}>{renderRightNav()}</nav>
                 </div>
             </div>
+
+            {/* Cart Drawer */}
+            {openDrawer && <CartDrawer onClose={() => setOpenDrawer(false)} />}
 
             {/* Menu */}
             <div className={`${styles.menuContainer} ${showMenu ? styles.menuVisible : ''}`} >

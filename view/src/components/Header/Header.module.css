@@ -51,7 +51,8 @@
     gap: 1.5rem;
 }
 
-.list a {
+.list a,
+.cartContainer {
     font-size: 0.875rem;
     font-weight: 600;
     text-decoration: none;
@@ -63,10 +64,12 @@
     align-items: center;
 }
 
-.rightNav a {
+.rightNav a,
+.cartContainer {
     display: flex;
     align-items: flex-end;
     gap: 0.25rem;
+    cursor: pointer;
 }
 
 .personIcon {

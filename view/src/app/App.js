@@ -7,7 +7,6 @@ import './App.css';
 import Root from '../layouts/Root';
 import Home from '../pages/Home';
 import Shop from '../pages/Shop';
-import Cart from '../pages/Cart';
 import Auth from '../pages/Auth';
 import Account from '../pages/Account';
 import Product from '../pages/Product';
@@ -25,7 +24,6 @@ const router = createBrowserRouter(createRoutesFromElements(
     <Route path='/' element={ <Root /> } >
       <Route path='/' element={ <Home /> } />
       <Route path='shop' element={ <Shop /> } />
-      <Route path='cart' element={ <Cart /> } />
       <Route path='account' element={ <Account /> } />
       <Route path='account/:action' element={ <Auth /> } />
       <Route path='products/:id' element={ <Product /> } />

@@ -90,8 +90,8 @@ function ChosenProducts({ products, allowUpdate }) {
     };
 
     return (
-        products.map(product => (
-            <div className={styles.mainContainer} key={`${product.productId}_${product.productVariant}`}>
+        products.map((product, index) => (
+            <div className={styles.mainContainer} style={index === 0 ? {borderTop: 0, paddingTop: 0} : {}} key={`${product.productId}_${product.productVariant}`}>
                 <div className={styles.imgOuterContainer}>
                     <div className={styles.imgContainer} style={!allowUpdate ? {border: "1px solid #d8d8d8"} : {}}>
                         <img src={product.imgUrl} alt="Product image" />

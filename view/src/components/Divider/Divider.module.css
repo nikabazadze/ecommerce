@@ -1,0 +1,19 @@
+.divider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 1rem;
+}
+
+.divider hr {
+    width: 100%;
+    border: 0;
+    border-top: 1px inset;
+}
+
+.divider span {
+    letter-spacing: 0.05rem;
+    padding: 0 1rem;
+    position: absolute;
+    background-color: #fff;
+}

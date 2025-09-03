@@ -5,12 +5,6 @@
     position: relative;
 }
 
-.checkoutPage h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 4rem;
-    line-height: 5.5rem;
-    color: #3d3939;
-}
 
 /* Override App.css styles */
 .checkoutPage main {
@@ -32,9 +26,10 @@
 /* Left side styles */
 .leftContainer {
     width: 60%;
-    padding: 3.375rem 4.375rem;
+    padding: 5rem 4.375rem;
     display: flex;
     justify-content: flex-end;
+    /* border: 2px solid red; */
 }
 
 .leftContent {
@@ -45,7 +40,7 @@
 .leftContent h1 {
     font-family: 'DM Serif Display', serif;
     font-size: 4rem;
-    line-height: 5.5rem;
+    text-align: center;
     color: #3d3939;
 }
 
@@ -68,20 +63,6 @@
     color: #575151;
 }
 
-/* Header styles */
-.leftContent header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.3125rem;
-}
-
-.leftContent header p {
-    font-size: 0.8125rem;
-    font-weight: 500;
-    word-spacing: 0.5rem;
-    color: #000;
-}
 
 /* Express checkout styles */
 .expressCheckout {
@@ -103,27 +84,12 @@
     cursor: pointer;
 }
 
+
 /* Divider styles */
-.divider {
-    margin: 1rem 0;
-    height: 3rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.dividerContainer {
+    margin: 2.5rem 0;
 }
 
-.divider hr {
-    width: 100%;
-    border: 0;
-    border-top: 1px solid #eaeaea;
-}
-
-.divider h3 {
-    padding: 1rem;
-    position: absolute;
-    background-color: #fff;
-}
 
 /* Contact section styles */
 .contact {
@@ -239,8 +205,8 @@
 /* Right side styles */
 .rightContainer {
     width: 40%;
-    padding: 5.375rem 4.875rem;
-    background-color: #fafafa;
+    padding: 5.5rem 4.875rem;
+    background-color: #f5f5f5;
 }
 
 .cartSummaryContainer {

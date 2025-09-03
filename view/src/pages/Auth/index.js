@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useParams } from 'react-router-dom';
 import styles from './Auth.module.css';
+import Divider from "../../components/Divider";
 import LoginForm from "../../components/LoginForm";
 import SignUpForm from "../../components/SignUpForm";
 import AuthButton from "../../components/AuthButton";
@@ -28,9 +29,8 @@ function Auth() {
                             <p>Don't have an account? <Link to="/account/signup" className={styles.link}>Sign up</Link></p>
                         }
                     </div>
-                    <div className={styles.divider}>
-                        <hr />
-                        <span>OR</span>
+                    <div className={styles.dividerContainer}>
+                        <Divider />
                     </div>
                     <div className={styles.ssoContainer}>
                         <div onClick={() => setOpenDialog(true)} >

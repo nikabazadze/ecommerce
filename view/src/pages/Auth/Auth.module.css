@@ -51,24 +51,8 @@
  
 
 /* Divider styles */
-.divider {
+.dividerContainer {
     margin: 2rem 0;
-    height: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.divider hr {
-    width: 100%;
-}
-
-.divider span {
-    font-size: 0.875rem;
-    letter-spacing: 0.05rem;
-    padding: 0 1rem;
-    position: absolute;
-    background-color: #fff;
 }
 
 

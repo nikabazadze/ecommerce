@@ -6,6 +6,7 @@ import { checkout } from "../../API";
 import styles from './Checkout.module.css';
 import Input from "../../components/Input";
 import { selectCart } from "../../store/CartSlice";
+import Divider from "../../components/Divider";
 import ScrollToTop from "../../components/ScrollToTop";
 import AlertDialog from "../../components/AlertDialog";
 import CartSummary from "../../components/CartSummary";
@@ -107,11 +108,7 @@ function Checkout() {
             <div className={styles.leftContainer}>
                 <div className={styles.leftContent}>
                     <header>
-                        
                         <Link to={"/"} className={styles.link}><h1>ZiPLiX</h1></Link>
-                        {/* <div className={styles.breadcrumbs}>
-                            <p>Cart &#10095; Infortmation &#10095; Shipping &#10095; Payment</p>
-                        </div> */}
                     </header>
                     <section className={styles.expressCheckout}>
                         <h3>express checkout</h3>
@@ -123,9 +120,8 @@ function Checkout() {
                             <img src={googlePayLogo} onClick={handleDialogClick} alt="GooglePay logo" />
                         </div>
                     </section>
-                    <div className={styles.divider}>
-                        <hr />
-                        <h3>OR</h3>
+                    <div className={styles.dividerContainer}>
+                        <Divider fontWeight="300" fontColor="#3d3939" lineColor="#eaeaea" />
                     </div>
                     <section className={styles.contact}>
                         <div className={styles.contactHeader}>

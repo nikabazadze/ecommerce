@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 
@@ -17,9 +17,7 @@ import { selectIsLoggedIn, selectUser } from "../../store/UserSlice";
 import CheckIcon from '@mui/icons-material/Check';
 import shopPayLogo from '../../assets/logos/paymentLogos/shopPay.svg';
 import applePayLogo from '../../assets/logos/paymentLogos/applePay.svg';
-import googlePayLogo from '../../assets/logos/paymentLogos/googlePay.svg';
 import paypalPayLogo from '../../assets/logos/paymentLogos/paypalPay.svg';
-import amazonPayLogo from '../../assets/logos/paymentLogos/amazonPay.svg';
 
 function Checkout() {
     const [ email, setEmail ] = useState("");
@@ -41,10 +39,6 @@ function Checkout() {
     const user = useSelector(selectUser);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
 
     useEffect(() => {
         if (userLoggedIn) {
@@ -104,25 +98,27 @@ function Checkout() {
         <div className={styles.checkoutPage}>
             <ScrollToTop />
 
-            {/* Left side */}
-            <div className={styles.leftContainer}>
-                <div className={styles.leftContent}>
+            {/* Main Container */}
+            <div className={styles.mainContainer}>
+                <div className={styles.mainContent}>
                     <header>
                         <Link to={"/"} className={styles.link}><h1>ZiPLiX</h1></Link>
                     </header>
+
+                    {/* Express Pay Buttons */}
                     <section className={styles.expressCheckout}>
                         <h3>express checkout</h3>
                         <div className={styles.expressPaymentsContainer}>
-                            <img src={shopPayLogo}   onClick={handleDialogClick} alt="ShopPay logo" />
-                            <img src={paypalPayLogo} onClick={handleDialogClick} alt="Paypal logo" />
-                            <img src={amazonPayLogo} onClick={handleDialogClick} alt="AmazonPay logo" />
-                            <img src={applePayLogo}  onClick={handleDialogClick} alt="ApplePay logo" />
-                            <img src={googlePayLogo} onClick={handleDialogClick} alt="GooglePay logo" />
+                            <div className={styles.payImgContainer}><img src={shopPayLogo}   onClick={handleDialogClick} alt="ShopPay logo" /></div>
+                            <div className={styles.payImgContainer}><img src={paypalPayLogo}   onClick={handleDialogClick} alt="Paypal logo" style={window.innerWidth < 400 ? {display: "none"} : {}}/></div>
+                            <div className={styles.payImgContainer}><img src={applePayLogo}   onClick={handleDialogClick} alt="ApplePay logo" /></div>
                         </div>
                     </section>
                     <div className={styles.dividerContainer}>
                         <Divider fontWeight="300" fontColor="#3d3939" lineColor="#eaeaea" />
                     </div>
+
+                    {/* Contact */}
                     <section className={styles.contact}>
                         <div className={styles.contactHeader}>
                             <h2>Contact</h2>
@@ -136,9 +132,11 @@ function Checkout() {
                             <p>Email me with news and offers</p>
                         </div>
                     </section>
+
+                    {/* Shipping info */}
                     <section className={styles.shipping}>
                         <h2>Shipping address</h2>
-                        <form onSubmit={handleSubmit}>
+                        <form id="checkoutForm" onSubmit={handleSubmit}>
                             <Input label={"Country"} inputId={"country"} state={country} setState={setCountry} />
                             <div className={styles.inputsContainer}>
                                 <Input label={"First name"} inputId={"firstName"} state={firstName} setState={setFirstName} />
@@ -152,15 +150,20 @@ function Checkout() {
                                 <Input label={"ZIP code"} inputId={"zipCode"} state={zipCode} setState={setZipCode} />
                             </div>
                             <Input label={"Phone"} inputId={"phone"} state={phone} setState={handlePhoneChange} type={"tel"} isRequired={true} placeholder="(xxx) xxx-xxxx" />
-                            <div className={styles.formFooter}>
-                                <div>
-                                    <Link to={"/cart"} className={styles.link}><span>&#10094;</span> Return to cart</Link>
-                                </div>
-                                <button type="submit" className={styles.submitButton}>Buy Now</button>
-                            </div>
                         </form>
                     </section>
-                    <footer>
+
+                    {/* Order Summary Mobile */}
+                    <section className={styles.orderSummaryMobile}>
+                        <h2>Order summary</h2>
+                        <div className={styles.orderSummaryContent}>
+                            <CartSummary />
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className={styles.footer}>
+                        <button type="submit" form="checkoutForm" className={styles.submitButton}>Pay now</button>
                         <nav>
                             <ul>
                                 <li onClick={handleDialogClick}>Refund policy</li>
@@ -173,12 +176,13 @@ function Checkout() {
                 </div>
             </div>
 
-            {/* Right side */}
-            <div className={styles.rightContainer}>
-                <div className={styles.cartSummaryContainer}>
+            {/* Order Summary Desktop */}
+            <div className={styles.orderSummaryDesktop}>
+                <div className={styles.orderSummaryContent}>
                     <CartSummary />
                 </div>
             </div>
+
             {openDialog && <AlertDialog title={dialogTitle} content={dialogContent} onClose={setOpenDialog} />}
         </div>
     );

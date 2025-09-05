@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -25,16 +25,18 @@ function OrderConfirm() {
     }, [location, navigate, dispatch]);
     
     return (
-        <div className={styles.mainContainer}>
-            <h2>Order has been placed successfully!</h2>
-            {order && (
-                <div className={styles.orderContainer}>
-                    <OrderListItem order={order} />
-                </div>
-            )}
-            <section className={styles.continueShoppingContainer}>
-                <Carousel items={products} title="Continue Shopping" />
-            </section>
+        <div className={styles.orderConfirmPage}>
+            <div className={styles.mainContainer}>
+                <h2>Order has been placed successfully!</h2>
+                {order && (
+                    <div className={styles.orderContainer}>
+                        <OrderListItem order={order} />
+                    </div>
+                )}
+                <section className={styles.carouselContainer}>
+                    <Carousel items={products} title="Continue Shopping" />
+                </section>
+            </div>
         </div>
     );
 };

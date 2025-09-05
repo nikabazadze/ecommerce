@@ -1,4 +1,3 @@
-import React from "react";
 import styles from './OrderListItem.module.css';
 import { styled } from '@mui/material/styles';
 import ChosenProducts from "../ChosenProducts";
@@ -10,11 +9,11 @@ function OrderListItem({ order }) {
 
     const tooltipContent = (
         <div className={styles.tooltipContentContainer}>
-            <p>{`${address.firstName} ${address.lastName}`}</p>
-            <p>{`${address.address}${address.apartment ? `, ${address.apartment}` : ""}`}</p>
-            <p>{`${address.city}, ${address.state}, ${address.zipCode}`}</p>
-            <p>{address.country}</p>
-            <p>{`Phone: ${address.phone}`}</p>
+            <p><span>Name: </span>{`${address.firstName} ${address.lastName}`}</p>
+            <p><span>Address: </span>{`${address.address}${address.apartment ? `, ${address.apartment}` : ""}`}</p>
+            <p><span>City: </span>{`${address.city}, ${address.state}, ${address.zipCode}`}</p>
+            <p><span>Country: </span>{address.country}</p>
+            <p><span>Phone: </span>{address.phone}</p>
         </div>
     );
 
@@ -36,25 +35,28 @@ function OrderListItem({ order }) {
         <div className={styles.mainContainer}>
             <section className={styles.header}>
                 <div>
-                    <p>order placed</p>
+                    <h3>order placed</h3>
                     <p>{order.createdAt}</p>
                 </div>
                 <div>
-                    <p>total</p>
+                    <h3>total</h3>
                     <p>{`$${order.totalValue}`}</p>
                 </div>
                 <div>
-                    <p>status</p>
+                    <h3>status</h3>
                     <p>{order.status}</p>
                 </div>
                 <div className={styles.shippingContainer}>
-                    <p>ship to</p>
-                    <StyledTooltip title={tooltipContent} placement="bottom" arrow>
-                        <div>
-                            <p>{`${address.firstName} ${address.lastName}`}</p>
-                            <ExpandMoreIcon sx={{ fontSize: 18 }} className={styles.expandIcon} />
-                        </div>
-                    </StyledTooltip>
+                    <h3>ship to</h3>
+                    <p>{address.address}</p>
+                    <div className={styles.tooltip}>
+                        <StyledTooltip title={tooltipContent} placement="bottom" arrow>
+                            <div>
+                                <p>{address.address}</p>
+                                <ExpandMoreIcon sx={{ fontSize: 18 }} className={styles.expandIcon} />
+                            </div>
+                        </StyledTooltip>
+                    </div>
                 </div>
             </section>
             <section className={styles.contentContainer}>

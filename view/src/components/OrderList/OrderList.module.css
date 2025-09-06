@@ -1,11 +1,6 @@
 .mainContainer {
     width: 100%;
-}
-
-.mainContainer > * {
-    margin-bottom: 1.5rem;
-}
-
-.mainContainer > *:last-child {
-    margin-bottom: 0rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }

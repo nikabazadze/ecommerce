@@ -1,121 +1,123 @@
-/* Universal styles */
 .profilePage {
-    font-family: 'Clash Grotesk', sans-serif;
-    margin: 0 var(--padding-main);
+    width: 100%;
+    padding: 5rem var(--padding-header) 3rem;
+    min-height: calc(100vh - var(--height-promoHeader) - var(--height-mainHeader));
+    color: #000;
+    display: flex;
+}
+
+.profilePage > div {
+    width: 100%;
+    max-width: var(--max-width-header);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .profilePage h2 {
     font-size: 1.5rem;
-    font-weight: 300;
-    line-height: 1.875rem;
-    color: #0D1B2A;
+    font-weight: 500;
+    margin-bottom: 2.25rem;
 }
 
-.profilePage h3 {
-    font-weight: 200;
-    line-height: 1.25rem;
-    color: #2c2c2c;
+
+/* Button styles */
+.button {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    width: 12rem;
+    height: 3rem;
+    cursor: pointer;
+    color: #fff;
+    border: none;
+    background-color: rgb(68, 68, 68);
+    border-radius: var(--border-radius-button-round);
 }
 
-.profilePage hr {
+.button:hover {
+    background-color: #000;
+}
+
+
+/* Orders Container Styles */
+.orderListContainer {
     width: 100%;
-    margin: 1rem 0;
-    border: 0;
-    border-top: 1px solid #f2f2f2;
+    max-width: 600px;
+    margin-bottom: 3rem;
+}
+
+/* No orders styles */
+.noOrdersContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    height: 20vh;
+    border-radius: var(--border-radius-card);
+    box-shadow: var(--box-shadow-card);
+    background-color: #fff;
+}
+
+.noOrdersContainer span {
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.noOrdersContainer p {
+    font-size: 1rem;
 }
 
 
 /* Logout styles */
 .logout {
-    margin-top: 1.5rem;
-}
-
-.logout p {
-    font-weight: 200;
-    letter-spacing: calc(1rem * 9 / 100);
-    color: #0D1B2A;
-    cursor: pointer;
-    display: inline-block;
-    border-bottom: 1px solid;
+    margin-top: 10rem;
 }
 
 
-/* Account info styles */
-.accountContainer {
-    margin-top: 2rem;
-    margin-bottom: 10.25rem;
+/* Media Queries */
+/* Desktop */
+@media only screen and (max-width: 1350px) {
+    .profilePage {
+        padding-top: 4rem;
+    }
+
+    .profilePage h2 {
+        margin-bottom: 1.5rem;
+    }
 }
 
-.accountContainer p {
-    font-weight: 300;
-    line-height: 1.25rem;
-    margin-top: 0.5625rem;
-    color: #0D1B2A;
+/* Tablet */
+@media only screen and (max-width: 950px) {
+    .profilePage {
+        padding-top: 3rem;
+    }
+
+    .profilePage h2 {
+        font-size: 1.375rem;
+        font-weight: 600;
+        margin-bottom: 1.125rem;
+    }
+
+    .orderListContainer {
+        margin-bottom: 2.5rem;
+    }
+
+    .noOrdersContainer {
+        box-shadow: none;
+    }
 }
 
+/* Mobile */
+@media only screen and (max-width: 550px) {
+    .profilePage {
+        padding-top: 2.5rem;
+    }
 
-/* Profile Footer styles */
-.profileFooter {
-    width: 100%;
-    margin-bottom: 5rem;
-    display: flex;
-    justify-content: space-between;
-    gap: 5rem;
-}
-
-/* Orders list styles */
-.ordersContainer {
-    width: 45rem;
-}
-
-.ordersContainer > span {
-    font-size: 0.875rem;
-    text-decoration: underline;
-    display: block;
-    margin-top: 1rem;
-    color: #0D1B2A;
-    cursor: pointer;
-}
-
-.ordersContainer > p {
-    font-size: 1rem;
-    line-height: 1.25rem;
-    margin-top: 1.5rem;
-    color: #000;
-}
-
-/* Primary address styles */
-.addressContainer {
-    width: 20rem;
-}
-
-.addressInfo {
-    margin: 1.5rem 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.375rem;
-}
-
-.addressInfo p {
-    font-weight: 300;
-    line-height: 1.25rem;
-    color: #000;
-}
-
-.addressButton {
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 2rem;
-    letter-spacing: calc(1rem * 3 / 100);
-    width: 11rem;
-    height: 3rem;
-    border: none;
-    border-radius: 2px;
-    color: #fff;
-    background-color: #0D1B2A;
-    cursor: pointer;
-}
-
-.addressButton:hover {
-    background-color: #0d3866;
+    .orderListContainer {
+        margin-bottom: 2rem;
+    }
 }
